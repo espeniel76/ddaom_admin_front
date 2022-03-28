@@ -14,7 +14,7 @@ import { Tools } from "../../utils/tools";
 import useFetchCommonStudy from "../../hooks/useFetchCommonStudy";
 import ListSummarySentence from "../../components/Card/ListSummarySentence";
 
-const Sentence = (props) => {
+const Genres = (props) => {
 	const ctx = useContext(UserContext);
 	let oPage = ctx.pageList.genre;
 
@@ -74,7 +74,6 @@ const Sentence = (props) => {
 			switch (result.ResultCode) {
 				case results.OK:
 					korea.value = "";
-					english.value = "";
 					fnClickViewNew(false);
 					fnSearch();
 					korea.focus();
@@ -116,16 +115,10 @@ const Sentence = (props) => {
 		let oBtn1 = refCtrlBtn1[num].current;
 		let oBtn2 = refCtrlBtn2[num].current;
 		const korea = refSentelceListKorea[num].current;
-		const english = refSentelceListEnglish[num].current;
 		if (oBtn1.innerText === "Save") {
 			if (window.confirm("정말로 저장 하시겠습니까?")) {
 				if (korea.value.length < 1) {
 					alert("한국어 문장을 입력 하세요.");
-					korea.focus();
-					return false;
-				}
-				if (english.value.length < 1) {
-					alert("영어 문장을 입력 하세요.");
 					korea.focus();
 					return false;
 				}
@@ -134,7 +127,6 @@ const Sentence = (props) => {
 					method: HttpMethod.PUT,
 					data: {
 						Korea: korea.value,
-						English: english.value,
 						ActiveYn: isViewSentence,
 						SeqSentence: SeqSentence,
 					},
@@ -145,7 +137,6 @@ const Sentence = (props) => {
 						oBtn1.innerText = "Edit";
 						oBtn2.innerText = "Del";
 						korea.style.backgroundColor = "#FFFFFF";
-						english.style.backgroundColor = "#FFFFFF";
 						break;
 					case results.ER_DUP_ENTRY:
 						alert("이미 존재하는 문장 입니다.");
@@ -159,7 +150,6 @@ const Sentence = (props) => {
 			oBtn1.innerText = "Save";
 			oBtn2.innerText = "Cancel";
 			korea.style.backgroundColor = "#EAEAEA";
-			english.style.backgroundColor = "#EAEAEA";
 			korea.focus();
 		}
 	}
@@ -167,12 +157,10 @@ const Sentence = (props) => {
 		let oBtn1 = refCtrlBtn1[num].current;
 		let oBtn2 = refCtrlBtn2[num].current;
 		const korea = refSentelceListKorea[num].current;
-		const english = refSentelceListEnglish[num].current;
 		if (oBtn2.innerText === "Cancel") {
 			oBtn1.innerText = "Edit";
 			oBtn2.innerText = "Del";
 			korea.style.backgroundColor = "#FFFFFF";
-			english.style.backgroundColor = "#FFFFFF";
 		} else {
 			if (window.confirm("정말로 삭제 하시겠습니까?")) {
 				let result = await Ajax.run({
@@ -285,7 +273,6 @@ const Sentence = (props) => {
 												<td>
 													<input type="text" placeholder="한글 문장을 입력 하세요." ref={refSentelceListKorea[numBtn]} style={oStyle.sentenceStyleInput} className="form-control-sm form-control" defaultValue={o.Korea} />
 													<div style={{ height: "2pt" }}></div>
-													<input type="text" placeholder="영문 문장을 입력 하세요." ref={refSentelceListEnglish[numBtn]} style={oStyle.sentenceStyleInput} className="form-control-sm form-control" defaultValue={o.English} />
 												</td>
 												<td style={oStyle.sentenceStyleViewLike}>
 													{o.BasicYn ? "관리자" : "사용자"}
@@ -347,4 +334,4 @@ const Sentence = (props) => {
 	);
 };
 
-export default Sentence;
+export default Genres;
