@@ -1,13 +1,106 @@
 <script>
-	import { active } from "tinro";
+	// import { active } from "tinro";
+	let listMenu = [
+		{
+			title: "소설관리",
+			menus: [
+				{
+					title: "메인",
+					active: true,
+					open: true,
+					src: "/",
+					subs: [
+						{ title: "전체소설", src: "/" },
+						{ title: "삭제된 소설", src: "/" },
+					],
+				},
+				{
+					title: "표지관리",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+				{
+					title: "금칙어관리",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+				{
+					title: "주제어관리",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+		{
+			title: "이벤트관리",
+			menus: [
+				{
+					title: "이벤트",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+		{
+			title: "CS관리",
+			menus: [
+				{
+					title: "공지사항",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+				{
+					title: "1:1문의",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+				{
+					title: "FAQ",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+		{
+			title: "회원관리",
+			menus: [
+				{
+					title: "회원관리 정보",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+		{
+			title: "통계",
+			menus: [
+				{
+					title: "통계",
+					active: false,
+					open: true,
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+	];
 </script>
-
-<!-- <nav>
-	<a href="/">Home</a>
-	<a href="/about">About</a>
-	<a href="/about/sub">Sub</a>
-	<a href="/contacts">Contacts</a>
-</nav> -->
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 	<div class="app-brand demo" style="padding-left: 0rem">
@@ -25,42 +118,36 @@
 			</a>
 		</li>
 
-		<li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
-		<li class="menu-item">
-			<a href="#\" class="menu-link menu-toggle">
-				<i class="menu-icon tf-icons bx bx-detail" />
-				<div data-i18n="Form Elements">Form Elements</div>
-			</a>
-			<ul class="menu-sub">
-				<li class="menu-item">
-					<a href="forms-basic-inputs.html" class="menu-link">
-						<div data-i18n="Basic Inputs">Basic Inputs</div>
+		{#each listMenu as menu}
+			<li class="menu-header small text-uppercase">
+				<span class="menu-header-text">{menu.title}</span>
+			</li>
+			{#each menu.menus as item}
+				<li class="menu-item {item.active ? ' active' : ''} {item.open ? ' open' : ''}">
+					<a href={item.url} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
+						<i class="menu-icon tf-icons bx bx-detail" />
+						<div data-i18n="Form Elements">{item.title}</div>
 					</a>
+					{#if item.subs.length > 0}
+						<ul class="menu-sub">
+							{#each item.subs as sub}
+								<li class="menu-item">
+									<a href={sub.src} class="menu-link">
+										<div data-i18n="Basic Inputs">{sub.title}</div>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</li>
-				<li class="menu-item">
-					<a href="forms-input-groups.html" class="menu-link">
-						<div data-i18n="Input groups">Input groups</div>
-					</a>
-				</li>
-			</ul>
-		</li>
-		<li class="menu-item active open">
-			<a href="#\" class="menu-link menu-toggle">
-				<i class="menu-icon tf-icons bx bx-detail" />
-				<div data-i18n="Form Layouts">Form Layouts</div>
-			</a>
-			<ul class="menu-sub">
-				<li class="menu-item">
-					<a href="form-layouts-vertical.html" class="menu-link">
-						<div data-i18n="Vertical Form">Vertical Form</div>
-					</a>
-				</li>
-				<li class="menu-item active">
-					<a href="form-layouts-horizontal.html" class="menu-link">
-						<div data-i18n="Horizontal Form">Horizontal Form</div>
-					</a>
-				</li>
-			</ul>
-		</li>
+			{/each}
+		{/each}
 	</ul>
 </aside>
+
+<style>
+	a:-webkit-any-link {
+		color: -webkit-link;
+		cursor: pointer;
+	}
+</style>

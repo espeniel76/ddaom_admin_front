@@ -7,5 +7,5 @@
 	import SubContent from "./pages/SubContent.svelte";
 </script>
 
-<Route path="/" redirect="/home"><Home /></Route>
-<Route path="/home"><Home /></Route>
+<!-- <Route path="/" redirect="/home"><Home /></Route> -->
+<Route path="/"><Home /></Route>
