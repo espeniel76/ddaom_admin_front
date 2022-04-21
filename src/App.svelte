@@ -1,30 +1,201 @@
 <script>
-	export let name;
+	// export let name;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<div class="layout-wrapper layout-content-navbar">
+	<div class="layout-container">
+		<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+			<div class="app-brand demo" style="padding-left: 0rem">
+				<img alt="" src="./assets/img/logo.png" width="50" />
+				<span class="app-brand-text demo menu-text fw-bolder ms-2">따옴 관리자</span>
+			</div>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+			<div class="menu-inner-shadow" />
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+			<ul class="menu-inner py-1">
+				<li class="menu-item">
+					<a href="index.html" class="menu-link">
+						<i class="menu-icon tf-icons bx bx-home-circle" />
+						<div data-i18n="Analytics">Dashboard</div>
+					</a>
+				</li>
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+				<li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
+				<li class="menu-item">
+					<a href="#\" class="menu-link menu-toggle">
+						<i class="menu-icon tf-icons bx bx-detail" />
+						<div data-i18n="Form Elements">Form Elements</div>
+					</a>
+					<ul class="menu-sub">
+						<li class="menu-item">
+							<a href="forms-basic-inputs.html" class="menu-link">
+								<div data-i18n="Basic Inputs">Basic Inputs</div>
+							</a>
+						</li>
+						<li class="menu-item">
+							<a href="forms-input-groups.html" class="menu-link">
+								<div data-i18n="Input groups">Input groups</div>
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li class="menu-item active open">
+					<a href="#\" class="menu-link menu-toggle">
+						<i class="menu-icon tf-icons bx bx-detail" />
+						<div data-i18n="Form Layouts">Form Layouts</div>
+					</a>
+					<ul class="menu-sub">
+						<li class="menu-item">
+							<a href="form-layouts-vertical.html" class="menu-link">
+								<div data-i18n="Vertical Form">Vertical Form</div>
+							</a>
+						</li>
+						<li class="menu-item active">
+							<a href="form-layouts-horizontal.html" class="menu-link">
+								<div data-i18n="Horizontal Form">Horizontal Form</div>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</aside>
+		<div class="layout-page">
+			<div class="content-wrapper">
+				<div class="container-xxl flex-grow-1 container-p-y">
+					<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span> Horizontal Layouts</h4>
+
+					<div class="row">
+						<div class="col-xxl">
+							<div class="card mb-4">
+								<div class="card-header d-flex align-items-center justify-content-between">
+									<h5 class="mb-0">Basic Layout</h5>
+									<small class="text-muted float-end">Default label</small>
+								</div>
+								<div class="card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" id="basic-default-name" placeholder="John Doe" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-default-company">Company</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" id="basic-default-company" placeholder="ACME Inc." />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<input type="text" id="basic-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2" />
+													<span class="input-group-text" id="basic-default-email2">@example.com</span>
+												</div>
+												<div class="form-text">You can use letters, numbers & periods</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
+											<div class="col-sm-10">
+												<input type="text" id="basic-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-default-phone" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
+											<div class="col-sm-10">
+												<textarea id="basic-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?" aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2" />
+											</div>
+										</div>
+										<div class="row justify-content-end">
+											<div class="col-sm-10">
+												<button type="submit" class="btn btn-primary">Send</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-xxl">
+							<div class="card mb-4">
+								<div class="card-header d-flex align-items-center justify-content-between">
+									<h5 class="mb-0">Basic with Icons</h5>
+									<small class="text-muted float-end">Merged input group</small>
+								</div>
+								<div class="card-body">
+									<form>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user" /></span>
+													<input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" />
+												</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-icon-default-company">Company</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<span id="basic-icon-default-company2" class="input-group-text"><i class="bx bx-buildings" /></span>
+													<input type="text" id="basic-icon-default-company" class="form-control" placeholder="ACME Inc." aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" />
+												</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<span class="input-group-text"><i class="bx bx-envelope" /></span>
+													<input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+													<span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
+												</div>
+												<div class="form-text">You can use letters, numbers & periods</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone No</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone" /></span>
+													<input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
+												</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label class="col-sm-2 form-label" for="basic-icon-default-message">Message</label>
+											<div class="col-sm-10">
+												<div class="input-group input-group-merge">
+													<span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment" /></span>
+													<textarea id="basic-icon-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?" aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2" />
+												</div>
+											</div>
+										</div>
+										<div class="row justify-content-end">
+											<div class="col-sm-10">
+												<button type="submit" class="btn btn-primary">Send</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="content-footer footer bg-footer-theme">
+					<div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+						<div class="mb-2 mb-md-0">
+							©
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							, DDAOM
+						</div>
+					</div>
+				</footer>
+				<div class="content-backdrop fade" />
+			</div>
+		</div>
+	</div>
+	<div class="layout-overlay layout-menu-toggle" />
+</div>
