@@ -1,11 +1,10 @@
 <script>
 	import { Route } from "tinro";
 
-	import About from "./pages/About.svelte";
 	import Home from "./pages/Home.svelte";
-	import Contacts from "./pages/Contacts.svelte";
-	import SubContent from "./pages/SubContent.svelte";
+	import NovelSlangs from "./pages/novel/Slangs.svelte";
 </script>
 
 <!-- <Route path="/" redirect="/home"><Home /></Route> -->
 <Route path="/"><Home /></Route>
+<Route path="/novel/slangs"><NovelSlangs /></Route>

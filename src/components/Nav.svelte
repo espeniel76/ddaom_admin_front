@@ -6,8 +6,6 @@
 			menus: [
 				{
 					title: "메인",
-					active: true,
-					open: true,
 					src: "/",
 					subs: [
 						{ title: "전체소설", src: "/" },
@@ -16,23 +14,22 @@
 				},
 				{
 					title: "표지관리",
-					active: false,
-					open: true,
-					src: "/",
+					src: "/novel/images",
 					subs: [],
 				},
 				{
 					title: "금칙어관리",
-					active: false,
-					open: true,
-					src: "/",
+					src: "/novel/slangs",
 					subs: [],
 				},
 				{
 					title: "주제어관리",
-					active: false,
-					open: true,
-					src: "/",
+					src: "/novel/keywords",
+					subs: [],
+				},
+				{
+					title: "장르관리",
+					src: "/novel/genres",
 					subs: [],
 				},
 			],
@@ -42,8 +39,6 @@
 			menus: [
 				{
 					title: "이벤트",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
@@ -54,22 +49,16 @@
 			menus: [
 				{
 					title: "공지사항",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
 				{
 					title: "1:1문의",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
 				{
 					title: "FAQ",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
@@ -80,8 +69,6 @@
 			menus: [
 				{
 					title: "회원관리 정보",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
@@ -92,17 +79,19 @@
 			menus: [
 				{
 					title: "통계",
-					active: false,
-					open: true,
 					src: "/",
 					subs: [],
 				},
 			],
 		},
 	];
+	let current = "";
+	$: {
+		console.log(current);
+	}
 </script>
 
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+<nav id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 	<div class="app-brand demo" style="padding-left: 0rem">
 		<img alt="" src="./assets/img/logo.png" width="50" />
 		<span class="app-brand-text demo menu-text fw-bolder ms-2">따옴 관리자</span>
@@ -123,8 +112,13 @@
 				<span class="menu-header-text">{menu.title}</span>
 			</li>
 			{#each menu.menus as item}
-				<li class="menu-item {item.active ? ' active' : ''} {item.open ? ' open' : ''}">
-					<a href={item.url} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
+				<li
+					class={current === item.title ? "menu-item active open" : "menu-item"}
+					on:click={() => {
+						current = item.title;
+					}}
+				>
+					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
 						<i class="menu-icon tf-icons bx bx-detail" />
 						<div data-i18n="Form Elements">{item.title}</div>
 					</a>
@@ -143,7 +137,7 @@
 			{/each}
 		{/each}
 	</ul>
-</aside>
+</nav>
 
 <style>
 	a:-webkit-any-link {
