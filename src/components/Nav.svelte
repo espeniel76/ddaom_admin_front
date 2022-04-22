@@ -1,5 +1,7 @@
 <script>
-	// import { active } from "tinro";
+	console.log("Nav");
+	// import { setContext } from "svelte";
+
 	let listMenu = [
 		{
 			title: "소설관리",
@@ -88,12 +90,13 @@
 	let current = "";
 	$: {
 		console.log(current);
+		// setContext("menu", current);
 	}
 </script>
 
 <nav id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 	<div class="app-brand demo" style="padding-left: 0rem">
-		<img alt="" src="./assets/img/logo.png" width="50" />
+		<img alt="" src="/assets/img/logo.png" width="50" />
 		<span class="app-brand-text demo menu-text fw-bolder ms-2">따옴 관리자</span>
 	</div>
 
@@ -116,6 +119,7 @@
 					class={current === item.title ? "menu-item active open" : "menu-item"}
 					on:click={() => {
 						current = item.title;
+						// setContext("menu", item.title);
 					}}
 				>
 					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
