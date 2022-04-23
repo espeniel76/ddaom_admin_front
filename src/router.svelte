@@ -7,6 +7,5 @@
 	console.log("Router");
 </script>
 
-<Route path="/" redirect="/home"><Home /></Route>
-<Route path="/"><Home /></Route>
+<Route path="/" redirect="/novel/slangs"><NovelSlangs /></Route>
 <Route path="/novel/slangs"><NovelSlangs /></Route>

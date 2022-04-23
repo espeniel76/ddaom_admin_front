@@ -1,14 +1,43 @@
 <script>
-	let values = {
-		formEmail: "",
-		formPassword: "",
-	};
+	import { postApi } from "../service/api";
+
+	let formUserId = null;
+	let formPassword = null;
+
 	const resetValues = () => {
-		values.formEmail = "";
-		values.formPassword = "";
+		formUserId.value = "";
+		formPassword.value = "";
+		formUserId.focus();
 	};
 
-	function fnCheckLogin() {}
+	async function onLogin() {
+		if (formUserId.value.length < 1) {
+			alert("아이디를 입력 하세요.");
+			formUserId.focus();
+			return false;
+		}
+
+		if (formPassword.value.length < 1) {
+			alert("아이디를 입력 하세요.");
+			formPassword.focus();
+			return false;
+		}
+
+		let data = { UserId: formUserId.value, Password: formPassword.value };
+		let result = await postApi("/auth/login", data);
+		switch (result.ResultCode) {
+			case "NO_EXIST_DATA":
+				alert("존재하지 않는 관리자 입니다.");
+				resetValues();
+				break;
+			case "OK":
+				sessionStorage.setItem("AccessToken", result.Data.AccessToken);
+				sessionStorage.setItem("RefershToken", result.Data.RefershToken);
+				resetValues();
+				self.location.href = "/";
+				break;
+		}
+	}
 </script>
 
 <div class="container-xxl">
@@ -24,21 +53,18 @@
 					</div>
 
 					<br /><br />
-					<p class="mb-4">Please sign-in to your account and start the admin</p>
+					<p class="mb-4">계정 아이디와 비밀번호를 입력 후 시작하세요.</p>
 
 					<div class="mb-3">
-						<label for="email" class="form-label">Email or Username</label>
-						<input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus />
+						<label for="UserId" class="form-label">관리자아이디</label>
+						<input type="text" class="form-control" placeholder="관리자아이디" bind:this={formUserId} />
 					</div>
 					<div class="mb-3 form-password-toggle">
 						<div class="d-flex justify-content-between">
 							<label class="form-label" for="password">Password</label>
-							<a href="auth-forgot-password-basic.html">
-								<small>Forgot Password?</small>
-							</a>
 						</div>
 						<div class="input-group input-group-merge">
-							<input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+							<input type="password" class="form-control" placeholder="패스워드" bind:this={formPassword} />
 							<span class="input-group-text cursor-pointer"><i class="bx bx-hide" /></span>
 						</div>
 					</div>
@@ -49,7 +75,7 @@
 						</div>
 					</div>
 					<div class="mb-3">
-						<button class="btn btn-primary d-grid w-100" type="button" on:click={fnCheckLogin}>Sign in</button>
+						<button class="btn btn-primary d-grid w-100" type="button" on:click={onLogin}>Sign in</button>
 					</div>
 				</div>
 			</div>

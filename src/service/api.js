@@ -3,7 +3,7 @@ import axios from "axios";
 const send = async ({ method = "", path = "", data = {} } = {}) => {
 	const commonUrl = "http://192.168.0.17:3013/api";
 	const url = commonUrl + path;
-	const getToken = localStorage.getItem("authToken");
+	const getToken = sessionStorage.getItem("AccessToken");
 	const headers = {
 		"Content-Type": "application/json",
 		Authorization: getToken,
@@ -14,6 +14,7 @@ const send = async ({ method = "", path = "", data = {} } = {}) => {
 		headers,
 		data,
 	};
+	console.log(options);
 
 	try {
 		const response = await axios(options);
