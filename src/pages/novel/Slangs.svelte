@@ -1,10 +1,10 @@
 <script>
-	import axios from "axios";
+	// import axios from "axios";
+	import { getApi } from "../../service/api";
 
 	async function getData() {
 		try {
-			const response = await axios.get("http://192.168.0.17:3013/api/assets/slangs?ActiveYn=All&Search=&PageSize=10&Page=1");
-			// const response = await axios.post("http://192.168.0.17:3013/api/auth/login", { UserId: "espeniel", Password: "anjgkrp" });
+			const response = await getApi("/assets/slangs?ActiveYn=All&Search=&PageSize=10&Page=1");
 			console.log(response);
 		} catch (e) {
 			console.log(e);
