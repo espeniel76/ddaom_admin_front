@@ -2,10 +2,8 @@
 	import Router from "./router.svelte";
 	import Nav from "./components/Nav.svelte";
 	import Footer from "./components/Footer.svelte";
-	import { setContext } from "svelte";
 	import Login from "./pages/Login.svelte";
-	setContext("menu", "금칙어관리");
-	console.log("App");
+	import { menu, menuSub } from "./stores";
 
 	$: accessToken = sessionStorage.getItem("AccessToken");
 	$: {
@@ -22,7 +20,7 @@
 			<div class="layout-page">
 				<div class="content-wrapper">
 					<div class="container-xxl flex-grow-1 container-p-y">
-						<!-- <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{menu} / </span>{menu}</h4> -->
+						<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{$menu} / </span>{$menuSub}</h4>
 						<Router />
 						<Footer />
 					</div>

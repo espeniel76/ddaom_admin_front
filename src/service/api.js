@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const send = async ({ method = "", path = "", data = {} } = {}) => {
-	const commonUrl = "http://192.168.0.17:3013/api";
+	// const commonUrl = "http://192.168.0.17:3013/api";
+	const commonUrl = "http://192.168.1.20:3013/api";
 	const url = commonUrl + path;
 	const getToken = sessionStorage.getItem("AccessToken");
 	const headers = {

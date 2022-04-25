@@ -1,6 +1,5 @@
 <script>
-	console.log("Nav");
-	// import { setContext } from "svelte";
+	import { menu, menuSub } from "../stores";
 
 	let listMenu = [
 		{
@@ -8,6 +7,7 @@
 			menus: [
 				{
 					title: "메인",
+					icon: "layer",
 					src: "/",
 					subs: [
 						{ title: "전체소설", src: "/" },
@@ -16,21 +16,25 @@
 				},
 				{
 					title: "표지관리",
+					icon: "paint",
 					src: "/novel/images",
 					subs: [],
 				},
 				{
 					title: "금칙어관리",
+					icon: "filter-alt",
 					src: "/novel/slangs",
 					subs: [],
 				},
 				{
 					title: "주제어관리",
+					icon: "edit-alt",
 					src: "/novel/keywords",
 					subs: [],
 				},
 				{
 					title: "장르관리",
+					icon: "category",
 					src: "/novel/genres",
 					subs: [],
 				},
@@ -41,6 +45,7 @@
 			menus: [
 				{
 					title: "이벤트",
+					icon: "face",
 					src: "/",
 					subs: [],
 				},
@@ -51,16 +56,19 @@
 			menus: [
 				{
 					title: "공지사항",
+					icon: "notification",
 					src: "/",
 					subs: [],
 				},
 				{
 					title: "1:1문의",
+					icon: "chat",
 					src: "/",
 					subs: [],
 				},
 				{
 					title: "FAQ",
+					icon: "user",
 					src: "/",
 					subs: [],
 				},
@@ -71,6 +79,7 @@
 			menus: [
 				{
 					title: "회원관리 정보",
+					icon: "user-pin",
 					src: "/",
 					subs: [],
 				},
@@ -81,16 +90,18 @@
 			menus: [
 				{
 					title: "통계",
+					icon: "line-chart",
 					src: "/",
 					subs: [],
 				},
 			],
 		},
 	];
-	let current = "";
+	let current = "소설관리";
+	let currentSub = "금칙어관리";
 	$: {
-		console.log(current);
-		// setContext("menu", current);
+		menu.update((menu) => current);
+		menuSub.update((menuSub) => currentSub);
 	}
 </script>
 
@@ -116,14 +127,14 @@
 			</li>
 			{#each menu.menus as item}
 				<li
-					class={current === item.title ? "menu-item active open" : "menu-item"}
+					class={currentSub === item.title ? "menu-item active open" : "menu-item"}
 					on:click={() => {
-						current = item.title;
-						// setContext("menu", item.title);
+						current = menu.title;
+						currentSub = item.title;
 					}}
 				>
 					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
-						<i class="menu-icon tf-icons bx bx-detail" />
+						<i class="menu-icon tf-icons bx bx-{item.icon}" />
 						<div data-i18n="Form Elements">{item.title}</div>
 					</a>
 					{#if item.subs.length > 0}
