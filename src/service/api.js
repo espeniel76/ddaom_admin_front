@@ -15,8 +15,6 @@ const send = async ({ method = "", path = "", data = {} } = {}) => {
 		headers,
 		data,
 	};
-	console.log(options);
-
 	try {
 		const response = await axios(options);
 		return response.data;
@@ -28,13 +26,13 @@ const send = async ({ method = "", path = "", data = {} } = {}) => {
 const getApi = (path) => {
 	return send({ method: "GET", path: path });
 };
-const putApi = ({ path = "", data = {} } = {}) => {
+const putApi = (path, data) => {
 	return send({ method: "PUT", path, data });
 };
 const postApi = (path, data) => {
-	return send({ method: "POST", path: path, data: data });
+	return send({ method: "POST", path, data });
 };
-const delApi = ({ path = "", data = {} } = {}) => {
+const delApi = (path, data) => {
 	return send({ method: "DELETE", path, data });
 };
 

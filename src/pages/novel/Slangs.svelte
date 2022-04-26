@@ -1,17 +1,28 @@
 <script>
 	import { onMount } from "svelte";
-	import { slangs, menu } from "../../stores";
+	import { slangs, paging } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
+	let oSave = {
+		oActiveYnTrue: null,
+		oActiveYnFalse: null,
+		oSlang: null,
+	};
 	let oEdit = {
 		SeqSlang: 0,
 		oSlang: null,
 		oActiveYn: null,
 	};
+	let oSearch = {
+		ActiveYn: "All",
+		Slang: "",
+	};
+	let pageSize = 10;
+	let totalCount = 0;
 
 	onMount(() => {
-		slangs.fetchSlangs("All", "", 10, 1);
+		fnSearch();
 	});
 
 	function handleChangeEditMode(SeqSlang) {
@@ -29,7 +40,7 @@
 		}
 		slangs.editSlang(SeqSlang, Slang, ActiveYn);
 		closeEditMode();
-		slangs.fetchSlangs("All", "", 10, 1);
+		fnSearch();
 	}
 
 	function closeEditMode() {
@@ -40,10 +51,43 @@
 		};
 	}
 
+	async function fnSave() {
+		let isActive = false;
+		if (oSave.oActiveYnTrue.checked) {
+			isActive = true;
+		} else if (oSave.oActiveYnFalse.checked) {
+			isActive = false;
+		}
+		if (oSave.oSlang.value.length < 1) {
+			alert("금칙어를 입력 하세요.");
+			oSave.oSlang.focus();
+			return flase;
+		}
+		await slangs.saveSlang(oSave.oSlang.value, isActive);
+		oSave.oSlang.value = "";
+		await fnSearch();
+	}
+
+	async function fnSearch() {
+		await slangs.fetchSlangs(oSearch.ActiveYn, oSearch.Slang, $paging.pageSize, $paging.nowPage);
+	}
+
+	function fnInit() {
+		oSearch.ActiveYn = "All";
+		oSearch.Slang = "";
+		let o = $paging;
+		o.nowPage = 1;
+		paging.update((paging) => o);
+		fnSearch();
+	}
+
 	$: {
 		if (oEdit.oSlang) {
 			oEdit.oSlang.select();
 			oEdit.oSlang.focus();
+		}
+		if ($slangs.Data.TotalCount > 0) {
+			totalCount = $slangs.Data.TotalCount;
 		}
 	}
 </script>
@@ -54,17 +98,17 @@
 			<tr>
 				<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 				<td width="250">
-					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked />
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" bind:this={oSave.oActiveYnTrue} checked />
 					<label class="form-check-label" for="inlineRadio1">사용</label>
 					&nbsp;
-					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+					<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" bind:this={oSave.oActiveYnFalse} />
 					<label class="form-check-label" for="inlineRadio2">미사용</label>
 				</td>
 				<td width="150" style="text-align: right;"><h5 class="mb-0">금칙어</h5></td>
 				<td width="*">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="금칙어" aria-label="Recipient's username with two button addons" />
-						<button class="btn btn-primary" type="button">등록</button>
+						<input type="text" class="form-control" placeholder="금칙어" aria-label="Recipient's username with two button addons" bind:this={oSave.oSlang} />
+						<button class="btn btn-primary" type="button" on:click={fnSave}>등록</button>
 					</div>
 				</td>
 			</tr>
@@ -79,18 +123,18 @@
 				<tr>
 					<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 					<td width="250" style="vertical-align: middle;text-align:center">
-						<select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-							<option selected="">전체</option>
-							<option value="1">사용</option>
-							<option value="2">미사용</option>
+						<select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSearch.ActiveYn}>
+							<option value="All" selected>전체</option>
+							<option value="Y">사용</option>
+							<option value="N">미사용</option>
 						</select>
 					</td>
 					<td width="150" style="text-align: right;"><h5 class="mb-0">금칙어</h5></td>
 					<td width="*">
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="금칙어" aria-label="Recipient's username with two button addons" />
-							<button class="btn btn-outline-primary" type="button">초기화</button>
-							<button class="btn btn-primary" type="button">검색</button>
+							<input type="text" class="form-control" placeholder="금칙어" aria-label="Recipient's username with two button addons" bind:value={oSearch.Slang} />
+							<button class="btn btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
+							<button class="btn btn-primary" type="button" on:click={fnSearch}>검색</button>
 						</div>
 					</td>
 				</tr>
@@ -98,6 +142,13 @@
 		</table>
 		<table class="table">
 			<thead>
+				<tr>
+					<th colspan="9">
+						Total data: {$paging.totalCount}
+						, Now page: {$paging.nowPage}
+						, TOTAL page: {$paging.totalPage}
+					</th>
+				</tr>
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
 					<th width="50">No</th>
@@ -139,7 +190,7 @@
 						</td>
 						<td>{Dates.defaultConvert(o.CreatedAt)}</td>
 						<td>{o.Creator ? o.Creator : ""}</td>
-						<td>{Dates.defaultConvert(o.UpdatedAt)}</td>
+						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
 						<td>{o.Updator ? o.Updator : ""}</td>
 						<td>
 							{#if oEdit.SeqSlang === o.SeqSlang}
@@ -152,6 +203,6 @@
 				{/each}
 			</tbody>
 		</table>
-		<Paging />
+		<Paging {fnSearch} {pageSize} {totalCount} />
 	</div>
 </div>

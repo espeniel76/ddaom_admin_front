@@ -7,7 +7,7 @@
 
 	$: accessToken = sessionStorage.getItem("AccessToken");
 	$: {
-		console.log(accessToken);
+		// console.log(accessToken);
 	}
 </script>
 
