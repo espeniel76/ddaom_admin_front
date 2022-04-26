@@ -63,6 +63,118 @@ function setSlangs() {
 		saveSlang,
 	};
 }
+function setGenres() {
+	let values = { ...initListValues };
+
+	const { subscribe, set, update } = writable(values);
+
+	const fetchGenres = async (ActiveYn, Search, PageSize, Page) => {
+		try {
+			const getDatas = await getApi(`/assets/genres?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const editGenre = async (SeqGenre, Genre, ActiveYn) => {
+		try {
+			const newData = await putApi(`/assets/genres/${SeqGenre}`, {
+				Genre,
+				ActiveYn,
+			});
+			if (newData.ResultCode !== "OK") {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const saveGenre = async (Genre, ActiveYn) => {
+		try {
+			const newData = await postApi(`/assets/genres`, {
+				Genre,
+				ActiveYn,
+			});
+			if (newData.ResultCode !== "OK") {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			console.log(error);
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	return {
+		subscribe,
+		fetchGenres,
+		editGenre,
+		saveGenre,
+	};
+}
+function setKeywords() {
+	let values = { ...initListValues };
+
+	const { subscribe, set, update } = writable(values);
+
+	const fetchKeywords = async (ActiveYn, Search, PageSize, Page) => {
+		try {
+			const getDatas = await getApi(`/assets/keywords?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const editKeyword = async (SeqKeyword, Keyword, ActiveYn, StartDate, EndDate) => {
+		try {
+			const newData = await putApi(`/assets/keywords/${SeqKeyword}`, {
+				Keyword,
+				ActiveYn,
+				StartDate,
+				EndDate,
+			});
+			if (newData.ResultCode !== "OK") {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const saveKeyword = async (Genre, ActiveYn, StartDate, EndDate) => {
+		try {
+			const newData = await postApi(`/assets/keywords`, {
+				Keyword,
+				ActiveYn,
+				StartDate,
+				EndDate,
+			});
+			if (newData.ResultCode !== "OK") {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			console.log(error);
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	return {
+		subscribe,
+		fetchKeywords,
+		editKeyword,
+		saveKeyword,
+	};
+}
 
 export const paging = writable({
 	nowPage: 1,
@@ -74,6 +186,8 @@ export const paging = writable({
 	endPage: 0,
 });
 
-export const slangs = setSlangs();
 export const menu = writable("");
 export const menuSub = writable("");
+export const slangs = setSlangs();
+export const genres = setGenres();
+export const keywords = setKeywords();

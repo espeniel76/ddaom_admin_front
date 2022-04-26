@@ -98,7 +98,7 @@
 		},
 	];
 	let current = "소설관리";
-	let currentSub = "금칙어관리";
+	let currentSub = "주제어관리";
 	$: {
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
