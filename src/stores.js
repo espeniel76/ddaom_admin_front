@@ -122,14 +122,25 @@ function setKeywords() {
 
 	const { subscribe, set, update } = writable(values);
 
-	const fetchKeywords = async (ActiveYn, Search, PageSize, Page) => {
+	const fetchKeywords = async (o, PageSize, Page) => {
+		let url = `/assets/keywords?ActiveYn=${o.ActiveYn}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
 		try {
-			const getDatas = await getApi(`/assets/keywords?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`);
+			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const getKeyword = async (SeqKeyword) => {
+		let url = `/assets/keywords/${SeqKeyword}`;
+		try {
+			const getDatas = await getApi(url);
+			return getDatas;
 		} catch (error) {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
@@ -143,15 +154,13 @@ function setKeywords() {
 				StartDate,
 				EndDate,
 			});
-			if (newData.ResultCode !== "OK") {
-				alert(newData.ErrorDesc);
-			}
+			return newData;
 		} catch (error) {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const saveKeyword = async (Genre, ActiveYn, StartDate, EndDate) => {
+	const saveKeyword = async (Keyword, ActiveYn, StartDate, EndDate) => {
 		try {
 			const newData = await postApi(`/assets/keywords`, {
 				Keyword,
@@ -159,9 +168,7 @@ function setKeywords() {
 				StartDate,
 				EndDate,
 			});
-			if (newData.ResultCode !== "OK") {
-				alert(newData.ErrorDesc);
-			}
+			return newData;
 		} catch (error) {
 			console.log(error);
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
@@ -171,6 +178,7 @@ function setKeywords() {
 	return {
 		subscribe,
 		fetchKeywords,
+		getKeyword,
 		editKeyword,
 		saveKeyword,
 	};
