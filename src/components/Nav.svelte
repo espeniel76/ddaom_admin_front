@@ -1,5 +1,5 @@
 <script>
-	import { menu, menuSub } from "../stores";
+	import { menu, menuSub, menuSubSub } from "../stores";
 
 	let listMenu = [
 		{
@@ -17,8 +17,11 @@
 				{
 					title: "표지관리",
 					icon: "paint",
-					src: "/novel/images",
-					subs: [],
+					src: "/novel/cover/image",
+					subs: [
+						{ title: "이미지", src: "/novel/cover/image" },
+						{ title: "배경", src: "/novel/cover/background" },
+					],
 				},
 				{
 					title: "금칙어관리",
@@ -98,10 +101,12 @@
 		},
 	];
 	let current = "소설관리";
-	let currentSub = "주제어관리";
+	let currentSub = "표지관리";
+	let currentSubSub = "배경";
 	$: {
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
+		menuSubSub.update((menuSubSub) => currentSubSub);
 	}
 </script>
 
@@ -129,8 +134,15 @@
 				<li
 					class={currentSub === item.title ? "menu-item active open" : "menu-item"}
 					on:click={() => {
-						current = menu.title;
-						currentSub = item.title;
+						console.log(item.subs.length);
+						if (item.subs.length == 0) {
+							current = menu.title;
+							currentSub = item.title;
+							currentSubSub = "";
+						} else {
+							current = menu.title;
+							currentSub = item.title;
+						}
 					}}
 				>
 					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
@@ -140,7 +152,14 @@
 					{#if item.subs.length > 0}
 						<ul class="menu-sub">
 							{#each item.subs as sub}
-								<li class="menu-item">
+								<li
+									class={currentSubSub == sub.title ? "menu-item active" : "menu-item"}
+									on:click={() => {
+										current = menu.title;
+										currentSub = item.title;
+										currentSubSub = sub.title;
+									}}
+								>
 									<a href={sub.src} class="menu-link">
 										<div data-i18n="Basic Inputs">{sub.title}</div>
 									</a>

@@ -19,7 +19,10 @@ const send = async ({ method = "", path = "", data = {} } = {}) => {
 		const response = await axios(options);
 		return response.data;
 	} catch (error) {
-		throw error;
+		// throw error;
+		console.log(error);
+		const response = await axios(options);
+		return response.data;
 	}
 };
 

@@ -3,7 +3,7 @@
 	import Nav from "./components/Nav.svelte";
 	import Footer from "./components/Footer.svelte";
 	import Login from "./pages/Login.svelte";
-	import { menu, menuSub } from "./stores";
+	import { menu, menuSub, menuSubSub } from "./stores";
 
 	$: accessToken = sessionStorage.getItem("AccessToken");
 	$: {
@@ -20,7 +20,7 @@
 			<div class="layout-page">
 				<div class="content-wrapper">
 					<div class="container-xxl flex-grow-1 container-p-y">
-						<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{$menu} / </span>{$menuSub}</h4>
+						<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">{$menu} / </span>{$menuSub}{$menuSubSub ? ` / ${$menuSubSub}` : ""}</h4>
 						<Router />
 						<Footer />
 					</div>

@@ -4,22 +4,33 @@
 	import { meta, router } from "tinro";
 	import { keywords } from "../../stores";
 	import { Dates } from "../../utils/date";
+	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonPeriod from "../../components/DetailCommonPeriod.svelte";
+	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
 	const route = meta();
-	let SeqKeyword = route.params.SeqKeyword;
-	console.log(SeqKeyword);
+	let _id = route.params._id;
 
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
+		ProcessYn: "",
 		oStartDate: "",
 		oEndDate: "",
 		oKeyword: "",
+		CntTotal: 0,
+		CreatedAt: "",
+		Creator: "",
+		UpdatedAt: "",
+		Updator: "",
 	};
 	let Data;
+	let nowDate = Dates.getYYYYMMTZ();
+	let urlList = "/novel/keywords";
 
 	onMount(async () => {
-		if (SeqKeyword !== "new") {
-			let retVal = await keywords.getKeyword(SeqKeyword);
+		if (_id !== "new") {
+			let retVal = await keywords.getKeyword(_id);
 			console.log(retVal);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
@@ -59,7 +70,7 @@
 		}
 
 		let retVal;
-		if (SeqKeyword === "new") {
+		if (_id === "new") {
 			retVal = await keywords.saveKeyword(oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/keywords");
@@ -67,7 +78,7 @@
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await keywords.editKeyword(SeqKeyword, oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await keywords.editKeyword(_id, oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -88,6 +99,18 @@
 			oSave.oStartDate.value = Dates.defaultConvert(Data.StartDate);
 			oSave.oEndDate.value = Dates.defaultConvert(Data.EndDate);
 			oSave.oKeyword.value = Data.Keyword;
+			if (nowDate < Data.StartDate) {
+				oSave.ProcessYn = "예정";
+			} else if (nowDate < Data.EndDate) {
+				oSave.ProcessYn = "진행";
+			} else {
+				oSave.ProcessYn = "종료";
+			}
+			oSave.CntTotal = Data.CntTotal;
+			oSave.CreatedAt = Data.CreatedAt;
+			oSave.UpdatedAt = Data.UpdatedAt;
+			oSave.Creator = Data.Creator;
+			oSave.Updator = Data.Updator;
 		}
 	}
 </script>
@@ -96,50 +119,25 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
+				<DetailCommonYn {oSave} />
+				<DetailCommonPeriod {oSave} />
+				{#if _id !== "new"}
+					<tr>
+						<td style="text-align: right;"><h5 class="mb-0">진행여부</h5></td>
+						<td width="*" style="vertical-align: middle;" colspan="3">{oSave.ProcessYn}</td>
+					</tr>
+				{/if}
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">사용여부*</h5></td>
-					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" bind:this={oSave.oActiveYnTrue} checked />
-						<label class="form-check-label" for="inlineRadio1">사용</label>
-						&nbsp;
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" bind:this={oSave.oActiveYnFalse} />
-						<label class="form-check-label" for="inlineRadio2">미사용</label>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;"><h5 class="mb-0">사용기간*</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
-						<input class="form-control" type="date" id="html5-date-input" bind:this={oSave.oStartDate} />
-					</td>
-					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
-						<input class="form-control" type="date" id="html5-date-input" bind:this={oSave.oEndDate} />
-					</td>
-					<td width="*"> <span style="color:chocolate">* 종료일 자정이 지나면 진행여부가 ‘종료’로 자동 변경됩니다. </span></td>
-				</tr>
-				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
+					<td style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<input type="text" class="form-control" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:this={oSave.oKeyword} />
 					</td>
 				</tr>
+				{#if _id !== "new"}
+					<DetailCommonBottom {oSave} />
+				{/if}
 			</tbody>
 		</table>
-		<table class="table">
-			<tr>
-				<td width="100">
-					<div class="demo-inline-spacing">
-						<a href="/novel/keywords">
-							<button type="button" class="btn btn-info">목록</button>
-						</a>
-					</div>
-				</td>
-				<td width="*" />
-				<td width="100">
-					<div class="demo-inline-spacing">
-						<button type="button" class="btn btn-primary" on:click={fnSave}>{SeqKeyword === "new" ? "등록" : "수정"}</button>
-					</div>
-				</td>
-			</tr>
-		</table>
+		<DetailCommonBottomBtns {urlList} {fnSave} {_id} />
 	</div>
 </div>
