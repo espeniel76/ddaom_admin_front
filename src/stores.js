@@ -247,6 +247,70 @@ function setColors() {
 		save,
 	};
 }
+function setImages() {
+	let values = { ...initListValues };
+
+	const { subscribe, set, update } = writable(values);
+
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/assets/images?ActiveYn=${o.ActiveYn}&Search=${o.Name}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const get = async (SeqImage) => {
+		let url = `/assets/images/${SeqImage}`;
+		try {
+			const getDatas = await getApi(url);
+			return getDatas;
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const edit = async (SeqImage, Name, Color, ActiveYn) => {
+		try {
+			const newData = await putApi(`/assets/images/${SeqImage}`, {
+				Name,
+				Color,
+				ActiveYn,
+			});
+			return newData;
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	const save = async (Name, Color, ActiveYn) => {
+		try {
+			const newData = await postApi(`/assets/images`, {
+				Name,
+				Color,
+				ActiveYn,
+			});
+			return newData;
+		} catch (error) {
+			console.log(error);
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	return {
+		subscribe,
+		fetch,
+		get,
+		edit,
+		save,
+	};
+}
 
 export const paging = writable({
 	nowPage: 1,
@@ -265,3 +329,4 @@ export const slangs = setSlangs();
 export const genres = setGenres();
 export const keywords = setKeywords();
 export const colors = setColors();
+export const images = setImages();

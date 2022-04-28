@@ -2,18 +2,18 @@
 	import { onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { colors } from "../../stores";
-	import { Dates } from "../../utils/date";
+	import { images } from "../../stores";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
 	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
+	import consts from "../../define/consts";
 	const route = meta();
 	let _id = route.params._id;
 
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		Color: "",
+		Image: "",
 		oName: "",
 		CreatedAt: "",
 		Creator: "",
@@ -21,11 +21,12 @@
 		Updator: "",
 	};
 	let Data;
-	let urlList = "/novel/cover/background";
+	let urlList = "/novel/cover/image";
+	let oImage = null;
 
 	onMount(async () => {
 		if (_id !== "new") {
-			let retVal = await colors.get(_id);
+			let retVal = await images.get(_id);
 			console.log(retVal);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
@@ -43,26 +44,21 @@
 			isActive = false;
 		}
 		if (oSave.oName.value.length < 1) {
-			alert("컬러명을 입력 하세요.");
+			alert("이미지명을 입력 하세요.");
 			oSave.oName.focus();
-			return false;
-		}
-		if (oSave.Color.length < 1) {
-			alert("컬러코드를 입력 하세요.");
-			oSave.Color.focus();
 			return false;
 		}
 
 		let retVal;
 		if (_id === "new") {
-			retVal = await colors.save(oSave.oName.value, oSave.Color, isActive);
+			retVal = await images.save(oSave.oName.value, oSave.Image, isActive);
 			if (retVal.ResultCode === "OK") {
 				router.goto(urlList);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await colors.edit(_id, oSave.oName.value, oSave.Color, isActive);
+			retVal = await colors.edit(_id, oSave.oName.value, oSave.Image, isActive);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -71,8 +67,18 @@
 		}
 	}
 
+	function imageLoad(input) {
+		if (input.files && input.files[0]) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				oImage.src = e.target.result;
+			};
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
 	$: {
-		if (Data && oSave.Color === "") {
+		if (Data && oSave.Image === "") {
 			if (Data.ActiveYn) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
@@ -81,11 +87,12 @@
 				oSave.oActiveYnFalse.checked = true;
 			}
 			oSave.oName.value = Data.Name;
-			oSave.Color = Data.Color;
+			oSave.Image = Data.Image;
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
 			oSave.Updator = Data.Updator;
+			oImage.src = `${consts.urls.IMAGE_SERVER}/${Data.Image}`;
 		}
 	}
 </script>
@@ -96,21 +103,28 @@
 			<tbody class="table-border-bottom-0">
 				<DetailCommonYn {oSave} />
 				<tr>
-					<td style="text-align: right;"><h5 class="mb-0">컬러명*</h5></td>
-					<td width="*" style="vertical-align: middle" height="55" colspan="4">
-						<input type="text" class="form-control" placeholder="컬러명" bind:this={oSave.oName} />
+					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<input type="text" class="form-control" placeholder="제목" bind:this={oSave.oName} />
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: right;"><h5 class="mb-0">코드*</h5></td>
-					<td width="200" style="vertical-align: middle">
-						<input type="text" class="form-control" placeholder="코드" bind:value={oSave.Color} />
+					<td style="text-align: right;"><h5 class="mb-0">이미지*</h5></td>
+					<td width="*" style="vertical-align: middle" colspan="3">
+						<input
+							type="file"
+							class="form-control"
+							placeholder="코드"
+							on:change={(e) => {
+								imageLoad(e.target);
+							}}
+						/>
 					</td>
-					<td width="100" style="vertical-align: middle; background-color: {oSave.Color}" />
-					<td width="200" style="vertical-align: middle;">
-						<input type="color" class="form-control" placeholder="코드" bind:value={oSave.Color} />
+				</tr>
+				<tr>
+					<td width="*" style="vertical-align: middle" colspan="4">
+						<img alt={oSave.Image} width="500" bind:this={oImage} />
 					</td>
-					<td width="*" />
 				</tr>
 				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />

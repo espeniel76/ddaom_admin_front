@@ -1,32 +1,31 @@
 <script>
 	import { onMount } from "svelte";
-	import { colors, paging } from "../../stores";
+	import { images, paging } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
+	import consts from "../../define/consts";
 
 	let oSearch = {
 		ActiveYn: "All",
-		Color: "",
+		Name: "",
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/novel/cover/background/new";
-	let nowDate = Dates.getYYYYMMTZ();
+	let registUrl = "/novel/cover/image/new";
 
 	onMount(() => {
 		fnSearch();
 	});
 
 	async function fnSearch() {
-		await colors.fetch(oSearch, $paging.pageSize, $paging.nowPage);
+		await images.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
 	function fnDelete() {}
 
 	function fnInit() {
 		oSearch.ActiveYn = "All";
-		oSearch.Color = "";
-
+		oSearch.Name = "";
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
@@ -34,8 +33,8 @@
 	}
 
 	$: {
-		if ($colors.Data.TotalCount > 0) {
-			totalCount = $colors.Data.TotalCount;
+		if ($images.Data.TotalCount > 0) {
+			totalCount = $images.Data.TotalCount;
 		}
 	}
 </script>
@@ -53,10 +52,10 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">컬러명/코드</h5></td>
+					<td width="100" style="text-align: right;"><h5 class="mb-0">제목</h5></td>
 					<td width="*" colspan="3">
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="컬러명/코드" aria-label="Recipient's username with two button addons" bind:value={oSearch.Color} />
+							<input type="text" class="form-control" placeholder="제목" aria-label="Recipient's username with two button addons" bind:value={oSearch.Name} />
 							<button class="btn btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
 							<button class="btn btn-primary" type="button" on:click={fnSearch}>검색</button>
 						</div>
@@ -76,20 +75,20 @@
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
 					<th width="50">No</th>
-					<th width="*">컬러명</th>
-					<th width="100">코드</th>
+					<th width="*">제목</th>
+					<th width="150">썸네일</th>
 					<th width="100">사용여부</th>
 					<th width="100">등록일</th>
 					<th width="100">수정일</th>
 				</tr>
 			</thead>
 			<tbody class="table-border-bottom-0">
-				{#each $colors.Data.List as o, index}
-					<tr style="text-align:center" id={o.SeqColor}>
+				{#each $images.Data.List as o, index}
+					<tr style="text-align:center" id={o.SeqImage}>
 						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
-						<td>{o.SeqColor}</td>
-						<td><a href="/novel/cover/background/{o.SeqColor}">{o.Name}</a></td>
-						<td>{o.Color}</td>
+						<td>{o.SeqImage}</td>
+						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
+						<td><img alt="" src="{consts.urls.IMAGE_SERVER}/{o.Image}" width="100" /></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
 						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>

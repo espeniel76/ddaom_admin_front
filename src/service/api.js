@@ -1,9 +1,8 @@
 import axios from "axios";
+import consts from "../define/consts";
 
 const send = async ({ method = "", path = "", data = {} } = {}) => {
-	// const commonUrl = "http://192.168.0.17:3013/api";
-	const commonUrl = "http://192.168.1.20:3013/api";
-	const url = commonUrl + path;
+	const url = consts.urls.ADMIN_API_SERVER + path;
 	const getToken = sessionStorage.getItem("AccessToken");
 	const headers = {
 		"Content-Type": "application/json",
@@ -38,5 +37,31 @@ const postApi = (path, data) => {
 const delApi = (path, data) => {
 	return send({ method: "DELETE", path, data });
 };
+const sendFile = async ({ method = "", path = "", data = {} } = {}) => {
+	const url = consts.urls.ADMIN_API_SERVER + path;
+	const getToken = sessionStorage.getItem("AccessToken");
+	const headers = {
+		Authorization: getToken,
+	};
+	const options = {
+		method,
+		url,
+		headers,
+		data,
+	};
+	try {
+		const response = await axios(options);
+		return response.data;
+	} catch (error) {
+		const response = await axios(options);
+		return response.data;
+	}
+};
+const putFileApi = (path, data) => {
+	return sendFile({ method: "PUT", path, data });
+};
+const postFileApi = (path, data) => {
+	return sendFile({ method: "POST", path, data });
+};
 
-export { getApi, putApi, postApi, delApi };
+export { getApi, putApi, postApi, delApi, putFileApi, postFileApi };

@@ -77,6 +77,7 @@
 					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
 					<th width="50">No</th>
 					<th width="*">컬러명</th>
+					<th width="50">색상</th>
 					<th width="100">코드</th>
 					<th width="100">사용여부</th>
 					<th width="100">등록일</th>
@@ -89,6 +90,7 @@
 						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
 						<td>{o.SeqColor}</td>
 						<td><a href="/novel/cover/background/{o.SeqColor}">{o.Name}</a></td>
+						<td style="background-color: {o.Color}" />
 						<td>{o.Color}</td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
