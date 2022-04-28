@@ -102,7 +102,7 @@
 	];
 	let current = "소설관리";
 	let currentSub = "표지관리";
-	let currentSubSub = "배경";
+	let currentSubSub = "이미지";
 	$: {
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);

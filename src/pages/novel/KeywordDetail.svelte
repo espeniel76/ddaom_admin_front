@@ -133,6 +133,10 @@
 						<input type="text" class="form-control" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:this={oSave.oKeyword} />
 					</td>
 				</tr>
+				<tr>
+					<td style="text-align: right;"><h5 class="mb-0">연재 소설 수</h5></td>
+					<td width="*" style="vertical-align: middle;" colspan="3">{oSave.CntTotal}</td>
+				</tr>
 				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />
 				{/if}
