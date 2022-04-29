@@ -3,7 +3,6 @@
 
 	import { meta, router } from "tinro";
 	import { colors } from "../../stores";
-	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
 	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";

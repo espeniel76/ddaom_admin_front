@@ -17,9 +17,6 @@ export const Dates = {
 			return null;
 		}
 	},
-	/**
-	 * YYYY-MM-DD
-	 */
 	nowDateYYYYMMDD: () => {
 		let o = new Date();
 		return `${o.getFullYear()}-${Maths.addZero(o.getMonth() + 1, 2)}-${Maths.addZero(o.getDate(), 2)}`;

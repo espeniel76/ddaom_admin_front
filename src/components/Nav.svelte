@@ -8,10 +8,10 @@
 				{
 					title: "메인",
 					icon: "layer",
-					src: "/",
+					src: "/novel/main/all",
 					subs: [
-						{ title: "전체소설", src: "/" },
-						{ title: "삭제된 소설", src: "/" },
+						{ title: "전체소설", src: "/novel/main/all" },
+						{ title: "삭제된 소설", src: "/novel/main/deleted" },
 					],
 				},
 				{
@@ -101,8 +101,8 @@
 		},
 	];
 	let current = "소설관리";
-	let currentSub = "표지관리";
-	let currentSubSub = "이미지";
+	let currentSub = "메인";
+	let currentSubSub = "전체소설";
 	$: {
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
@@ -134,7 +134,6 @@
 				<li
 					class={currentSub === item.title ? "menu-item active open" : "menu-item"}
 					on:click={() => {
-						console.log(item.subs.length);
 						if (item.subs.length == 0) {
 							current = menu.title;
 							currentSub = item.title;
@@ -172,10 +171,3 @@
 		{/each}
 	</ul>
 </nav>
-
-<style>
-	a:-webkit-any-link {
-		color: -webkit-link;
-		cursor: pointer;
-	}
-</style>

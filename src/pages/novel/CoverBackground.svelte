@@ -11,7 +11,6 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = "/novel/cover/background/new";
-	let nowDate = Dates.getYYYYMMTZ();
 
 	onMount(() => {
 		fnSearch();

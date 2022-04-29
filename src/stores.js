@@ -10,6 +10,30 @@ let initListValues = {
 	},
 };
 
+function setMainAll() {
+	let values = { ...initListValues };
+
+	const { subscribe, set, update } = writable(values);
+
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/all?ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+
+	return {
+		subscribe,
+		fetch,
+	};
+}
 function setSlangs() {
 	let values = { ...initListValues };
 
@@ -312,7 +336,6 @@ function setImages() {
 		save,
 	};
 }
-
 export const paging = writable({
 	nowPage: 1,
 	totalCount: 0,
@@ -326,6 +349,8 @@ export const paging = writable({
 export const menu = writable("");
 export const menuSub = writable("");
 export const menuSubSub = writable("");
+
+export const mainAll = setMainAll();
 export const slangs = setSlangs();
 export const genres = setGenres();
 export const keywords = setKeywords();
