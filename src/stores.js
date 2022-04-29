@@ -1,5 +1,5 @@
 import { writable, get } from "svelte/store";
-import { getApi, putApi, delApi, postApi } from "./service/api";
+import { getApi, putApi, delApi, postApi, postFileApi, putFileApi } from "./service/api";
 
 let initListValues = {
 	ResultCode: "",
@@ -276,26 +276,27 @@ function setImages() {
 		}
 	};
 
-	const edit = async (SeqImage, Name, Color, ActiveYn) => {
+	const save = async (Name, Image, ActiveYn) => {
+		var data = new FormData();
+		data.append("Name", Name);
+		data.append("ActiveYn", ActiveYn);
+		data.append("Image", Image.files[0]);
 		try {
-			const newData = await putApi(`/assets/images/${SeqImage}`, {
-				Name,
-				Color,
-				ActiveYn,
-			});
+			const newData = await postFileApi(`/assets/images`, data);
 			return newData;
 		} catch (error) {
+			console.log(error);
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const save = async (Name, Color, ActiveYn) => {
+	const edit = async (SeqImage, Name, Image, ActiveYn) => {
+		var data = new FormData();
+		data.append("Name", Name);
+		data.append("ActiveYn", ActiveYn);
+		data.append("Image", Image.files[0]);
 		try {
-			const newData = await postApi(`/assets/images`, {
-				Name,
-				Color,
-				ActiveYn,
-			});
+			const newData = await putFileApi(`/assets/images/${SeqImage}`, data);
 			return newData;
 		} catch (error) {
 			console.log(error);

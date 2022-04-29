@@ -14,6 +14,7 @@
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
 		Image: "",
+		oFile: "",
 		oName: "",
 		CreatedAt: "",
 		Creator: "",
@@ -51,14 +52,14 @@
 
 		let retVal;
 		if (_id === "new") {
-			retVal = await images.save(oSave.oName.value, oSave.Image, isActive);
+			retVal = await images.save(oSave.oName.value, oSave.oFile, isActive);
 			if (retVal.ResultCode === "OK") {
 				router.goto(urlList);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await colors.edit(_id, oSave.oName.value, oSave.Image, isActive);
+			retVal = await images.edit(_id, oSave.oName.value, oSave.oFile, isActive);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -118,12 +119,13 @@
 							on:change={(e) => {
 								imageLoad(e.target);
 							}}
+							bind:this={oSave.oFile}
 						/>
 					</td>
 				</tr>
 				<tr>
 					<td width="*" style="vertical-align: middle" colspan="4">
-						<img alt={oSave.Image} width="500" bind:this={oImage} />
+						<img alt={oSave.Image} bind:this={oImage} />
 					</td>
 				</tr>
 				{#if _id !== "new"}
