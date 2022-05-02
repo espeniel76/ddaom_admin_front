@@ -2,6 +2,7 @@
 	import { Route } from "tinro";
 
 	import NovelMainAll from "./pages/novel/MainAll.svelte";
+	import NovelMainAllDetail from "./pages/novel/MainAllDetail.svelte";
 
 	import NovelSlangs from "./pages/novel/Slangs.svelte";
 	import NovelGenres from "./pages/novel/Genres.svelte";
@@ -16,6 +17,7 @@
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
 
 <Route path="/novel/main/all"><NovelMainAll /></Route>
+<Route path="/novel/main/all/:_id"><NovelMainAllDetail /></Route>
 
 <Route path="/novel/slangs"><NovelSlangs /></Route>
 <Route path="/novel/genres"><NovelGenres /></Route>

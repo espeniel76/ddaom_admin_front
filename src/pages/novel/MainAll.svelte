@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { keywords, paging } from "../../stores";
+	import { mainAll, paging } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
@@ -21,7 +21,7 @@
 	});
 
 	async function fnSearch() {
-		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
+		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
 	function fnDelete() {}
@@ -40,8 +40,8 @@
 	}
 
 	$: {
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
+		if ($mainAll.Data.TotalCount > 0) {
+			totalCount = $mainAll.Data.TotalCount;
 		}
 	}
 </script>
@@ -83,14 +83,22 @@
 			<thead>
 				<tr>
 					<th colspan="4">
-						<select class="form-select" bind:value={oSearch.Sort} style="width:200px">
+						<select
+							class="form-select"
+							bind:value={oSearch.Sort}
+							style="width:200px"
+							on:change={() => {
+								// console.log(oSearch);
+								fnSearch();
+							}}
+						>
 							<option value="EndDateDESC" selected>종료일 늦은 순</option>
 							<option value="EndDateASC">종료일 임박 순</option>
 							<option value="LikeDESC">좋아요 많은 순</option>
 							<option value="NovelDESC">연재 많은 순</option>
 						</select>
 					</th>
-					<th colspan="4" style="text-align:right">
+					<th colspan="5" style="text-align:right">
 						Total data: {$paging.totalCount}
 						, Now page: {$paging.nowPage}
 						, TOTAL page: {$paging.totalPage}
@@ -99,21 +107,20 @@
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox" value="" checked="" /></th>
 					<th width="50">No</th>
-					<th width="*">주제어</th>
-					<th width="100">사용여부</th>
 					<th width="100">진행여부</th>
-					<th width="200">사용기간</th>
-					<th width="100">등록일</th>
-					<th width="100">수정일</th>
+					<th width="100">시작일</th>
+					<th width="100">종료일</th>
+					<th width="*">주제어</th>
+					<th width="100">좋아요 수</th>
+					<th width="100">소설 등록 수</th>
+					<th width="100" style="background-color: #2F5597;color:white">완결</th>
 				</tr>
 			</thead>
 			<tbody class="table-border-bottom-0">
-				{#each $keywords.Data.List as o, index}
+				{#each $mainAll.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
 						<td><input class="form-check-input" type="checkbox" value="" checked="" /></td>
 						<td>{o.SeqKeyword}</td>
-						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}</a></td>
-						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>
 							{#if nowDate < o.StartDate}
 								예정
@@ -123,9 +130,12 @@
 								종료
 							{/if}
 						</td>
-						<td>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(o.EndDate)}</td>
-						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td>{Dates.defaultConvert(o.StartDate)}</td>
+						<td>{Dates.defaultConvert(o.EndDate)}</td>
+						<td><a href="/novel/main/all/{o.SeqKeyword}">{o.Keyword}</a></td>
+						<td>{o.CntLike}</td>
+						<td>{o.CntTotal}</td>
+						<td>{o.CntFinish > 0 ? "보기" : "-"}</td>
 					</tr>
 				{/each}
 			</tbody>

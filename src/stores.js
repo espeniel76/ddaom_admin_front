@@ -16,7 +16,7 @@ function setMainAll() {
 	const { subscribe, set, update } = writable(values);
 
 	const fetch = async (o, PageSize, Page) => {
-		let url = `/main/all?ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+		let url = `/main/all?Sort=${o.Sort}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== "OK") {
