@@ -3,10 +3,6 @@
 	export let fnSearch;
 	export let pageSize;
 	export let totalCount;
-	export let fnDelete;
-	export let registUrl;
-
-	console.log(fnDelete);
 
 	let nowPage = 0;
 	let totalPage = 0;
@@ -41,13 +37,6 @@
 
 <table class="table">
 	<tr>
-		<td width="100">
-			{#if fnDelete}
-				<div class="demo-inline-spacing">
-					<button type="button" class="btn btn-sm btn-danger" on:click={fnDelete}>삭제</button>
-				</div>
-			{/if}
-		</td>
 		<td width="*">
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
@@ -108,15 +97,6 @@
 					{/if}
 				</ul>
 			</nav>
-		</td>
-		<td width="100">
-			{#if registUrl}
-				<div class="demo-inline-spacing">
-					<a href={registUrl}>
-						<button type="button" class="btn btn-sm btn-primary">등록</button>
-					</a>
-				</div>
-			{/if}
 		</td>
 	</tr>
 </table>

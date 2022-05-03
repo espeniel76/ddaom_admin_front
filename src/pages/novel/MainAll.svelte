@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { mainAll, paging } from "../../stores";
+	import { mainAll, paging, mainAllDetail } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
@@ -24,7 +24,7 @@
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
-	function fnDelete() {}
+	let fnDelete = "";
 
 	function fnInit() {
 		oSearch.Sort = "EndDateDESC";
@@ -88,7 +88,6 @@
 							bind:value={oSearch.Sort}
 							style="width:200px"
 							on:change={() => {
-								// console.log(oSearch);
 								fnSearch();
 							}}
 						>
@@ -132,7 +131,11 @@
 						</td>
 						<td>{Dates.defaultConvert(o.StartDate)}</td>
 						<td>{Dates.defaultConvert(o.EndDate)}</td>
-						<td><a href="/novel/main/all/{o.SeqKeyword}">{o.Keyword}</a></td>
+						<td
+							on:click={() => {
+								mainAllDetail.update((mainAllDetail) => o);
+							}}><a href="/novel/main/all/{o.SeqKeyword}">{o.Keyword}</a></td
+						>
 						<td>{o.CntLike}</td>
 						<td>{o.CntTotal}</td>
 						<td>{o.CntFinish > 0 ? "보기" : "-"}</td>

@@ -12,9 +12,7 @@ let initListValues = {
 
 function setMainAll() {
 	let values = { ...initListValues };
-
 	const { subscribe, set, update } = writable(values);
-
 	const fetch = async (o, PageSize, Page) => {
 		let url = `/main/all?Sort=${o.Sort}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
 		try {
@@ -28,7 +26,90 @@ function setMainAll() {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
-
+	return {
+		subscribe,
+		fetch,
+	};
+}
+function setNovelStep1() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/all/step1?Sort=${o.Sort}&SeqKeyword=${o.SeqKeyword}&SeqGenre=${o.SeqGenre}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	return {
+		subscribe,
+		fetch,
+	};
+}
+function setNovelStep2() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/all/step234?Step=2&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	return {
+		subscribe,
+		fetch,
+	};
+}
+function setNovelStep3() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/all/step234?Step=3&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	return {
+		subscribe,
+		fetch,
+	};
+}
+function setNovelStep4() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/all/step234?Step=4&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
 	return {
 		subscribe,
 		fetch,
@@ -350,7 +431,13 @@ export const menu = writable("");
 export const menuSub = writable("");
 export const menuSubSub = writable("");
 
+export const mainAllDetail = writable({});
+
 export const mainAll = setMainAll();
+export const novelStep1 = setNovelStep1();
+export const novelStep2 = setNovelStep2();
+export const novelStep3 = setNovelStep3();
+export const novelStep4 = setNovelStep4();
 export const slangs = setSlangs();
 export const genres = setGenres();
 export const keywords = setKeywords();
