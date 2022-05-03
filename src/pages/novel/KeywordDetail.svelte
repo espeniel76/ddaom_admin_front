@@ -130,7 +130,7 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<input type="text" class="form-control" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:this={oSave.oKeyword} />
+						<input type="text" class="form-control form-control-sm" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:this={oSave.oKeyword} />
 					</td>
 				</tr>
 				<tr>

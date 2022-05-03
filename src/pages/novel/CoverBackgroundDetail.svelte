@@ -97,13 +97,13 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">컬러명*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="4">
-						<input type="text" class="form-control" placeholder="컬러명" bind:this={oSave.oName} />
+						<input type="text" class="form-control form-control-sm" placeholder="컬러명" bind:this={oSave.oName} />
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">코드*</h5></td>
 					<td width="200" style="vertical-align: middle">
-						<input type="text" class="form-control" placeholder="코드" bind:value={oSave.Color} />
+						<input type="text" class="form-control form-control-sm" placeholder="코드" bind:value={oSave.Color} />
 					</td>
 					<td width="100" style="vertical-align: middle; background-color: {oSave.Color}" />
 					<td width="200" style="vertical-align: middle;">

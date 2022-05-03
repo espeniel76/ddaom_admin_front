@@ -107,8 +107,8 @@
 				<td width="150" style="text-align: right;"><h5 class="mb-0">장르</h5></td>
 				<td width="*">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="장르" aria-label="Recipient's username with two button addons" bind:this={oSave.oGenre} />
-						<button class="btn btn-primary" type="button" on:click={fnSave}>등록</button>
+						<input type="text" class="form-control form-control-sm" placeholder="장르" aria-label="Recipient's username with two button addons" bind:this={oSave.oGenre} />
+						<button class="btn btn-sm btn-primary" type="button" on:click={fnSave}>등록</button>
 					</div>
 				</td>
 			</tr>
@@ -123,7 +123,7 @@
 				<tr>
 					<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 					<td width="250" style="vertical-align: middle;text-align:center">
-						<select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSearch.ActiveYn}>
+						<select class="form-select form-select-sm" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSearch.ActiveYn}>
 							<option value="All" selected>전체</option>
 							<option value="Y">사용</option>
 							<option value="N">미사용</option>
@@ -132,9 +132,9 @@
 					<td width="150" style="text-align: right;"><h5 class="mb-0">장르</h5></td>
 					<td width="*">
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="장르" aria-label="Recipient's username with two button addons" bind:value={oSearch.Genre} />
-							<button class="btn btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-primary" type="button" on:click={fnSearch}>검색</button>
+							<input type="text" class="form-control form-control-sm" placeholder="장르" aria-label="Recipient's username with two button addons" bind:value={oSearch.Genre} />
+							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
+							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
 						</div>
 					</td>
 				</tr>

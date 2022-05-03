@@ -106,7 +106,7 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<input type="text" class="form-control" placeholder="제목" bind:this={oSave.oName} />
+						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oName} />
 					</td>
 				</tr>
 				<tr>
@@ -114,7 +114,7 @@
 					<td width="*" style="vertical-align: middle" colspan="3">
 						<input
 							type="file"
-							class="form-control"
+							class="form-control form-control-sm"
 							placeholder="코드"
 							on:change={(e) => {
 								imageLoad(e.target);

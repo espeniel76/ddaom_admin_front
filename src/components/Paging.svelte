@@ -40,7 +40,7 @@
 	<tr>
 		<td width="100">
 			<div class="demo-inline-spacing">
-				<button type="button" class="btn btn-danger" on:click={fnDelete}>삭제</button>
+				<button type="button" class="btn btn-sm btn-danger" on:click={fnDelete}>삭제</button>
 			</div>
 		</td>
 		<td width="*">
@@ -108,7 +108,7 @@
 			{#if registUrl}
 				<div class="demo-inline-spacing">
 					<a href={registUrl}>
-						<button type="button" class="btn btn-primary">등록</button>
+						<button type="button" class="btn btn-sm btn-primary">등록</button>
 					</a>
 				</div>
 			{/if}
