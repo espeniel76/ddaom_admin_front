@@ -122,7 +122,9 @@ function setSlangs() {
 
 	const fetchSlangs = async (ActiveYn, Search, PageSize, Page) => {
 		try {
-			const getDatas = await getApi(`/assets/slangs?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`);
+			const getDatas = await getApi(
+				`/assets/slangs?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
+			);
 			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
@@ -175,7 +177,9 @@ function setGenres() {
 
 	const fetchGenres = async (ActiveYn, Search, PageSize, Page) => {
 		try {
-			const getDatas = await getApi(`/assets/genres?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`);
+			const getDatas = await getApi(
+				`/assets/genres?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
+			);
 			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
@@ -418,6 +422,42 @@ function setImages() {
 	};
 }
 export const paging = writable({
+	nowPage: 1,
+	totalCount: 0,
+	totalPage: 0,
+	pageSize: 10,
+	pageListSize: 10,
+	startPage: 0,
+	endPage: 0,
+});
+export const pagingStep1 = writable({
+	nowPage: 1,
+	totalCount: 0,
+	totalPage: 0,
+	pageSize: 10,
+	pageListSize: 10,
+	startPage: 0,
+	endPage: 0,
+});
+export const pagingStep2 = writable({
+	nowPage: 1,
+	totalCount: 0,
+	totalPage: 0,
+	pageSize: 10,
+	pageListSize: 10,
+	startPage: 0,
+	endPage: 0,
+});
+export const pagingStep3 = writable({
+	nowPage: 1,
+	totalCount: 0,
+	totalPage: 0,
+	pageSize: 10,
+	pageListSize: 10,
+	startPage: 0,
+	endPage: 0,
+});
+export const pagingStep4 = writable({
 	nowPage: 1,
 	totalCount: 0,
 	totalPage: 0,

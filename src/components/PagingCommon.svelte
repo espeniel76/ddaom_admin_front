@@ -1,8 +1,7 @@
 <script>
-	import { paging } from "../stores";
 	export let fnSearch;
-	export let pageSize;
-	export let totalCount;
+	export let oPage;
+	export let oPageStore;
 
 	let nowPage = 0;
 	let totalPage = 0;
@@ -12,22 +11,22 @@
 	let end = 0;
 	let pages = [];
 	$: {
-		if (totalCount > 0) {
+		if (oPage.totalCount > 0) {
 			pages = [];
-			nowPage = $paging.nowPage === 0 ? 1 : $paging.nowPage;
-			totalPage = Math.ceil(totalCount / pageSize);
-			myRound = Math.floor(nowPage / pageSize);
-			startPage = myRound * pageSize;
-			endPage = startPage + $paging.pageListSize - 1;
+			nowPage = $oPageStore.nowPage === 0 ? 1 : $oPageStore.nowPage;
+			totalPage = Math.ceil(oPage.totalCount / oPage.pageSize);
+			myRound = Math.floor(nowPage / oPage.pageSize);
+			startPage = myRound * oPage.pageSize;
+			endPage = startPage + $oPageStore.pageListSize - 1;
 			end = endPage <= totalPage ? endPage : totalPage;
-			let o = $paging;
+			let o = $oPageStore;
 			o.nowPage = nowPage;
-			o.totalCount = totalCount;
+			o.totalCount = oPage.totalCount;
 			o.totalPage = totalPage;
-			o.pageSize = pageSize;
+			o.pageSize = oPage.pageSize;
 			o.startPage = startPage;
 			o.endPage = endPage;
-			paging.update((paging) => o);
+			oPageStore.update((oPageStore) => o);
 			for (let i = startPage; i <= end; i++) {
 				pages = [...pages, i];
 			}
@@ -45,9 +44,9 @@
 							<span
 								class="page-link"
 								on:click={() => {
-									$paging.endPage = $paging.startPage - 1;
-									$paging.startPage = $paging.endPage - ($paging.pageListSize - 1);
-									$paging.nowPage = $paging.endPage;
+									$oPageStore.endPage = $oPageStore.startPage - 1;
+									$oPageStore.startPage = $oPageStore.endPage - ($oPageStore.pageListSize - 1);
+									$oPageStore.nowPage = $oPageStore.endPage;
 									fnSearch();
 								}}
 							>
@@ -67,9 +66,9 @@
 									<span
 										class="page-link"
 										on:click={() => {
-											let o = $paging;
-											o.nowPage = page;
-											paging.update((paging) => o);
+											let o = $oPageStore;
+											oPage.nowPage = page;
+											oPageStore.update((oPageStore) => o);
 											fnSearch();
 										}}
 										style="cursor:pointer"
@@ -86,8 +85,8 @@
 							<span
 								class="page-link"
 								on:click={() => {
-									$paging.startPage = $paging.endPage + 1;
-									$paging.nowPage = $paging.startPage;
+									$oPageStore.startPage = $oPageStore.endPage + 1;
+									$oPageStore.nowPage = $oPageStore.startPage;
 									fnSearch();
 								}}
 							>
