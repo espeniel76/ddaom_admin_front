@@ -163,6 +163,10 @@
 			oPageStep4.totalCount = $novelStep4.Data.TotalCount;
 		}
 	}
+
+	function fnDelete() {
+		alert("삭제 시스템 설계중...");
+	}
 </script>
 
 <div class="row">
@@ -223,28 +227,34 @@
 					</tr>
 				</thead>
 				<tbody class="table-border-bottom-0">
-					{#each $novelStep1.Data.List as o, index}
-						<tr
-							style="text-align:center; cursor:pointer"
-							on:click={async () => {
-								oStep1Content = o;
+					{#if $novelStep1.Data.List.length > 0}
+						{#each $novelStep1.Data.List as o, index}
+							<tr
+								style="text-align:center; cursor:pointer"
+								on:click={async () => {
+									oStep1Content = o;
 
-								// step 2,3,4 데이터 가져오기
-								oSearchStep2.SeqNovelStep1 = o.SeqNovelStep1;
-								oSearchStep3.SeqNovelStep1 = o.SeqNovelStep1;
-								oSearchStep4.SeqNovelStep1 = o.SeqNovelStep1;
+									// step 2,3,4 데이터 가져오기
+									oSearchStep2.SeqNovelStep1 = o.SeqNovelStep1;
+									oSearchStep3.SeqNovelStep1 = o.SeqNovelStep1;
+									oSearchStep4.SeqNovelStep1 = o.SeqNovelStep1;
 
-								await fnSearchStep2();
-								await fnSearchStep3();
-								await fnSearchStep4();
-							}}
-						>
-							<td>{o.SeqNovelStep1}</td>
-							<td>{o.Title}</td>
-							<td>{o.Genre}</td>
-							<td>{o.NickName}</td>
+									await fnSearchStep2();
+									await fnSearchStep3();
+									await fnSearchStep4();
+								}}
+							>
+								<td>{o.SeqNovelStep1}</td>
+								<td>{o.Title}</td>
+								<td>{o.Genre}</td>
+								<td>{o.NickName}</td>
+							</tr>
+						{/each}
+					{:else}
+						<tr style="text-align:center">
+							<td colspan="4">-</td>
 						</tr>
-					{/each}
+					{/if}
 				</tbody>
 			</table>
 			<PagingCommon fnSearch={fnSearchStep1} oPage={oPageStep1} oPageStore={pagingStep1} />
@@ -272,20 +282,24 @@
 						<th width="120">소설 등록 수</th>
 					</tr>
 					<tr style="text-align:center">
-						<td>
-							{#if nowDate < $mainAllDetail.StartDate}
-								예정
-							{:else if nowDate < $mainAllDetail.EndDate}
-								진행
-							{:else}
-								종료
-							{/if}
-						</td>
-						<td>{Dates.defaultConvert($mainAllDetail.StartDate)}</td>
-						<td>{Dates.defaultConvert($mainAllDetail.EndDate)}</td>
-						<td>{$mainAllDetail.Keyword}</td>
-						<td>{$mainAllDetail.CntLike}</td>
-						<td>{$mainAllDetail.CntTotal}</td>
+						{#if $mainAllDetail.StartDate}
+							<td>
+								{#if nowDate < $mainAllDetail.StartDate}
+									예정
+								{:else if nowDate < $mainAllDetail.EndDate}
+									진행
+								{:else}
+									종료
+								{/if}
+							</td>
+							<td>{Dates.defaultConvert($mainAllDetail.StartDate)}</td>
+							<td>{Dates.defaultConvert($mainAllDetail.EndDate)}</td>
+							<td>{$mainAllDetail.Keyword}</td>
+							<td>{$mainAllDetail.CntLike}</td>
+							<td>{$mainAllDetail.CntTotal}</td>
+						{:else}
+							<td colspan="6">-</td>
+						{/if}
 					</tr>
 				</thead>
 				<tbody class="table-border-bottom-0" />
@@ -306,18 +320,20 @@
 					</tr>
 					<tr style="text-align:center">
 						{#if oStep1Content.SeqNovelStep1}
-							<td>{oStep1Content.Title}</td>
+							<td>{oStep1Content.Title && oStep1Content.Title}</td>
 							<td>{oStep1Content.Genre}</td>
 							<td>{oStep1Content.NickName}</td>
 							<td>{oStep1Content.CntLike}</td>
 							<td>{Dates.defaultConvertFull(oStep1Content.CreatedAt)}</td>
-							<td><button class="btn btn-sm btn-info" type="button">삭제</button></td>
+							<td><button class="btn btn-sm btn-info" type="button" on:click={fnDelete}>삭제</button></td>
 						{:else}
 							<td colspan="6">-</td>
 						{/if}
 					</tr>
 					<tr>
-						<td colspan="6">{oStep1Content.Content}</td>
+						<td colspan="6"
+							><textarea class="form-control form-control-sm" rows="10">{oStep1Content.Content}</textarea></td
+						>
 					</tr>
 				</thead>
 				<tbody class="table-border-bottom-0" />
@@ -363,6 +379,7 @@
 						oPage={oPageStep2}
 						oPageStore={pagingStep2}
 						oList={$novelStep2.Data.List}
+						{fnDelete}
 					/>
 				</div>
 				<div class={oStepClass.step3.content}>
@@ -373,6 +390,7 @@
 						oPage={oPageStep3}
 						oPageStore={pagingStep3}
 						oList={$novelStep3.Data.List}
+						{fnDelete}
 					/>
 				</div>
 				<div class={oStepClass.step4.content}>
@@ -383,6 +401,7 @@
 						oPage={oPageStep4}
 						oPageStore={pagingStep4}
 						oList={$novelStep4.Data.List}
+						{fnDelete}
 					/>
 				</div>
 			</div>

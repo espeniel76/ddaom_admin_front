@@ -8,6 +8,7 @@
 	export let oPage;
 	export let oPageStore;
 	export let oList;
+	export let fnDelete;
 
 	$: {
 		console.log(oList);
@@ -73,42 +74,48 @@
 			<th width="90">내용</th>
 			<th width="90">삭제</th>
 		</tr>
-		{#each oList as o, index}
+		{#if oList.length > 0}
+			{#each oList as o, index}
+				<tr style="text-align:center">
+					<td>
+						{#if o.SeqNovelStep2}
+							{o.SeqNovelStep2}
+						{:else if o.SeqNovelStep3}
+							{o.SeqNovelStep3}
+						{:else if o.SeqNovelStep4}
+							{o.SeqNovelStep4}
+						{/if}
+					</td>
+					<td>{o.NickName}</td>
+					<td>{o.CntLike}</td>
+					<td>{Dates.defaultConvertFull(o.CreatedAt)}</td>
+					<td
+						><button
+							class="btn btn-sm btn-success"
+							type="button"
+							on:click={() => {
+								fnShowModal(o.Content);
+							}}>보기</button
+						></td
+					>
+					<td><button class="btn btn-sm btn-info" type="button" on:click={fnDelete}>삭제</button></td>
+				</tr>
+			{/each}
+		{:else}
 			<tr style="text-align:center">
-				<td>
-					{#if o.SeqNovelStep2}
-						{o.SeqNovelStep2}
-					{:else if o.SeqNovelStep3}
-						{o.SeqNovelStep3}
-					{:else if o.SeqNovelStep4}
-						{o.SeqNovelStep4}
-					{/if}
-				</td>
-				<td>{o.NickName}</td>
-				<td>{o.CntLike}</td>
-				<td>{Dates.defaultConvertFull(o.CreatedAt)}</td>
-				<td
-					><button
-						class="btn btn-sm btn-success"
-						type="button"
-						on:click={() => {
-							fnShowModal(o.Content);
-						}}>보기</button
-					></td
-				>
-				<td><button class="btn btn-sm btn-info" type="button">삭제</button></td>
+				<td colspan="6">- </td>
 			</tr>
-		{/each}
+		{/if}
 	</tbody>
 </table>
 
 <PagingCommon {fnSearch} {oPage} {oPageStore} />
 
-<div class={oModal.class} id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style={oModal.style}>
+<div class={oModal.class} aria-labelledby="modalToggleLabel" tabindex="-1" style={oModal.style}>
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modalToggleLabel">내용 상세</h5>
+				<h5 class="modal-title">내용 상세</h5>
 				<button
 					type="button"
 					class="btn-close"
@@ -119,7 +126,7 @@
 					}}
 				/>
 			</div>
-			<div class="modal-body">{oModal.content}</div>
+			<div class="modal-body"><textarea class="form-control form-control-sm" rows="10">{oModal.content}</textarea></div>
 			<!-- <div class="modal-footer">
 				<button class="btn btn-primary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
 					Open second modal
