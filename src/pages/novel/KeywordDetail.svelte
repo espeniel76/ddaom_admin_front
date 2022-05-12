@@ -78,7 +78,13 @@
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await keywords.editKeyword(_id, oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await keywords.editKeyword(
+				_id,
+				oSave.oKeyword.value,
+				isActive,
+				oSave.oStartDate.value,
+				oSave.oEndDate.value
+			);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -96,8 +102,8 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-			oSave.oStartDate.value = Dates.defaultConvert(Data.StartDate);
-			oSave.oEndDate.value = Dates.defaultConvert(Data.EndDate);
+			oSave.oStartDate.value = Dates.defaultConvertFullT(Data.StartDate);
+			oSave.oEndDate.value = Dates.defaultConvertFullT(Data.EndDate);
 			oSave.oKeyword.value = Data.Keyword;
 			if (nowDate < Data.StartDate) {
 				oSave.ProcessYn = "예정";
@@ -130,7 +136,13 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<input type="text" class="form-control form-control-sm" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:this={oSave.oKeyword} />
+						<input
+							type="text"
+							class="form-control form-control-sm"
+							placeholder="주제어"
+							aria-label="Recipient's username with two button addons"
+							bind:this={oSave.oKeyword}
+						/>
 					</td>
 				</tr>
 				<tr>
