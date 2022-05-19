@@ -6,8 +6,6 @@
 	export let fnDelete;
 	export let registUrl;
 
-	console.log(fnDelete);
-
 	let nowPage = 0;
 	let totalPage = 0;
 	let myRound = 0;

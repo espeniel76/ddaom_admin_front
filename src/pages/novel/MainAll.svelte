@@ -14,7 +14,7 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = "";
-	let nowDate = Dates.getYYYYMMTZ();
+	let nowUnixtime = Dates.getUnixtime();
 
 	onMount(() => {
 		fnSearch();
@@ -71,7 +71,12 @@
 					<td width="100" style="text-align: right;"><h5 class="mb-0">주제어</h5></td>
 					<td width="*" colspan="3">
 						<div class="input-group">
-							<input type="text" class="form-control form-control-sm" placeholder="주제어" bind:value={oSearch.Keyword} />
+							<input
+								type="text"
+								class="form-control form-control-sm"
+								placeholder="주제어"
+								bind:value={oSearch.Keyword}
+							/>
 							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
 							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
 						</div>
@@ -121,9 +126,9 @@
 						<td><input class="form-check-input" type="checkbox" value="" checked="" /></td>
 						<td>{o.SeqKeyword}</td>
 						<td>
-							{#if nowDate < o.StartDate}
+							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
 								예정
-							{:else if nowDate < o.EndDate}
+							{:else if nowUnixtime < Dates.setUnixtime(o.EndDate)}
 								진행
 							{:else}
 								종료

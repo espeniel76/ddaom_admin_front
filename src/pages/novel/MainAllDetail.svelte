@@ -12,6 +12,7 @@
 		novelStep2,
 		novelStep3,
 		novelStep4,
+		deleteNovel,
 	} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonStepList from "../../components/DetailCommonStepList.svelte";
@@ -62,7 +63,7 @@
 				break;
 		}
 	}
-	let nowDate = Dates.getYYYYMMTZ();
+	let nowUnixtime = Dates.getUnixtime();
 
 	let oPageStep1 = {
 		pageSize: 10,
@@ -164,8 +165,67 @@
 		}
 	}
 
-	function fnDelete() {
-		alert("삭제 시스템 설계중...");
+	async function fnDelete() {
+		console.log(oModal);
+		if (oModal.reasonDelete.value.length < 1) {
+			alert("삭제 사유를 입력하세요.");
+			return false;
+		}
+		let oReason = {
+			step: 1,
+			seqNovel: 0,
+			typeDelete: Number(oModal.typeDelete.value),
+			reasonDelete: oModal.reasonDelete.value,
+		};
+		if (oModal.item.hasOwnProperty("SeqNovelStep1")) {
+			oReason.step = 1;
+			oReason.seqNovel = Number(oModal.item.SeqNovelStep1);
+		} else if (oModal.item.hasOwnProperty("SeqNovelStep2")) {
+			oReason.step = 2;
+			oReason.seqNovel = Number(oModal.item.SeqNovelStep2);
+		} else if (oModal.item.hasOwnProperty("SeqNovelStep3")) {
+			oReason.step = 3;
+			oReason.seqNovel = Number(oModal.item.SeqNovelStep3);
+		} else if (oModal.item.hasOwnProperty("SeqNovelStep4")) {
+			oReason.step = 4;
+			oReason.seqNovel = Number(oModal.item.SeqNovelStep4);
+		}
+
+		if (confirm("삭제하시겠습니까?")) {
+			let retVal = await deleteNovel.saveStep1(oReason);
+			console.log(retVal);
+			switch (retVal.ResultCode) {
+				case "OK":
+					alert("정상적으로 삭제 처리 되었습니다.");
+					break;
+				default:
+					alert(retVal.ErrorDesc);
+					break;
+			}
+		}
+	}
+
+	let isDelete = false;
+	let oModal = {
+		class: "modal fade",
+		style: "display: none",
+		typeDelete: null,
+		reasonDelete: null,
+		item: {},
+	};
+	function fnInitModal() {
+		oModal.class = "modal fade";
+		oModal.style = "display: none";
+		oModal.item = {};
+		oModal.typeDelete = null;
+		oModal.reasonDelete = null;
+	}
+
+	function fnShowModal(o, isDel) {
+		isDelete = isDel;
+		oModal.class = "modal fade show";
+		oModal.style = "display: block";
+		oModal.item = o;
 	}
 </script>
 
@@ -284,9 +344,9 @@
 					<tr style="text-align:center">
 						{#if $mainAllDetail.StartDate}
 							<td>
-								{#if nowDate < $mainAllDetail.StartDate}
+								{#if nowUnixtime < Dates.setUnixtime($mainAllDetail.StartDate)}
 									예정
-								{:else if nowDate < $mainAllDetail.EndDate}
+								{:else if nowUnixtime < Dates.setUnixtime($mainAllDetail.EndDate)}
 									진행
 								{:else}
 									종료
@@ -325,7 +385,15 @@
 							<td>{oStep1Content.NickName}</td>
 							<td>{oStep1Content.CntLike}</td>
 							<td>{Dates.defaultConvertFull(oStep1Content.CreatedAt)}</td>
-							<td><button class="btn btn-sm btn-info" type="button" on:click={fnDelete}>삭제</button></td>
+							<td
+								><button
+									class="btn btn-sm btn-info"
+									type="button"
+									on:click={() => {
+										fnShowModal(oStep1Content, true);
+									}}>삭제</button
+								></td
+							>
 						{:else}
 							<td colspan="6">-</td>
 						{/if}
@@ -379,7 +447,7 @@
 						oPage={oPageStep2}
 						oPageStore={pagingStep2}
 						oList={$novelStep2.Data.List}
-						{fnDelete}
+						{fnShowModal}
 					/>
 				</div>
 				<div class={oStepClass.step3.content}>
@@ -390,7 +458,7 @@
 						oPage={oPageStep3}
 						oPageStore={pagingStep3}
 						oList={$novelStep3.Data.List}
-						{fnDelete}
+						{fnShowModal}
 					/>
 				</div>
 				<div class={oStepClass.step4.content}>
@@ -401,10 +469,99 @@
 						oPage={oPageStep4}
 						oPageStore={pagingStep4}
 						oList={$novelStep4.Data.List}
-						{fnDelete}
+						{fnShowModal}
 					/>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class={oModal.class} tabindex="-1" style={oModal.style}>
+	{#if isDelete}
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">삭제</h5>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="modal"
+						aria-label="Close"
+						on:click={() => {
+							fnInitModal();
+						}}
+					/>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<thead>
+							<tr style="text-align:center; background-color:#F2F2F2">
+								<th>제목</th>
+								<th>작가</th>
+								<th>종아요수</th>
+								<th>등록일</th>
+							</tr>
+							<tr style="text-align:center">
+								<th>{oStep1Content.Title}</th>
+								<th>{oModal.item.NickName}</th>
+								<th>{oModal.item.CntLike}</th>
+								<th>{Dates.getYYYYMMT(oModal.item.CreatedAt)}</th>
+							</tr>
+							<tr style="text-align:center; vertical-align: middle;">
+								<th>유형</th>
+								<th colspan="3">
+									<select class="form-select form-select-sm" bind:this={oModal.typeDelete}>
+										<option value="1" selected>작가요청</option>
+										<option value="2">운영검수</option>
+										<option value="3">기타</option>
+									</select>
+								</th>
+							</tr>
+							<tr style="text-align:center; vertical-align: middle;">
+								<th>사유 입력</th>
+								<th colspan="3" style="text-align: left;">
+									<textarea class="form-control form-control-sm" rows="10" bind:this={oModal.reasonDelete} />
+									<span style="color:red">*삭제 시 복구가 불가하므로 신중히 검토하시기 바랍니다.</span>
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-target="#modalToggle2"
+						data-bs-toggle="modal"
+						data-bs-dismiss="modal"
+						on:click={() => {
+							fnDelete();
+						}}
+					>
+						확인
+					</button>
+				</div>
+			</div>
+		</div>
+	{:else}
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">내용 상세</h5>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="modal"
+						aria-label="Close"
+						on:click={() => {
+							fnInitModal();
+						}}
+					/>
+				</div>
+				<div class="modal-body">
+					<textarea class="form-control form-control-sm" rows="10">{oModal.item.Content}</textarea>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>

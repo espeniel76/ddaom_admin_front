@@ -52,4 +52,12 @@ export const Dates = {
 			2
 		)}Z`;
 	},
+	getUnixtime: function () {
+		let d = new Date();
+		return d.getTime();
+	},
+	setUnixtime: function (date) {
+		let d = new Date(date);
+		return d.getTime();
+	},
 };

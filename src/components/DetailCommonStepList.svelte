@@ -8,26 +8,10 @@
 	export let oPage;
 	export let oPageStore;
 	export let oList;
-	export let fnDelete;
+	export let fnShowModal;
 
 	$: {
-		console.log(oList);
-	}
-
-	let oModal = {
-		class: "modal fade",
-		style: "display: none",
-		content: "",
-	};
-	function fnInitModal() {
-		oModal.class = "modal fade";
-		oModal.style = "display: none";
-		oModal.content = "";
-	}
-	function fnShowModal(o) {
-		oModal.class = "modal fade show";
-		oModal.style = "display: block";
-		oModal.content = o;
+		// console.log(oList);
 	}
 </script>
 
@@ -94,11 +78,19 @@
 							class="btn btn-sm btn-success"
 							type="button"
 							on:click={() => {
-								fnShowModal(o.Content);
+								fnShowModal(o, false);
 							}}>보기</button
 						></td
 					>
-					<td><button class="btn btn-sm btn-info" type="button" on:click={fnDelete}>삭제</button></td>
+					<td
+						><button
+							class="btn btn-sm btn-info"
+							type="button"
+							on:click={() => {
+								fnShowModal(o, true);
+							}}>삭제</button
+						></td
+					>
 				</tr>
 			{/each}
 		{:else}
@@ -110,28 +102,3 @@
 </table>
 
 <PagingCommon {fnSearch} {oPage} {oPageStore} />
-
-<div class={oModal.class} aria-labelledby="modalToggleLabel" tabindex="-1" style={oModal.style}>
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">내용 상세</h5>
-				<button
-					type="button"
-					class="btn-close"
-					data-bs-dismiss="modal"
-					aria-label="Close"
-					on:click={() => {
-						fnInitModal();
-					}}
-				/>
-			</div>
-			<div class="modal-body"><textarea class="form-control form-control-sm" rows="10">{oModal.content}</textarea></div>
-			<!-- <div class="modal-footer">
-				<button class="btn btn-primary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
-					Open second modal
-				</button>
-			</div> -->
-		</div>
-	</div>
-</div>

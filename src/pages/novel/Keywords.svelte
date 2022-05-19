@@ -14,7 +14,7 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = "/novel/keywords/new";
-	let nowDate = Dates.getYYYYMMTZ();
+	let nowUnixtime = Dates.getUnixtime();
 
 	onMount(() => {
 		fnSearch();
@@ -53,7 +53,12 @@
 				<tr>
 					<td width="100" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 					<td width="200" style="vertical-align: middle;text-align:center">
-						<select class="form-select form-select-sm" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSearch.ActiveYn}>
+						<select
+							class="form-select form-select-sm"
+							id="exampleFormControlSelect1"
+							aria-label="Default select example"
+							bind:value={oSearch.ActiveYn}
+						>
 							<option value="All" selected>전체</option>
 							<option value="Y">사용</option>
 							<option value="N">미사용</option>
@@ -61,7 +66,12 @@
 					</td>
 					<td width="100" style="text-align: right;"><h5 class="mb-0">진행여부</h5></td>
 					<td width="200" style="vertical-align: middle;text-align:center">
-						<select class="form-select form-select-sm" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSearch.ProcessYn}>
+						<select
+							class="form-select form-select-sm"
+							id="exampleFormControlSelect1"
+							aria-label="Default select example"
+							bind:value={oSearch.ProcessYn}
+						>
 							<option value="All" selected>전체</option>
 							<option value="Y">진행</option>
 							<option value="N">종료</option>
@@ -69,17 +79,33 @@
 					</td>
 					<td width="100" style="text-align: right;"><h5 class="mb-0">사용기간</h5></td>
 					<td width="100" style="vertical-align: middle;text-align:center">
-						<input class="form-control form-control-sm" type="date" bind:value={oSearch.StartDate} id="html5-date-input" />
+						<input
+							class="form-control form-control-sm"
+							type="date"
+							bind:value={oSearch.StartDate}
+							id="html5-date-input"
+						/>
 					</td>
 					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
-						<input class="form-control form-control-sm" type="date" bind:value={oSearch.EndDate} id="html5-date-input" />
+						<input
+							class="form-control form-control-sm"
+							type="date"
+							bind:value={oSearch.EndDate}
+							id="html5-date-input"
+						/>
 					</td>
 				</tr>
 				<tr>
 					<td width="100" style="text-align: right;"><h5 class="mb-0">주제어</h5></td>
 					<td width="*" colspan="3">
 						<div class="input-group">
-							<input type="text" class="form-control form-control-sm" placeholder="주제어" aria-label="Recipient's username with two button addons" bind:value={oSearch.Keyword} />
+							<input
+								type="text"
+								class="form-control form-control-sm"
+								placeholder="주제어"
+								aria-label="Recipient's username with two button addons"
+								bind:value={oSearch.Keyword}
+							/>
 							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
 							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
 						</div>
@@ -115,9 +141,9 @@
 						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}</a></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>
-							{#if nowDate < o.StartDate}
+							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
 								예정
-							{:else if nowDate < o.EndDate}
+							{:else if nowUnixtime < Dates.setUnixtime(o.EndDate)}
 								진행
 							{:else}
 								종료
