@@ -197,6 +197,8 @@
 			switch (retVal.ResultCode) {
 				case "OK":
 					alert("정상적으로 삭제 처리 되었습니다.");
+					// 1. 레이어 닫기
+					// 2. 목록으로 이동
 					break;
 				default:
 					alert(retVal.ErrorDesc);
@@ -400,7 +402,7 @@
 					</tr>
 					<tr>
 						<td colspan="6"
-							><textarea class="form-control form-control-sm" rows="10">{oStep1Content.Content}</textarea></td
+							><textarea class="form-control form-control-sm" rows="5">{oStep1Content.Content}</textarea></td
 						>
 					</tr>
 				</thead>
