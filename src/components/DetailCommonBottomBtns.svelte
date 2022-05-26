@@ -14,10 +14,14 @@
 			</div>
 		</td>
 		<td width="*" />
-		<td width="100">
-			<div class="demo-inline-spacing">
-				<button type="button" class="btn btn-sm btn-primary" on:click={fnSave}>{_id === "new" ? "등록" : "수정"}</button>
-			</div>
-		</td>
+		{#if fnSave}
+			<td width="100">
+				<div class="demo-inline-spacing">
+					<button type="button" class="btn btn-sm btn-primary" on:click={fnSave}
+						>{_id === "new" ? "등록" : "수정"}</button
+					>
+				</div>
+			</td>
+		{/if}
 	</tr>
 </table>

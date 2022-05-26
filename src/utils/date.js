@@ -60,4 +60,16 @@ export const Dates = {
 		let d = new Date(date);
 		return d.getTime();
 	},
+	getProcessText(fromDate, toDate) {
+		let nowUnixtime = Dates.getUnixtime();
+		let status;
+		if (nowUnixtime < Dates.setUnixtime(fromDate)) {
+			status = "예정";
+		} else if (nowUnixtime < Dates.setUnixtime(toDate)) {
+			status = "진행";
+		} else {
+			status = "종료";
+		}
+		return status;
+	},
 };

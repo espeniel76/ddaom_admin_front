@@ -31,6 +31,37 @@ function setMainAll() {
 		fetch,
 	};
 }
+function setMainDeletedAll() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (o, PageSize, Page) => {
+		let url = `/main/deleted/all?PageSize=${PageSize}&Page=${Page}`;
+		try {
+			const getDatas = await postApi(url, o);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	const get = async (SeqNovelDelete) => {
+		let url = `/main/deleted/all/${SeqNovelDelete}`;
+		try {
+			const getDatas = await getApi(url);
+			return getDatas;
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	return {
+		subscribe,
+		fetch,
+		get,
+	};
+}
 function setNovelStep1() {
 	let values = { ...initListValues };
 	const { subscribe, set, update } = writable(values);
@@ -47,6 +78,7 @@ function setNovelStep1() {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
+
 	return {
 		subscribe,
 		fetch,
@@ -56,7 +88,7 @@ function setNovelStep2() {
 	let values = { ...initListValues };
 	const { subscribe, set, update } = writable(values);
 	const fetch = async (o, PageSize, Page) => {
-		let url = `/main/all/step234?Step=2&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		let url = `/main/all/step234?Step=2&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
 		try {
 			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== "OK") {
@@ -77,7 +109,7 @@ function setNovelStep3() {
 	let values = { ...initListValues };
 	const { subscribe, set, update } = writable(values);
 	const fetch = async (o, PageSize, Page) => {
-		let url = `/main/all/step234?Step=3&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		let url = `/main/all/step234?Step=3&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
 		try {
 			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== "OK") {
@@ -98,7 +130,7 @@ function setNovelStep4() {
 	let values = { ...initListValues };
 	const { subscribe, set, update } = writable(values);
 	const fetch = async (o, PageSize, Page) => {
-		let url = `/main/all/step234?Step=4&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
+		let url = `/main/all/step234?Step=4&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
 		try {
 			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== "OK") {
@@ -426,30 +458,6 @@ function setDeleteNovel() {
 
 	const { subscribe, set, update } = writable(values);
 
-	// const fetch = async (o, PageSize, Page) => {
-	// 	let url = `/assets/images?ActiveYn=${o.ActiveYn}&Search=${o.Name}&PageSize=${PageSize}&Page=${Page}`;
-	// 	try {
-	// 		const getDatas = await getApi(url);
-	// 		if (getDatas.ResultCode !== "OK") {
-	// 			alert(getDatas.ErrorDesc);
-	// 		} else {
-	// 			set(getDatas);
-	// 		}
-	// 	} catch (error) {
-	// 		alert("오류가 발생했습니다. 다시 시도해 주세요. ");
-	// 	}
-	// };
-
-	// const get = async (SeqImage) => {
-	// 	let url = `/assets/images/${SeqImage}`;
-	// 	try {
-	// 		const getDatas = await getApi(url);
-	// 		return getDatas;
-	// 	} catch (error) {
-	// 		alert("오류가 발생했습니다. 다시 시도해 주세요. ");
-	// 	}
-	// };
-
 	const saveStep1 = async (o) => {
 		try {
 			const newData = await postApi(`/main/deleted/step1`, {
@@ -464,20 +472,6 @@ function setDeleteNovel() {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
-
-	// const edit = async (SeqImage, Name, Image, ActiveYn) => {
-	// 	var data = new FormData();
-	// 	data.append("Name", Name);
-	// 	data.append("ActiveYn", ActiveYn);
-	// 	data.append("Image", Image.files[0]);
-	// 	try {
-	// 		const newData = await putFileApi(`/assets/images/${SeqImage}`, data);
-	// 		return newData;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		alert("오류가 발생했습니다. 다시 시도해 주세요. ");
-	// 	}
-	// };
 
 	return {
 		saveStep1,
@@ -533,9 +527,11 @@ export const menu = writable("");
 export const menuSub = writable("");
 export const menuSubSub = writable("");
 
-export const mainAllDetail = writable({});
-
 export const mainAll = setMainAll();
+export const mainAllDetail = writable({});
+export const mainDeletedAll = setMainDeletedAll();
+export const deleteNovel = setDeleteNovel();
+
 export const novelStep1 = setNovelStep1();
 export const novelStep2 = setNovelStep2();
 export const novelStep3 = setNovelStep3();
@@ -545,4 +541,3 @@ export const genres = setGenres();
 export const keywords = setKeywords();
 export const colors = setColors();
 export const images = setImages();
-export const deleteNovel = setDeleteNovel();

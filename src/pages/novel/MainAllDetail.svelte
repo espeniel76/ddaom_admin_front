@@ -196,9 +196,25 @@
 			console.log(retVal);
 			switch (retVal.ResultCode) {
 				case "OK":
-					alert("정상적으로 삭제 처리 되었습니다.");
+					// alert("정상적으로 삭제 처리 되었습니다.");
 					// 1. 레이어 닫기
-					// 2. 목록으로 이동
+					fnInitModal();
+					// 2. 리프레쉬
+					await fnSearchStep1();
+					await fnSearchStep2();
+					await fnSearchStep3();
+					await fnSearchStep4();
+					oStep1Content = {
+						CntLike: "",
+						Content: "",
+						CreatedAt: "",
+						Genre: "",
+						NickName: "",
+						SeqGenre: "",
+						SeqMember: "",
+						SeqNovelStep1: "",
+						Title: "",
+					};
 					break;
 				default:
 					alert(retVal.ErrorDesc);
@@ -219,8 +235,8 @@
 		oModal.class = "modal fade";
 		oModal.style = "display: none";
 		oModal.item = {};
-		oModal.typeDelete = null;
-		oModal.reasonDelete = null;
+		oModal.typeDelete.value = "1";
+		oModal.reasonDelete.value = "";
 	}
 
 	function fnShowModal(o, isDel) {
