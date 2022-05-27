@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { mainAll, paging, mainAllDetail } from "../../stores";
+	import { mainAll, mainAllFinish, paging, mainAllDetail } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
@@ -39,9 +39,31 @@
 		fnSearch();
 	}
 
+	let oModal = {
+		class: "modal fade",
+		style: "display: none",
+		item: {},
+	};
+	function fnInitModal() {
+		oModal.class = "modal fade";
+		oModal.style = "display: none";
+		oModal.item = {};
+	}
+
+	async function fnShowModal(seqKeyword) {
+		oModal.class = "modal fade show";
+		oModal.style = "display: block";
+
+		await mainAllFinish.fetch(seqKeyword);
+	}
+
 	$: {
 		if ($mainAll.Data.TotalCount > 0) {
 			totalCount = $mainAll.Data.TotalCount;
+		}
+
+		if ($mainAllFinish.Data.totalCount > 0) {
+			console.log($mainAllFinish.Data);
 		}
 	}
 </script>
@@ -143,12 +165,134 @@
 						>
 						<td>{o.CntLike}</td>
 						<td>{o.CntTotal}</td>
-						<td>{o.CntFinish > 0 ? "보기" : "-"}</td>
+						{#if o.CntFinish > 0}
+							<td on:click={fnShowModal(o.SeqKeyword)} style="cursor:pointer"><b>보기</b></td>
+						{:else}
+							<td>-</td>
+						{/if}
 					</tr>
 				{/each}
 			</tbody>
 		</table>
 
 		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} />
+	</div>
+</div>
+
+<!--
+	active_yn: 1
+	cnt_bookmark: "0"
+	cnt_like: "8"
+	cnt_like_step1: "2"
+	cnt_like_step2: "2"
+	cnt_like_step3: "2"
+	cnt_like_step4: "2"
+	cnt_view: "2"
+	content1: "d"
+	content2: "zlzl코코"
+	content3: "아아아아"
+	content4: "쿠쿠쿠"
+	created_at: "2022-05-23T01:18:02.000Z"
+	nick_name_step1: "볶음밥"
+	nick_name_step2: "볶음밥"
+	nick_name_step3: "물벼주"
+	nick_name_step4: "물벼주"
+	seq_color: "6"
+	seq_genre: "4"
+	seq_image: "12"
+	seq_keyword: "23"
+	seq_member_step1: "8"
+	seq_member_step2: "8"
+	seq_member_step3: "10"
+	seq_member_step4: "10"
+	seq_novel_finish: "1"
+	seq_novel_step1: "57"
+	seq_novel_step2: "86"
+	seq_novel_step3: "69"
+	seq_novel_step4: "54"
+	title: "bbbbbb-1"
+	updated_at: "2022-05-23T01:18:02.000Z"
+	updated_at_step1: "2022-05-18T03:50:15.112Z"
+	updated_at_step2: "2022-05-18T03:50:15.112Z"
+	updated_at_step3: "2022-05-18T03:50:15.112Z"
+	updated_at_step4: "2022-05-18T03:50:15.112Z"
+-->
+<div class={oModal.class} tabindex="-1" style={oModal.style}>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">완결 소설</h5>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"
+					on:click={() => {
+						fnInitModal();
+					}}
+				/>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<tbody>
+						{#each $mainAllFinish.Data.List as o}
+							<tr>
+								<td width="100" style="text-aligh: right">제목</td>
+								<td width="*">{o.title}</td>
+								<td width="50"><i class="menu-icon tf-icons bx bx-box" /></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>Step</th>
+												<th>작가</th>
+												<th>좋아요 수</th>
+												<th>등록일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Step1</td>
+												<td>{o.nick_name_step1}</td>
+												<td>{o.cnt_like_step1}</td>
+												<td>{Dates.defaultConvertFull(o.updated_at_step1)}</td>
+											</tr>
+											<tr>
+												<td>Step1</td>
+												<td>{o.nick_name_step2}</td>
+												<td>{o.cnt_like_step2}</td>
+												<td>{Dates.defaultConvertFull(o.updated_at_step2)}</td>
+											</tr>
+											<tr>
+												<td>Step1</td>
+												<td>{o.nick_name_step3}</td>
+												<td>{o.cnt_like_step3}</td>
+												<td>{Dates.defaultConvertFull(o.updated_at_step3)}</td>
+											</tr>
+											<tr>
+												<td>Step1</td>
+												<td>{o.nick_name_step4}</td>
+												<td>{o.cnt_like_step4}</td>
+												<td>{Dates.defaultConvertFull(o.updated_at_step4)}</td>
+											</tr>
+										</tbody>
+									</table>
+									Step 1
+									<textarea class="form-control form-control-sm" rows="4">{o.content1}</textarea>
+									Step 2
+									<textarea class="form-control form-control-sm" rows="4">{o.content2}</textarea>
+									Step 3
+									<textarea class="form-control form-control-sm" rows="4">{o.content3}</textarea>
+									Step 4
+									<textarea class="form-control form-control-sm" rows="4">{o.content4}</textarea>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>

@@ -466,6 +466,7 @@
 						oPageStore={pagingStep2}
 						oList={$novelStep2.Data.List}
 						{fnShowModal}
+						viewType="1"
 					/>
 				</div>
 				<div class={oStepClass.step3.content}>
@@ -477,6 +478,7 @@
 						oPageStore={pagingStep3}
 						oList={$novelStep3.Data.List}
 						{fnShowModal}
+						viewType="1"
 					/>
 				</div>
 				<div class={oStepClass.step4.content}>
@@ -488,6 +490,7 @@
 						oPageStore={pagingStep4}
 						oList={$novelStep4.Data.List}
 						{fnShowModal}
+						viewType="1"
 					/>
 				</div>
 			</div>
@@ -581,5 +584,6 @@
 				</div>
 			</div>
 		</div>
+		s
 	{/if}
 </div>

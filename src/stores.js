@@ -31,6 +31,27 @@ function setMainAll() {
 		fetch,
 	};
 }
+function setMainFinish() {
+	let values = { ...initListValues };
+	const { subscribe, set, update } = writable(values);
+	const fetch = async (SeqKeyword) => {
+		let url = `/main/all/finishes/${SeqKeyword}`;
+		try {
+			const getDatas = await getApi(url);
+			if (getDatas.ResultCode !== "OK") {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
+		}
+	};
+	return {
+		subscribe,
+		fetch,
+	};
+}
 function setMainDeletedAll() {
 	let values = { ...initListValues };
 	const { subscribe, set, update } = writable(values);
@@ -47,8 +68,8 @@ function setMainDeletedAll() {
 			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
-	const get = async (SeqNovelDelete) => {
-		let url = `/main/deleted/all/${SeqNovelDelete}`;
+	const get = async (SeqNovelDelete, Step) => {
+		let url = `/main/deleted/all/${SeqNovelDelete}/${Step}`;
 		try {
 			const getDatas = await getApi(url);
 			return getDatas;
@@ -528,6 +549,7 @@ export const menuSub = writable("");
 export const menuSubSub = writable("");
 
 export const mainAll = setMainAll();
+export const mainAllFinish = setMainFinish();
 export const mainAllDetail = writable({});
 export const mainDeletedAll = setMainDeletedAll();
 export const deleteNovel = setDeleteNovel();

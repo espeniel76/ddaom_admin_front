@@ -9,6 +9,7 @@
 	export let oPageStore;
 	export let oList;
 	export let fnShowModal;
+	export let viewType;
 
 	$: {
 		// console.log(oList);
@@ -56,7 +57,9 @@
 			<th width="150">좋아요 수</th>
 			<th width="170">등록일</th>
 			<th width="90">내용</th>
-			<th width="90">삭제</th>
+			{#if viewType == "1"}
+				<th width="90">삭제</th>
+			{/if}
 		</tr>
 		{#if oList.length > 0}
 			{#each oList as o, index}
@@ -73,24 +76,30 @@
 					<td>{o.NickName}</td>
 					<td>{o.CntLike}</td>
 					<td>{Dates.defaultConvertFull(o.CreatedAt)}</td>
-					<td
-						><button
+					<td>
+						<button
 							class="btn btn-sm btn-success"
 							type="button"
 							on:click={() => {
 								fnShowModal(o, false);
-							}}>보기</button
-						></td
-					>
-					<td
-						><button
-							class="btn btn-sm btn-info"
-							type="button"
-							on:click={() => {
-								fnShowModal(o, true);
-							}}>삭제</button
-						></td
-					>
+							}}
+						>
+							보기
+						</button>
+					</td>
+					{#if viewType == "1"}
+						<td>
+							<button
+								class="btn btn-sm btn-info"
+								type="button"
+								on:click={() => {
+									fnShowModal(o, true);
+								}}
+							>
+								삭제
+							</button>
+						</td>
+					{/if}
 				</tr>
 			{/each}
 		{:else}

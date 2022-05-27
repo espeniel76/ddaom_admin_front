@@ -21,7 +21,7 @@
 <Route path="/novel/main/all"><NovelMainAll /></Route>
 <Route path="/novel/main/all/:_id"><NovelMainAllDetail /></Route>
 <Route path="/novel/main/deleted"><NovelMainDeleted /></Route>
-<Route path="/novel/main/deleted/:_id"><NovelMainDeletedDetail /></Route>
+<Route path="/novel/main/deleted/:_id/:_id2"><NovelMainDeletedDetail /></Route>
 
 <Route path="/novel/slangs"><NovelSlangs /></Route>
 <Route path="/novel/genres"><NovelGenres /></Route>

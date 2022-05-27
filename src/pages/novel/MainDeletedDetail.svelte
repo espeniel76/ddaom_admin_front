@@ -15,8 +15,10 @@
 	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
 	import { Strings } from "../../utils/string";
 	import DetailCommonStepList from "../../components/DetailCommonStepList.svelte";
+	import DetailCommonNovelViewLayer from "../../components/DetailCommonNovelViewLayer.svelte";
 	const route = meta();
 	let _id = route.params._id;
+	let _id2 = Number(route.params._id2);
 
 	let oStepClass = {
 		step2: {
@@ -35,21 +37,21 @@
 
 	let Data;
 	let o = {
-		Content: "무서운 이야기",
-		CreatedAt: "2022-05-24T05:13:28.530Z",
-		EndDate: "2022-05-18T00:20:00.000Z",
-		Genre: "공포",
-		Keyword: "완결 test) B",
-		NickName: "볶음밥",
-		ReasonDelete: "ㄴㅇㄹㄴ",
-		SeqGenre: "3",
-		SeqMember: "8",
-		SeqNovelDelete: "51",
-		StartDate: "2022-05-16T06:40:00.000Z",
+		Content: "",
+		CreatedAt: "",
+		EndDate: "",
+		Genre: "",
+		Keyword: "",
+		NickName: "",
+		ReasonDelete: "",
+		SeqGenre: "",
+		SeqMember: "",
+		SeqNovelDelete: "",
+		StartDate: "",
 		Step: 1,
-		Title: "b-1",
+		Title: "",
 		TypeDelete: 1,
-		UpdatedAt: "2022-05-26T00:28:36.000Z",
+		UpdatedAt: "",
 		SeqNovel: "",
 	};
 	let urlList = "/novel/main/deleted";
@@ -57,18 +59,19 @@
 
 	onMount(async () => {
 		if (_id !== "new") {
-			let retVal = await mainDeletedAll.get(_id);
-			// console.log(retVal);
+			let retVal = await mainDeletedAll.get(_id, _id2);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 
-				oSearchStep2.SeqNovelStep1 = Data.SeqNovel;
-				oSearchStep3.SeqNovelStep1 = Data.SeqNovel;
-				oSearchStep4.SeqNovelStep1 = Data.SeqNovel;
+				if (_id2 === 1) {
+					oSearchStep2.SeqNovelStep1 = Data.SeqNovel;
+					oSearchStep3.SeqNovelStep1 = Data.SeqNovel;
+					oSearchStep4.SeqNovelStep1 = Data.SeqNovel;
 
-				await fnSearchStep2();
-				await fnSearchStep3();
-				await fnSearchStep4();
+					await fnSearchStep2();
+					await fnSearchStep3();
+					await fnSearchStep4();
+				}
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -158,20 +161,15 @@
 	let oModal = {
 		class: "modal fade",
 		style: "display: none",
-		typeDelete: null,
-		reasonDelete: null,
 		item: {},
 	};
 	function fnInitModal() {
 		oModal.class = "modal fade";
 		oModal.style = "display: none";
 		oModal.item = {};
-		oModal.typeDelete.value = "1";
-		oModal.reasonDelete.value = "";
 	}
 
 	function fnShowModal(o, isDel) {
-		isDelete = isDel;
 		oModal.class = "modal fade show";
 		oModal.style = "display: block";
 		oModal.item = o;
@@ -234,72 +232,78 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="nav-align-top mb-4">
-			<ul class="nav nav-tabs" role="tablist">
-				<li class="nav-item">
-					<button
-						type="button"
-						class={oStepClass.step2.title}
-						on:click={() => {
-							fnShowStepClass(2);
-						}}>Step2</button
-					>
-				</li>
-				<li class="nav-item">
-					<button
-						type="button"
-						class={oStepClass.step3.title}
-						on:click={() => {
-							fnShowStepClass(3);
-						}}>Step3</button
-					>
-				</li>
-				<li class="nav-item">
-					<button
-						type="button"
-						class={oStepClass.step4.title}
-						on:click={() => {
-							fnShowStepClass(4);
-						}}>Step4</button
-					>
-				</li>
-			</ul>
-			<div class="tab-content" style="padding:5px; box-shadow: none;">
-				<div class={oStepClass.step2.content}>
-					<DetailCommonStepList
-						oSearchStep={oSearchStep2}
-						fnInitStep={fnInitStep2}
-						fnSearch={fnSearchStep2}
-						oPage={oPageStep2}
-						oPageStore={pagingStep2}
-						oList={$novelStep2.Data.List}
-						{fnShowModal}
-					/>
+		{#if _id2 == 1}
+			<div class="nav-align-top mb-4">
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<button
+							type="button"
+							class={oStepClass.step2.title}
+							on:click={() => {
+								fnShowStepClass(2);
+							}}>Step2</button
+						>
+					</li>
+					<li class="nav-item">
+						<button
+							type="button"
+							class={oStepClass.step3.title}
+							on:click={() => {
+								fnShowStepClass(3);
+							}}>Step3</button
+						>
+					</li>
+					<li class="nav-item">
+						<button
+							type="button"
+							class={oStepClass.step4.title}
+							on:click={() => {
+								fnShowStepClass(4);
+							}}>Step4</button
+						>
+					</li>
+				</ul>
+
+				<div class="tab-content" style="padding:5px; box-shadow: none;">
+					<div class={oStepClass.step2.content}>
+						<DetailCommonStepList
+							oSearchStep={oSearchStep2}
+							fnInitStep={fnInitStep2}
+							fnSearch={fnSearchStep2}
+							oPage={oPageStep2}
+							oPageStore={pagingStep2}
+							oList={$novelStep2.Data.List}
+							{fnShowModal}
+						/>
+					</div>
+					<div class={oStepClass.step3.content}>
+						<DetailCommonStepList
+							oSearchStep={oSearchStep3}
+							fnInitStep={fnInitStep3}
+							fnSearch={fnSearchStep3}
+							oPage={oPageStep3}
+							oPageStore={pagingStep3}
+							oList={$novelStep3.Data.List}
+							{fnShowModal}
+						/>
+					</div>
+					<div class={oStepClass.step4.content}>
+						<DetailCommonStepList
+							oSearchStep={oSearchStep4}
+							fnInitStep={fnInitStep4}
+							fnSearch={fnSearchStep4}
+							oPage={oPageStep4}
+							oPageStore={pagingStep4}
+							oList={$novelStep4.Data.List}
+							{fnShowModal}
+							viewType="2"
+						/>
+					</div>
 				</div>
-				<div class={oStepClass.step3.content}>
-					<DetailCommonStepList
-						oSearchStep={oSearchStep3}
-						fnInitStep={fnInitStep3}
-						fnSearch={fnSearchStep3}
-						oPage={oPageStep3}
-						oPageStore={pagingStep3}
-						oList={$novelStep3.Data.List}
-						{fnShowModal}
-					/>
-				</div>
-				<div class={oStepClass.step4.content}>
-					<DetailCommonStepList
-						oSearchStep={oSearchStep4}
-						fnInitStep={fnInitStep4}
-						fnSearch={fnSearchStep4}
-						oPage={oPageStep4}
-						oPageStore={pagingStep4}
-						oList={$novelStep4.Data.List}
-						{fnShowModal}
-					/>
-				</div>
-				<DetailCommonBottomBtns {urlList} {fnSave} {_id} />
 			</div>
-		</div>
+		{/if}
+		<DetailCommonBottomBtns {urlList} {fnSave} {_id} />
 	</div>
 </div>
+
+<DetailCommonNovelViewLayer {oModal} {fnInitModal} />

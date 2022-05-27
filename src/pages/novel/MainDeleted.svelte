@@ -196,7 +196,7 @@
 						<td>{Dates.defaultConvert(o.StartDate)}</td>
 						<td>{Dates.defaultConvert(o.EndDate)}</td>
 						<td>{o.Keyword}</td>
-						<td><a href="/novel/main/deleted/{o.SeqNovelDelete}">{o.Title}</a></td>
+						<td><a href="/novel/main/deleted/{o.SeqNovelDelete}/{o.Step}">{o.Title}</a></td>
 						<td>{o.Genre}</td>
 						<td>{o.Step}</td>
 						<td>{o.NickName}</td>
