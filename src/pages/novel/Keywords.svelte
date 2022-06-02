@@ -41,6 +41,7 @@
 
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
+			console.log($keywords);
 			totalCount = $keywords.Data.TotalCount;
 		}
 	}
