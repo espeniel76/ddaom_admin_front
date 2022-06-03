@@ -1,8 +1,11 @@
 <script>
-	import { onMount } from "svelte";
+	import { afterUpdate, beforeUpdate, onDestroy, onMount } from "svelte";
 	import { mainAll, mainAllFinish, paging, mainAllDetail } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
+	
+
+
 
 	let oSearch = {
 		Sort: "EndDateDESC",
@@ -16,12 +19,19 @@
 	let registUrl = "";
 	let nowUnixtime = Dates.getUnixtime();
 
+	
 	onMount(() => {
 		fnSearch();
+		
 	});
-
+	
+	function fnPageNavSet() {
+		checkedList=[]	
+		check=false
+	}
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
+		
 	}
 
 	let fnDelete = "";
@@ -36,6 +46,7 @@
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
+		
 		fnSearch();
 	}
 
@@ -66,6 +77,39 @@
 			console.log($mainAllFinish.Data);
 		}
 	}
+
+
+	
+	
+	
+	afterUpdate(()=>{
+		console.log("마운트후 checkedList",checkedList);
+		
+		
+	})
+	
+	
+	
+	
+	let checkedList = []	
+	let check = false;
+
+
+
+	const checkedAllchange = (e) => {
+		const checked = e.target.checked;
+		console.log(checked);
+		if(checked == false){
+			check = false
+		}else if(checked == true){
+			check = true
+		}
+
+	 }
+	
+
+	 
+
 </script>
 
 <div class="card mb-4">
@@ -131,7 +175,12 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox" value="" checked="" /></th>
+					<th width="50"><input class="form-check-input" type="checkbox"  
+						bind:group={checkedList} 
+						
+						on:click={checkedAllchange} />
+
+					</th>
 					<th width="50">No</th>
 					<th width="100">진행여부</th>
 					<th width="100">시작일</th>
@@ -145,7 +194,15 @@
 			<tbody class="table-border-bottom-0">
 				{#each $mainAll.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
-						<td><input class="form-check-input" type="checkbox" value="" checked="" /></td>
+						<td><input class="form-check-input" type="checkbox"  bind:group={checkedList} 
+							value={o.SeqKeyword}
+							checked={check}
+							on:click={e=>{
+								console.log(e.target);
+								
+							}}
+							
+							/></td>
 						<td>{o.SeqKeyword}</td>
 						<td>
 							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
@@ -175,7 +232,7 @@
 			</tbody>
 		</table>
 
-		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} />
+		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} {fnPageNavSet} />
 	</div>
 </div>
 

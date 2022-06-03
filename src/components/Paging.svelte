@@ -5,14 +5,34 @@
 	export let totalCount;
 	export let fnDelete;
 	export let registUrl;
+	export let fnPageNavSet;
+	
 
 	let nowPage = 0;
 	let totalPage = 0;
 	let myRound = 0;
 	let startPage = 0;
-	let endPage = 0;
+	let  endPage = 0;
 	let end = 0;
 	let pages = [];
+
+	// afterUpdate(()=>{
+	// 	console.log("마운트후 checkedList",checkedList);
+	// })
+	// let checkedList = []	
+	// let check = false;
+	// const checkedAllchange = (e) => {
+	// 	const checked = e.target.checked;
+	// 	console.log(checked);
+	// 	if(checked == false){
+	// 		check = false
+	// 	}else if(checked == true){
+	// 		check = true
+	// 	}
+
+	//  }
+	
+
 	$: {
 		// if (totalCount > 0) {
 		pages = [];
@@ -35,6 +55,7 @@
 		}
 		// }
 	}
+	
 </script>
 
 <table class="table">
@@ -58,6 +79,7 @@
 									$paging.startPage = $paging.endPage - ($paging.pageListSize - 1);
 									$paging.nowPage = $paging.endPage;
 									fnSearch();
+									fnPageNavSet();
 								}}
 							>
 								<i class="tf-icon bx bx-chevrons-left" />
@@ -80,6 +102,7 @@
 											o.nowPage = page;
 											paging.update((paging) => o);
 											fnSearch();
+											fnPageNavSet();
 										}}
 										style="cursor:pointer"
 									>
@@ -98,6 +121,7 @@
 									$paging.startPage = $paging.endPage + 1;
 									$paging.nowPage = $paging.startPage;
 									fnSearch();
+									fnPageNavSet();
 								}}
 							>
 								<i class="tf-icon bx bx-chevrons-right" />
