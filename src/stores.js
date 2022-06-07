@@ -534,7 +534,6 @@ export const paging = writable({
   pageListSize: 10,
   startPage: 0,
   endPage: 0,
-  checkList: [],
 });
 export const pagingStep1 = writable({
   nowPage: 1,

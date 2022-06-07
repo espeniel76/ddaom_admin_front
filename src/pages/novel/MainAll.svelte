@@ -24,25 +24,20 @@
 		fnSearch();
 		
 	});
-	
-	function fnPageNavSet() {
-		checkedList=[]	
-		check=false
-	}
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 		
 	}
 
 	let fnDelete = "";
-
+	
 	function fnInit() {
 		oSearch.Sort = "EndDateDESC";
 		oSearch.ProcessYn = "All";
 		oSearch.StartDate = "";
 		oSearch.EndDate = "";
 		oSearch.Keyword = "";
-
+		
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
@@ -60,25 +55,25 @@
 		oModal.style = "display: none";
 		oModal.item = {};
 	}
-
+	
 	async function fnShowModal(seqKeyword) {
 		oModal.class = "modal fade show";
 		oModal.style = "display: block";
-
+		
 		await mainAllFinish.fetch(seqKeyword);
 	}
-
+	
 	$: {
 		if ($mainAll.Data.TotalCount > 0) {
 			totalCount = $mainAll.Data.TotalCount;
 		}
-
+		
 		if ($mainAllFinish.Data.totalCount > 0) {
 			console.log($mainAllFinish.Data);
 		}
 	}
-
-
+	
+	
 	
 	
 	
@@ -90,20 +85,20 @@
 	
 	
 	
+	function fnPageNavSet() {
+		checkedList=[]	
+		check=false
+	}
+	
 	
 	let checkedList = []	
 	let check = false;
 
 
 
-	const checkedAllchange = (e) => {
+	function checkedAllchange(e) {
 		const checked = e.target.checked;
-		console.log(checked);
-		if(checked == false){
-			check = false
-		}else if(checked == true){
-			check = true
-		}
+		check = checked
 
 	 }
 	
@@ -176,8 +171,7 @@
 				</tr>
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox"  
-						bind:group={checkedList} 
-						
+						bind:group={checkedList} 						
 						on:click={checkedAllchange} />
 
 					</th>
@@ -196,12 +190,7 @@
 					<tr style="text-align:center" id={o.SeqKeyword}>
 						<td><input class="form-check-input" type="checkbox"  bind:group={checkedList} 
 							value={o.SeqKeyword}
-							checked={check}
-							on:click={e=>{
-								console.log(e.target);
-								
-							}}
-							
+							checked={check}	
 							/></td>
 						<td>{o.SeqKeyword}</td>
 						<td>

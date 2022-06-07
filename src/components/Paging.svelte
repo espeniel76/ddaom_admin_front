@@ -16,22 +16,7 @@
 	let end = 0;
 	let pages = [];
 
-	// afterUpdate(()=>{
-	// 	console.log("마운트후 checkedList",checkedList);
-	// })
-	// let checkedList = []	
-	// let check = false;
-	// const checkedAllchange = (e) => {
-	// 	const checked = e.target.checked;
-	// 	console.log(checked);
-	// 	if(checked == false){
-	// 		check = false
-	// 	}else if(checked == true){
-	// 		check = true
-	// 	}
 
-	//  }
-	
 
 	$: {
 		// if (totalCount > 0) {
