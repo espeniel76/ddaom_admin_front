@@ -1,11 +1,13 @@
 <script>
-	import { paging } from "../stores";
+	import { afterUpdate } from "svelte";
+	import { paging , checkedList , check } from "../stores";
 	export let fnSearch;
 	export let pageSize;
 	export let totalCount;
 	export let fnDelete;
 	export let registUrl;
-	export let fnPageNavSet;
+	
+	
 	
 
 	let nowPage = 0;
@@ -16,7 +18,14 @@
 	let end = 0;
 	let pages = [];
 
-
+	function fnPageNavSet() {
+		$checkedList=[]	
+		$check=false
+	
+	}
+	afterUpdate(()=>{
+		console.log("마운트후 checkedList",$checkedList);
+	});
 
 	$: {
 		// if (totalCount > 0) {
@@ -65,6 +74,8 @@
 									$paging.nowPage = $paging.endPage;
 									fnSearch();
 									fnPageNavSet();
+									
+									
 								}}
 							>
 								<i class="tf-icon bx bx-chevrons-left" />
@@ -88,6 +99,8 @@
 											paging.update((paging) => o);
 											fnSearch();
 											fnPageNavSet();
+											
+											
 										}}
 										style="cursor:pointer"
 									>
@@ -107,6 +120,7 @@
 									$paging.nowPage = $paging.startPage;
 									fnSearch();
 									fnPageNavSet();
+									
 								}}
 							>
 								<i class="tf-icon bx bx-chevrons-right" />

@@ -1,6 +1,6 @@
 <script>
-	import { afterUpdate, beforeUpdate, onDestroy, onMount } from "svelte";
-	import { mainAll, mainAllFinish, paging, mainAllDetail } from "../../stores";
+	import { onMount } from "svelte";
+	import { mainAll, mainAllFinish, paging, mainAllDetail ,checkedList , check} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	
@@ -22,14 +22,16 @@
 	
 	onMount(() => {
 		fnSearch();
-		
 	});
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 		
 	}
 
+
 	let fnDelete = "";
+	
+
 	
 	function fnInit() {
 		oSearch.Sort = "EndDateDESC";
@@ -77,31 +79,18 @@
 	
 	
 	
-	afterUpdate(()=>{
-		console.log("마운트후 checkedList",checkedList);
-		
-		
-	})
 	
 	
 	
-	function fnPageNavSet() {
-		checkedList=[]	
-		check=false
-	}
-	
-	
-	let checkedList = []	
-	let check = false;
 
 
 
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
-		check = checked
+		$check = checked
 
 	 }
-	
+
 
 	 
 
@@ -171,7 +160,7 @@
 				</tr>
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox"  
-						bind:group={checkedList} 						
+						bind:group={$checkedList} 			
 						on:click={checkedAllchange} />
 
 					</th>
@@ -188,9 +177,10 @@
 			<tbody class="table-border-bottom-0">
 				{#each $mainAll.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
-						<td><input class="form-check-input" type="checkbox"  bind:group={checkedList} 
+						<td><input class="form-check-input" type="checkbox" 
+							 bind:group={$checkedList} 
 							value={o.SeqKeyword}
-							checked={check}	
+							checked={$check}	
 							/></td>
 						<td>{o.SeqKeyword}</td>
 						<td>
@@ -221,7 +211,7 @@
 			</tbody>
 		</table>
 
-		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} {fnPageNavSet} />
+		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl}  />
 	</div>
 </div>
 

@@ -1,3 +1,4 @@
+import { onMount } from 'svelte';
 import { writable, get } from 'svelte/store';
 import {
   getApi,
@@ -33,23 +34,10 @@ function setMainAll() {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
     }
   };
-  const del = async (idList) => {
-    let url = `/main/all`;
-    try {
-      const getDatas = await postApi(url, idList);
-      if (getDatas.ResultCode !== 'OK') {
-        alert(getDatas.ErrorDesc);
-      } else {
-        set(getDatas);
-      }
-    } catch (error) {
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-    }
-  };
+
   return {
     subscribe,
     fetch,
-    del,
   };
 }
 function setMainFinish() {
@@ -364,14 +352,32 @@ function setKeywords() {
     }
   };
 
+  const delKeyword = async (idList) => {
+    let url = `/assets/keywords`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+        location.replace(location.href);
+        alert('삭제확인');
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
   return {
     subscribe,
     fetchKeywords,
     getKeyword,
     editKeyword,
     saveKeyword,
+    delKeyword,
   };
 }
+
 function setColors() {
   let values = { ...initListValues };
 
@@ -571,6 +577,9 @@ export const pagingStep4 = writable({
   startPage: 0,
   endPage: 0,
 });
+
+export const checkedList = writable([]);
+export const check = writable(false);
 
 export const menu = writable('');
 export const menuSub = writable('');

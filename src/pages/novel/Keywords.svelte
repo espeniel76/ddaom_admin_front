@@ -1,6 +1,6 @@
 <script>
-	import { onMount } from "svelte";
-	import { keywords, paging } from "../../stores";
+	import { afterUpdate, onMount } from "svelte";
+	import { keywords, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
@@ -17,14 +17,21 @@
 	let nowUnixtime = Dates.getUnixtime();
 
 	onMount(() => {
-		fnSearch();
+		fnSearch(); 
+		
 	});
 
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
-	function fnDelete() {}
+	async function fnDelete() {
+		console.log("삭제버튼");
+		await keywords.delKeyword($checkedList)
+	}
+
+
+
 
 	function fnInit() {
 		oSearch.ActiveYn = "All";
@@ -44,6 +51,12 @@
 			totalCount = $keywords.Data.TotalCount;
 		}
 	}
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked
+
+	 }
+
 </script>
 
 <div class="card mb-4">
@@ -123,7 +136,13 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
+					<th width="50"><input class="form-check-input"
+						 type="checkbox"
+						  
+						   id="defaultCheck3"
+						   bind:group={$checkedList} 						
+						   on:click={checkedAllchange}
+							 /></th>
 					<th width="50">No</th>
 					<th width="*">주제어</th>
 					<th width="100">사용여부</th>
@@ -136,7 +155,12 @@
 			<tbody class="table-border-bottom-0">
 				{#each $keywords.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
-						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
+						<td><input class="form-check-input" type="checkbox" 
+							 id="defaultCheck3"
+							 bind:group={$checkedList} 
+							 value={o.SeqKeyword}
+							 checked={$check}
+							   /></td>
 						<td>{o.SeqKeyword}</td>
 						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}</a></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>

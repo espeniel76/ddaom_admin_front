@@ -1,5 +1,13 @@
 <script>
-	import { menu, menuSub, menuSubSub } from "../stores";
+	import { afterUpdate, onMount } from "svelte";
+	import {mainAll, menu, menuSub, paging, menuSubSub, checkedList, check  } from "../stores";
+	
+
+
+
+	
+	
+	
 
 	let listMenu = [
 		{
@@ -108,6 +116,17 @@
 		menuSub.update((menuSub) => currentSub);
 		menuSubSub.update((menuSubSub) => currentSubSub);
 	}
+
+
+	// nav 이동시 모든 체크박스 풀림 , 페이지네이션 1로 초기화 
+	function fnPageNavSet() {
+		$checkedList=[]	
+		$check=false
+		$paging.nowPage=1
+	}
+	afterUpdate(()=>{
+
+	})
 </script>
 
 <nav id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
@@ -142,6 +161,8 @@
 							current = menu.title;
 							currentSub = item.title;
 						}
+						fnPageNavSet()
+						
 					}}
 				>
 					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
@@ -157,7 +178,11 @@
 										current = menu.title;
 										currentSub = item.title;
 										currentSubSub = sub.title;
-									}}
+										fnPageNavSet();
+										
+									}
+									
+									}
 								>
 									<a href={sub.src} class="menu-link">
 										<div data-i18n="Basic Inputs">{sub.title}</div>
