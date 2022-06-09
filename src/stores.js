@@ -357,13 +357,13 @@ function setKeywords() {
     try {
       const getDatas = await delApi(url, idList);
       if (getDatas.ResultCode !== 'OK') {
-        alert(getDatas.ErrorDesc);
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
       } else {
-        set(getDatas);
-        location.replace(location.href);
         alert('삭제확인');
       }
     } catch (error) {
+      console.log(error);
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
     }
   };
@@ -578,8 +578,10 @@ export const pagingStep4 = writable({
   endPage: 0,
 });
 
+//체크박스
 export const checkedList = writable([]);
 export const check = writable(false);
+// export const test = test();
 
 export const menu = writable('');
 export const menuSub = writable('');

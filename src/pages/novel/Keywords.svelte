@@ -1,5 +1,5 @@
 <script>
-	import { afterUpdate, onMount } from "svelte";
+	import { onMount } from "svelte";
 	import { keywords, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
@@ -20,16 +20,24 @@
 		fnSearch(); 
 		
 	});
-
+	
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
 	}
-
 	async function fnDelete() {
-		console.log("삭제버튼");
-		await keywords.delKeyword($checkedList)
+		await keywords.delKeyword($checkedList);
+		console.log("삭제클릭");
+		fnPageNavSet();
+		fnSearch();
 	}
 
+
+	$: {
+		if ($keywords.Data.TotalCount > 0) {
+			totalCount = $keywords.Data.TotalCount;
+
+		}
+	}
 
 
 
@@ -46,17 +54,14 @@
 		fnSearch();
 	}
 
-	$: {
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
-		}
-	}
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
 		$check = checked
+		
+	}
+	
 
-	 }
-
+	
 </script>
 
 <div class="card mb-4">

@@ -1,9 +1,8 @@
 <script>
-	import { afterUpdate } from "svelte";
-	import { paging , checkedList , check } from "../stores";
+	import { paging , checkedList , check ,keywords} from "../stores";
 	export let fnSearch;
 	export let pageSize;
-	export let totalCount;
+	export let totalCount; 
 	export let fnDelete;
 	export let registUrl;
 	
@@ -18,14 +17,16 @@
 	let end = 0;
 	let pages = [];
 
-	function fnPageNavSet() {
-		$checkedList=[]	
-		$check=false
 	
-	}
-	afterUpdate(()=>{
-		console.log("마운트후 checkedList",$checkedList);
-	});
+	//체크 초기화 
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
+	
+	
+	
+	
 
 	$: {
 		// if (totalCount > 0) {
@@ -48,7 +49,10 @@
 			pages = [...pages, i];
 		}
 		// }
+		
 	}
+	
+
 	
 </script>
 
