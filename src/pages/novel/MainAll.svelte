@@ -23,6 +23,7 @@
 	onMount(() => {
 		fnSearch();
 	});
+	
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 		

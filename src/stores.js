@@ -581,7 +581,8 @@ export const pagingStep4 = writable({
 //체크박스
 export const checkedList = writable([]);
 export const check = writable(false);
-// export const test = test();
+
+// export const fnPageNavSet = setFnPageNavSet();
 
 export const menu = writable('');
 export const menuSub = writable('');

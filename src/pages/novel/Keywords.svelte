@@ -20,7 +20,10 @@
 		fnSearch(); 
 		
 	});
-	
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
 	}

@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { keywords } from "../../stores";
+	import { keywords , checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -40,12 +40,22 @@
 		}
 	});
 
+	//체크 초기화 
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
+
+	//생성 
 	async function fnSave() {
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
+			fnPageNavSet();
+			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
+			
 		}
 		// 사용기간 체크
 		if (oSave.oStartDate.value.length < 1) {
@@ -69,6 +79,8 @@
 			return false;
 		}
 
+
+		//수정 
 		let retVal;
 		if (_id === "new") {
 			retVal = await keywords.saveKeyword(oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
