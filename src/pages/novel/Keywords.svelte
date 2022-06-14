@@ -20,10 +20,15 @@
 		fnSearch(); 
 		
 	});
+
+	// 체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
+
+
+		// 게시글 페이지 1번으로 
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
 	}
@@ -137,6 +142,21 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th colspan="4">
+						<select
+							class="form-select form-select-sm"
+							bind:value={oSearch.Sort}
+							style="width:200px"
+							on:change={() => {
+								fnSearch();
+							}}
+						>
+							<option value="EndDateDESC" selected>등록일 순</option>
+							<option value="EndDateASC">연재 많은 순</option>
+							<option value="LikeDESC">종료일 임박 순</option>
+							<option value="NovelDESC">종료일 늦은 순</option>
+						</select>
+					</th>
 					<th colspan="9">
 						Total data: {$paging.totalCount}
 						, Now page: {$paging.nowPage}

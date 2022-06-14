@@ -160,9 +160,8 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox"  
-						bind:group={$checkedList} 			
-						on:click={checkedAllchange} />
+					<th width="50"><input class="form-check-input" type="hidden"  
+					/>
 
 					</th>
 					<th width="50">No</th>
@@ -178,10 +177,8 @@
 			<tbody class="table-border-bottom-0">
 				{#each $mainAll.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
-						<td><input class="form-check-input" type="checkbox" 
-							 bind:group={$checkedList} 
-							value={o.SeqKeyword}
-							checked={$check}	
+						<td><input class="form-check-input" type="hidden" 
+								
 							/></td>
 						<td>{o.SeqKeyword}</td>
 						<td>

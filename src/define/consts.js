@@ -9,7 +9,7 @@ export default {
   //     IMAGE_SERVER: 'http://192.168.1.20:81',
   //   },
   urls: {
-    ADMIN_API_SERVER: 'http://192.168.1.138:3013/api',
+    ADMIN_API_SERVER: 'http://192.168.1.20:3023/api',
     IMAGE_SERVER: 'http://192.168.1.20:81',
   },
 };

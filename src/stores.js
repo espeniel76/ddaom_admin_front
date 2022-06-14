@@ -434,12 +434,28 @@ function setColors() {
     }
   };
 
+  const delColors = async (idList) => {
+    let url = `/assets/colors`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
   return {
     subscribe,
     fetch,
     get,
     edit,
     save,
+    delColors,
   };
 }
 function setImages() {
@@ -499,12 +515,28 @@ function setImages() {
     }
   };
 
+  const delImages = async (idList) => {
+    let url = `/assets/images`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
   return {
     subscribe,
     fetch,
     get,
     edit,
     save,
+    delImages,
   };
 }
 function setDeleteNovel() {
@@ -579,10 +611,15 @@ export const pagingStep4 = writable({
 });
 
 //체크박스
+
 export const checkedList = writable([]);
 export const check = writable(false);
 
-// export const fnPageNavSet = setFnPageNavSet();
+// function setTest() {
+//   const {subscribe,set,update} =
+// }
+
+// export const test = setTest();
 
 export const menu = writable('');
 export const menuSub = writable('');

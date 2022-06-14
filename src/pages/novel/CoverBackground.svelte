@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { colors, paging } from "../../stores";
+	import { colors, paging ,checkedList , check} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
@@ -16,11 +16,28 @@
 		fnSearch();
 	});
 
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
+
 	async function fnSearch() {
 		await colors.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
-	function fnDelete() {}
+	async function fnDelete() {
+		await colors.delColors($checkedList);
+		console.log("삭제클릭");
+		fnPageNavSet();
+		fnSearch();
+	}
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked
+		
+	}
+	
+
 
 	function fnInit() {
 		oSearch.ActiveYn = "All";
@@ -73,7 +90,12 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
+					<th width="50"><input class="form-check-input"
+						 type="checkbox"
+						  id="defaultCheck3"
+						  bind:group={$checkedList} 						
+						  on:click={checkedAllchange}
+						   /></th>
 					<th width="50">No</th>
 					<th width="*">컬러명</th>
 					<th width="50">색상</th>
@@ -86,7 +108,13 @@
 			<tbody class="table-border-bottom-0">
 				{#each $colors.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqColor}>
-						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
+						<td><input class="form-check-input"
+							 type="checkbox"
+							 id="defaultCheck3"
+							 bind:group={$checkedList} 
+							 value={o.SeqColor}
+							 checked={$check}
+							  /></td>
 						<td>{o.SeqColor}</td>
 						<td><a href="/novel/cover/background/{o.SeqColor}">{o.Name}</a></td>
 						<td style="background-color: {o.Color}" />

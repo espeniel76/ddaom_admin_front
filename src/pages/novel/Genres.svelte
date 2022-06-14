@@ -1,8 +1,10 @@
 <script>
+	// 장르관리 
 	import { onMount } from "svelte";
-	import { genres, paging } from "../../stores";
+	import { genres, paging ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
+
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -25,9 +27,19 @@
 		fnSearch();
 	});
 
+
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked
+		
+	}
+
+
 	function handleChangeEditMode(SeqGenre) {
 		oEdit.SeqGenre = SeqGenre;
 	}
+
+
 
 	function handleChangeSaveMode() {
 		let SeqGenre = oEdit.SeqGenre;
@@ -150,7 +162,13 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
+					<th width="50"><input class="form-check-input"
+						 type="checkbox"
+						  id="defaultCheck3"
+						  bind:group={$checkedList} 						
+						  on:click={checkedAllchange}
+						   />
+						</th>
 					<th width="50">No</th>
 					<th width="*">장르</th>
 					<th width="130">사용여부</th>
@@ -164,7 +182,12 @@
 			<tbody class="table-border-bottom-0">
 				{#each $genres.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqGenre}>
-						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
+						<td><input class="form-check-input"
+							 type="checkbox" 
+							 id="defaultCheck3" 
+							 bind:group={$checkedList} 
+							 value={o.SeqGenre}
+							 checked={$check}/></td>
 						<td>{o.SeqGenre}</td>
 						<td>
 							{#if oEdit.SeqGenre === o.SeqGenre}

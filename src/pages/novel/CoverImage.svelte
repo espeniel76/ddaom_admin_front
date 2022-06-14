@@ -1,6 +1,6 @@
 <script>
-	import { onMount } from "svelte";
-	import { images, paging } from "../../stores";
+	import { beforeUpdate, onMount } from "svelte";
+	import { images, paging,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import consts from "../../define/consts";
@@ -15,13 +15,31 @@
 
 	onMount(() => {
 		fnSearch();
+		
 	});
+
+	beforeUpdate(()=>{
+		console.log("삭제클릭2",$checkedList);
+	
+
+	})
 
 	async function fnSearch() {
 		await images.fetch(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
-	function fnDelete() {}
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
+
+	async function fnDelete() {
+		await images.delImages($checkedList);
+		console.log("삭제클릭");
+		fnPageNavSet();
+		fnSearch();
+	}
+
 
 	function fnInit() {
 		oSearch.ActiveYn = "All";
@@ -31,6 +49,12 @@
 		paging.update((paging) => o);
 		fnSearch();
 	}
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked
+		
+	}
+	
 
 	$: {
 		if ($images.Data.TotalCount > 0) {
@@ -73,7 +97,12 @@
 					</th>
 				</tr>
 				<tr style="text-align:center">
-					<th width="50"><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></th>
+					<th width="50"><input class="form-check-input"
+						 type="checkbox"
+						   id="defaultCheck3" 
+						   bind:group={$checkedList} 						
+						   on:click={checkedAllchange}
+						    /></th>
 					<th width="50">No</th>
 					<th width="*">제목</th>
 					<th width="150">썸네일</th>
@@ -85,7 +114,12 @@
 			<tbody class="table-border-bottom-0">
 				{#each $images.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqImage}>
-						<td><input class="form-check-input" type="checkbox" value="" id="defaultCheck3" checked="" /></td>
+						<td><input class="form-check-input"
+							 type="checkbox"
+							 id="defaultCheck3"
+							 bind:group={$checkedList} 
+							 value={o.SeqImage}
+							 checked={$check} /></td>
 						<td>{o.SeqImage}</td>
 						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
 						<td><img alt="" src="{consts.urls.IMAGE_SERVER}/{o.Image}" width="100" /></td>

@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { colors } from "../../stores";
+	import { colors, checkedList , check } from "../../stores";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
 	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
@@ -22,6 +22,11 @@
 	let Data;
 	let urlList = "/novel/cover/background";
 
+	function fnPageNavSet() {
+		$checkedList=[];	
+		$check=false;
+		}
+
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await colors.get(_id);
@@ -38,6 +43,7 @@
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
+			fnPageNavSet();
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
 		}
