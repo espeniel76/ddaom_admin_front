@@ -294,9 +294,11 @@ function setKeywords() {
   const { subscribe, set, update } = writable(values);
 
   const fetchKeywords = async (o, PageSize, Page) => {
-    let url = `/assets/keywords?ActiveYn=${o.ActiveYn}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/assets/keywords?Sort=${o.Sort}&ActiveYn=${o.ActiveYn}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+
     try {
       const getDatas = await getApi(url);
+      console.log('get', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -311,6 +313,7 @@ function setKeywords() {
     let url = `/assets/keywords/${SeqKeyword}`;
     try {
       const getDatas = await getApi(url);
+
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');

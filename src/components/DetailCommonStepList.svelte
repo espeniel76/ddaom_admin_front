@@ -61,17 +61,21 @@
 				<th width="90">삭제</th>
 			{/if}
 		</tr>
+		
 		{#if oList.length > 0}
 			{#each oList as o, index}
 				<tr style="text-align:center">
 					<td>
+						<!-- 넘버 부분 -->
 						{#if o.SeqNovelStep2}
-							{o.SeqNovelStep2}
+							{index + 1}
+							
 						{:else if o.SeqNovelStep3}
-							{o.SeqNovelStep3}
+						{index + 1}
 						{:else if o.SeqNovelStep4}
-							{o.SeqNovelStep4}
+						{index + 1}
 						{/if}
+						
 					</td>
 					<td>{o.NickName}</td>
 					<td>{o.CntLike}</td>

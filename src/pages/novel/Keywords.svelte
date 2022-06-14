@@ -1,15 +1,17 @@
 <script>
-	import { onMount } from "svelte";
+	import { beforeUpdate, onMount } from "svelte";
 	import { keywords, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
 	let oSearch = {
+		Sort: "startDateASC",
 		ActiveYn: "All",
 		ProcessYn: "All",
 		StartDate: "",
 		EndDate: "",
 		Keyword: "",
+		CntTotal:0,
 	};
 	let pageSize = 10;
 	let totalCount = 0;
@@ -21,6 +23,10 @@
 		
 	});
 
+	beforeUpdate(()=>{
+	console.log("a1",oSearch.CntTotal);
+})
+
 	// 체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
@@ -31,6 +37,7 @@
 		// 게시글 페이지 1번으로 
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
+	
 	}
 	async function fnDelete() {
 		await keywords.delKeyword($checkedList);
@@ -41,26 +48,32 @@
 
 
 	$: {
+		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($keywords.Data.TotalCount > 0) {
 			totalCount = $keywords.Data.TotalCount;
-
+			
 		}
 	}
 
 
 
 	function fnInit() {
+		oSearch.Sort = "startDateASC";
 		oSearch.ActiveYn = "All";
 		oSearch.ProcessYn = "All";
 		oSearch.StartDate = "";
 		oSearch.EndDate = "";
 		oSearch.Keyword = "";
+		oSearch.CntTotal = 0;
+	
 
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
 		fnSearch();
 	}
+
+	
 
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
@@ -149,12 +162,14 @@
 							style="width:200px"
 							on:change={() => {
 								fnSearch();
+								console.log("선택했나");
+								
 							}}
 						>
-							<option value="EndDateDESC" selected>등록일 순</option>
-							<option value="EndDateASC">연재 많은 순</option>
-							<option value="LikeDESC">종료일 임박 순</option>
-							<option value="NovelDESC">종료일 늦은 순</option>
+							<option value="startDateASC" selected >등록일 순</option>
+							<option value="NovelDESC">연재 많은 순</option>
+							<option value="EndDateASC">종료일 임박 순</option>
+							<option value="EndDateDESC" >종료일 늦은 순</option>
 						</select>
 					</th>
 					<th colspan="9">
@@ -166,7 +181,6 @@
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input"
 						 type="checkbox"
-						  
 						   id="defaultCheck3"
 						   bind:group={$checkedList} 						
 						   on:click={checkedAllchange}
@@ -190,7 +204,7 @@
 							 checked={$check}
 							   /></td>
 						<td>{o.SeqKeyword}</td>
-						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}</a></td>
+						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword} ({o.CntTotal})</a></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>
 							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}

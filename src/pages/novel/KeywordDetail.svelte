@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from "svelte";
+	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
 	import { keywords , checkedList , check } from "../../stores";
@@ -38,7 +38,13 @@
 				alert(retVal.ErrorDesc);
 			}
 		}
-	});
+	}
+	);
+
+beforeUpdate(()=>{
+	console.log("a2",oSave.CntTotal);
+})
+
 
 	//체크 초기화 
 	function fnPageNavSet() {

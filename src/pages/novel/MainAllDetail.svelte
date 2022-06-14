@@ -107,23 +107,27 @@
 		await genres.fetchGenres(true, "", 1000, 1);
 		await novelStep1.fetch(oSearchStep1, $pagingStep1.pageSize, $pagingStep1.nowPage);
 	});
-
+	
 	function fnInitStep1() {
 		oSearchStep1.SeqGenre = "0";
 		oSearchStep1.Sort = "CreatedAtDESC";
 		oSearchStep1.Search = "";
+		fnSearchStep1()
 	}
 	function fnInitStep2() {
 		oSearchStep2.Sort = "CreatedAtDESC";
 		oSearchStep2.Search = "";
+		fnSearchStep2()
 	}
 	function fnInitStep3() {
 		oSearchStep3.Sort = "CreatedAtDESC";
 		oSearchStep3.Search = "";
+		fnSearchStep3()
 	}
 	function fnInitStep4() {
 		oSearchStep4.Sort = "CreatedAtDESC";
 		oSearchStep4.Search = "";
+		fnSearchStep4()
 	}
 	async function fnSearchStep1() {
 		await novelStep1.fetch(oSearchStep1, $pagingStep1.pageSize, $pagingStep1.nowPage);
@@ -294,7 +298,7 @@
 							</select>
 						</th>
 						<th colspan="2" style="text-align:right; padding: 10px">
-							Total: {$pagingStep1.totalCountStep1} , Now: {$pagingStep1.nowPage}, pages: {$pagingStep1.totalPage}
+							Total: {$pagingStep1.totalCount} , Now: {$pagingStep1.nowPage}, pages: {$pagingStep1.totalPage}
 						</th>
 					</tr>
 					<tr style="text-align:center">
@@ -307,7 +311,7 @@
 				<tbody class="table-border-bottom-0">
 					{#if $novelStep1.Data.List.length > 0}
 						{#each $novelStep1.Data.List as o, index}
-							<tr
+							<tr 
 								style="text-align:center; cursor:pointer"
 								on:click={async () => {
 									oStep1Content = o;
@@ -318,8 +322,11 @@
 									oSearchStep4.SeqNovelStep1 = o.SeqNovelStep1;
 
 									await fnSearchStep2();
+									fnInitStep2();
 									await fnSearchStep3();
+									fnInitStep3();
 									await fnSearchStep4();
+									fnInitStep4();
 								}}
 							>
 								<td>{o.SeqNovelStep1}</td>

@@ -44,7 +44,6 @@
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		
 		fnSearch();
 	}
 
@@ -72,7 +71,7 @@
 		}
 		
 		if ($mainAllFinish.Data.totalCount > 0) {
-			console.log($mainAllFinish.Data);
+			console.log("ㅇㅇ?",$mainAllFinish.Data);
 		}
 	}
 	
@@ -86,11 +85,6 @@
 
 
 
-	function checkedAllchange(e) {
-		const checked = e.target.checked;
-		$check = checked
-
-	 }
 
 
 	 
