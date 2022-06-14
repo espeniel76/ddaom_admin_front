@@ -79,6 +79,11 @@
 			totalCount = $keywords.Data.TotalCount;
 		}
 	}
+
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked
+	}
 	
 
 	
