@@ -73,12 +73,11 @@
 		fnSearch();
 	}
 
-	
-
-	function checkedAllchange(e) {
-		const checked = e.target.checked;
-		$check = checked
-		
+	$: {
+		if ($keywords.Data.TotalCount > 0) {
+			console.log($keywords);
+			totalCount = $keywords.Data.TotalCount;
+		}
 	}
 	
 
