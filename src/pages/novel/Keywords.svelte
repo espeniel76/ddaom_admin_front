@@ -23,9 +23,6 @@
 		
 	});
 
-	beforeUpdate(()=>{
-	console.log("a1",oSearch.CntTotal);
-})
 
 	// 체크 초기화 
 	function fnPageNavSet() {
@@ -75,11 +72,12 @@
 
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
-			console.log($keywords);
 			totalCount = $keywords.Data.TotalCount;
 		}
 	}
-	
+	function checkedAllchange(e) {
+		const checked = e.target.checked;
+		$check = checked}
 
 	
 </script>

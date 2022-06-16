@@ -31,7 +31,7 @@
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await keywords.getKeyword(_id);
-			console.log(retVal);
+	
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 			} else {
@@ -41,9 +41,6 @@
 	}
 	);
 
-beforeUpdate(()=>{
-	console.log("a2",oSave.CntTotal);
-})
 
 
 	//체크 초기화 
@@ -154,8 +151,11 @@ beforeUpdate(()=>{
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<input
+						<textarea
 							type="text"
+							rows="2"
+							style="resize:none"
+							wrap="hard"
 							class="form-control form-control-sm"
 							placeholder="주제어"
 							aria-label="Recipient's username with two button addons"
