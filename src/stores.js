@@ -567,6 +567,99 @@ function setDeleteNovel() {
   };
 }
 
+function setNotice() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchNotice = async (o, PageSize, Page) => {
+    let url = `/assets/notice?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+
+    try {
+      const getDatas = await getApi(url);
+      console.log('get', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const getNotice = async (SeqNotice) => {
+    let url = `/assets/notice/${SeqNotice}`;
+    try {
+      const getDatas = await getApi(url);
+
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editNotice = async (
+    SeqNotice,
+    Notice,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/assets/notice/${SeqNotice}`, {
+        Notice,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveNotice = async (Notice, ActiveYn, StartDate, EndDate) => {
+    try {
+      const newData = await postApi(`/assets/notice`, {
+        Notice,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delNotice = async (idList) => {
+    let url = `/assets/notice`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchNotice,
+    getNotice,
+    editNotice,
+    saveNotice,
+    delNotice,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -643,3 +736,5 @@ export const genres = setGenres();
 export const keywords = setKeywords();
 export const colors = setColors();
 export const images = setImages();
+
+export const notice = setNotice();

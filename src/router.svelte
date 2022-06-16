@@ -14,6 +14,8 @@
 	import NovelCoverBackgroundDetail from "./pages/novel/CoverBackgroundDetail.svelte";
 	import NovelCoverImage from "./pages/novel/CoverImage.svelte";
 	import NovelCoverImageDetail from "./pages/novel/CoverImageDetail.svelte";
+
+	import Notice from "./pages/novel/Notice.svelte"
 </script>
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
@@ -31,3 +33,5 @@
 <Route path="/novel/cover/background/:_id"><NovelCoverBackgroundDetail /></Route>
 <Route path="/novel/cover/image"><NovelCoverImage /></Route>
 <Route path="/novel/cover/image/:_id"><NovelCoverImageDetail /></Route>
+
+<Route path="/novel/notice"><Notice/></Route>

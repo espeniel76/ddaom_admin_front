@@ -31,13 +31,17 @@
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await keywords.getKeyword(_id);
-	
+			
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
+		console.log('a',_id);
+		
+		console.log('a2',Data);
+		
 	}
 	);
 
