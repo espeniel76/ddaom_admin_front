@@ -40,7 +40,7 @@
 		}
 		console.log('a',_id);
 		
-		console.log('a2',Data);
+		console.log('kk',Data);
 		
 	}
 	);

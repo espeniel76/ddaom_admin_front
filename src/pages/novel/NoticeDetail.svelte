@@ -1,179 +1,159 @@
 <script>
-import { beforeUpdate, onMount } from "svelte";
-	import { keywords, paging, mainAll ,checkedList , check } from "../../stores";
+	import { beforeUpdate, onMount } from "svelte";
+
+	import { meta, router } from "tinro";
+	import { keywords ,notice, checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
-	import Paging from "../../components/Paging.svelte";
+	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonPeriod from "../../components/DetailCommonPeriod.svelte";
+	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
+	const route = meta();
+	let _id = route.params._id;
 
-	let oSearch = {
-		Sort: "startDateASC",
-		ActiveYn: "All",
-		StartDate: "",
-		EndDate: "",
-		Keyword: "",
-		CntTotal:0,
+	let oSave = {
+		oActiveYnTrue: null,
+		oActiveYnFalse: null,
+		oStartDate: "",
+		oEndDate: "",
+		CreatedAt: "",
+		Creator: "",
+		UpdatedAt: "",
+		Updator: "",
+		oTitle:"",
+		oContent:"",
 	};
-	let pageSize = 10;
-	let totalCount = 0;
-	let registUrl = "/novel/keywords/new";
-	let nowUnixtime = Dates.getUnixtime();
+	
+	let Data;
+	let urlList = "/novel/notice";
 
-    // 체크 초기화 
+	onMount(async () => {
+		if (_id !== "new") {
+			let retVal = await notice.getNotice(_id);
+			if (retVal.ResultCode === "OK") {
+				Data = retVal.Data;
+			} else {
+				alert(retVal.ErrorDesc);
+			}
+		}
+		console.log('notice',Data);
+		console.log('notice',_id);
+		
+		
+		
+	}
+	);
+
+
+
+	//체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
 
-
-		// 게시글 페이지 1번으로 
-	async function fnSearch() {
-		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
-	
-	}
-	async function fnDelete() {
-		await keywords.delKeyword($checkedList);
-		console.log("삭제클릭");
-		fnPageNavSet();
-		fnSearch();
-	}
-
-
-	$: {
-		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
+	//생성 
+	async function fnSave() {
+		let isActive = false;
+		if (oSave.oActiveYnTrue.checked) {
+			isActive = true;
+			fnPageNavSet();
+		} else if (oSave.oActiveYnFalse.checked) {
+			fnPageNavSet();
+			isActive = false;
 			
 		}
-	}
-
-
-
-	function fnInit() {
-		oSearch.Sort = "startDateASC";
-		oSearch.ActiveYn = "All";
-		oSearch.ProcessYn = "All";
-		oSearch.StartDate = "";
-		oSearch.EndDate = "";
-		oSearch.Keyword = "";
-		oSearch.CntTotal = 0;
 	
 
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
-		fnSearch();
+
+		//수정 
+		let retVal;
+		if (_id === "new") {
+			retVal = await notice.saveNotice(oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+
+			if (retVal.ResultCode === "OK") {
+				router.goto("/novel/notice");
+
+			} else {
+				alert(retVal.ErrorDesc);
+			}
+		} else {
+			retVal = await notice.editNotice(
+				_id,
+				oSave.oTitle.value,
+				oSave.oContent.value,
+				isActive,
+				oSave.oStartDate.value,
+				oSave.oEndDate.value
+			);
+			if (retVal.ResultCode === "OK") {
+				alert("정상적으로 수정 되었습니다");
+			} else {
+				alert(retVal.ErrorDesc);
+				alert("여기에런가");
+			}
+		}
 	}
 
 	$: {
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
-		}
-	}
-	function checkedAllchange(e) {
-		const checked = e.target.checked;
-		$check = checked}
-
-
-
-
-</script>
-<div class="card mb-4">
-    <div class="table-responsive text-nowrap">
-        <table class="table">
-			<tbody class="table-border-bottom-0">
-				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
-						<select
-							class="form-select form-select-sm"
-							id="exampleFormControlSelect1"
-							aria-label="Default select example"
-                            bind:value={oSearch.ActiveYn}
-						>
-							<option value="All" selected>전체</option>
-							<option value="Y">노출</option>
-							<option value="N">미노출</option>
-						</select>
-					</td>
-				
-					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/수정일</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
-						<input
-							class="form-control form-control-sm"
-							type="date"
-                            bind:value={oSearch.StartDate}
-							id="html5-date-input"
-						/>
-					</td>
-					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
-						<input
-							class="form-control form-control-sm"
-							type="date"
-                            bind:value={oSearch.EndDate}
-							id="html5-date-input"
-						/>
-					</td>
-				</tr>
-				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용</h5></td>
-					<td width="*" colspan="4">
-						<div class="input-group">
-							<input
-								type="text"
-								class="form-control form-control-sm"
-								placeholder="주제어"
-								aria-label="Recipient's username with two button addons"
-                                bind:value={oSearch.Keyword}
-							/>
-							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-sm btn-primary" type="button"  on:click={fnSearch}>검색</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
+		if (Data) {
+			if (Data.ActiveYn) {
+				oSave.oActiveYnTrue.checked = true;
+				oSave.oActiveYnFalse.checked = false;
+			} else {
+				oSave.oActiveYnTrue.checked = false;
+				oSave.oActiveYnFalse.checked = true;
+			}
+			oSave.oStartDate.value = Dates.defaultConvertFullT(Data.StartDate);
+			oSave.oEndDate.value = Dates.defaultConvertFullT(Data.EndDate);
+			oSave.oTitle.value = Data.Title;
+			oSave.oContent.value = Data.Content;
 		
-    </table>
-    <table class="table">
-        <thead>
-            <th colspan="9">
-                Total data: {$paging.totalCount}
-                , Now page: {$paging.nowPage}
-                , TOTAL page: {$paging.totalPage}
-            </th>
-            <tr style="text-align:center">
-                <th width="50"><input class="form-check-input"
-                     type="checkbox"
-                       id="defaultCheck3"
-                       bind:group={$checkedList} 						
-                       on:click={checkedAllchange}
-                         /></th>
-                <th width="50">No</th>
-                <th width="*">제목</th>
-                <th width="100">노출여부</th>
-                <th width="100">등록일</th>
-                <th width="200">수정일</th>
-            </tr>
-        </thead>
-        <tbody class="table-border-bottom-0">
-            {#each $keywords.Data.List as o, index}
-                <tr style="text-align:center" id={o.SeqKeyword}>
-                    <td><input class="form-check-input" type="checkbox" 
-                         id="defaultCheck3"
-                         bind:group={$checkedList} 
-                         value={o.SeqKeyword}
-                         checked={$check}
-                           /></td>
-                    <td>{o.SeqKeyword}</td>
-                    <td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword} ({o.CntTotal})</a></td>
-                    <td>{o.ActiveYn ? "노출" : "미노출"}</td>
-                  
-                   
-                    <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-                    <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
+		
+			oSave.CreatedAt = Data.CreatedAt;
+			oSave.UpdatedAt = Data.UpdatedAt;
+			oSave.Creator = Data.Creator;
+			oSave.Updator = Data.Updator;
+		}
+		console.log("a",Data);
+	
+	}
+</script>
 
-    <Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} />
-    </div>
+<div class="card mb-4">
+	<div class="table-responsive text-nowrap">
+		<table class="table">
+			<tbody class="table-border-bottom-0">
+				<DetailCommonYn {oSave} />
+					<tr>
+						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oTitle} />
+					</td>
+					</tr>
+				
+				<tr>
+					<td style="text-align: right;"><h5 class="mb-0">내용*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<textarea
+							type="text"
+							rows="10"
+							style="resize:none"
+							wrap="hard"
+							class="form-control form-control-sm"
+							placeholder=""
+							aria-label="Recipient's username with two button addons"
+							bind:this={oSave.oContent}
+						/>
+					</td>
+				</tr>
+				<tr>
+				</tr>
+				{#if _id !== "new"}
+					<DetailCommonBottom {oSave} />
+				{/if}
+			</tbody>
+		</table>
+		<DetailCommonBottomBtns {urlList} {fnSave} {_id} />
+	</div>
 </div>

@@ -298,7 +298,7 @@ function setKeywords() {
 
     try {
       const getDatas = await getApi(url);
-      console.log('get', getDatas);
+      console.log('keywordGet', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -313,7 +313,7 @@ function setKeywords() {
     let url = `/assets/keywords/${SeqKeyword}`;
     try {
       const getDatas = await getApi(url);
-
+      console.log('getKeyword2', getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -573,26 +573,26 @@ function setNotice() {
   const { subscribe, set, update } = writable(values);
 
   const fetchNotice = async (o, PageSize, Page) => {
-    let url = `/assets/notice?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
-
+    let url = `/cs/notices?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Notice}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log('get', getDatas);
+      console.log('noticeGet', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
         set(getDatas);
       }
     } catch (error) {
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.1');
     }
   };
 
   const getNotice = async (SeqNotice) => {
-    let url = `/assets/notice/${SeqNotice}`;
+    let url = `/cs/notices/${SeqNotice}`;
     try {
       const getDatas = await getApi(url);
-
+      console.log('noticeGet2', getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -601,32 +601,37 @@ function setNotice() {
 
   const editNotice = async (
     SeqNotice,
-    Notice,
+    Title,
+    Content,
     ActiveYn,
     StartDate,
     EndDate
   ) => {
     try {
-      const newData = await putApi(`/assets/notice/${SeqNotice}`, {
-        Notice,
+      const newData = await putApi(`/cs/notices/${SeqNotice}`, {
+        Title,
+        Content,
         ActiveYn,
         StartDate,
         EndDate,
       });
+
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
     }
   };
 
-  const saveNotice = async (Notice, ActiveYn, StartDate, EndDate) => {
+  const saveNotice = async (Title, Content, ActiveYn, StartDate, EndDate) => {
     try {
-      const newData = await postApi(`/assets/notice`, {
-        Notice,
+      const newData = await postApi(`/cs/notices`, {
+        Title,
+        Content,
         ActiveYn,
         StartDate,
         EndDate,
       });
+      console.log('saveNotice', newData);
       return newData;
     } catch (error) {
       console.log(error);
@@ -635,7 +640,7 @@ function setNotice() {
   };
 
   const delNotice = async (idList) => {
-    let url = `/assets/notice`;
+    let url = `/cs/notices`;
     try {
       const getDatas = await delApi(url, idList);
       if (getDatas.ResultCode !== 'OK') {

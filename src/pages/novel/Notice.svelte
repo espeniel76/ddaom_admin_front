@@ -1,21 +1,27 @@
 <script>
 import { beforeUpdate, onMount } from "svelte";
-	import { keywords, paging, mainAll ,checkedList , check } from "../../stores";
+	import { notice, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 
 	let oSearch = {
-		Sort: "startDateASC",
 		ActiveYn: "All",
 		StartDate: "",
 		EndDate: "",
-		Keyword: "",
-		CntTotal:0,
+		Notice: "",
+		
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/novel/keywords/new";
+	let registUrl = "/novel/notice/new";
 	let nowUnixtime = Dates.getUnixtime();
+
+
+	onMount(() => {
+		fnSearch(); 
+		
+	});
+
 
     // 체크 초기화 
 	function fnPageNavSet() {
@@ -25,12 +31,12 @@ import { beforeUpdate, onMount } from "svelte";
 
 
 		// 게시글 페이지 1번으로 
-	async function fnSearch() {
-		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
+	async function fnSearch() { 
+		await notice.fetchNotice(oSearch, $paging.pageSize, $paging.nowPage);
 	
 	}
 	async function fnDelete() {
-		await keywords.delKeyword($checkedList);
+		await notice.delNotice($checkedList);
 		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
@@ -39,8 +45,8 @@ import { beforeUpdate, onMount } from "svelte";
 
 	$: {
 		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
+		if ($notice.Data.TotalCount > 0) {
+			totalCount = $notice.Data.TotalCount;
 			
 		}
 	}
@@ -48,13 +54,11 @@ import { beforeUpdate, onMount } from "svelte";
 
 
 	function fnInit() {
-		oSearch.Sort = "startDateASC";
 		oSearch.ActiveYn = "All";
-		oSearch.ProcessYn = "All";
 		oSearch.StartDate = "";
 		oSearch.EndDate = "";
-		oSearch.Keyword = "";
-		oSearch.CntTotal = 0;
+		oSearch.Notice = "";
+	
 	
 
 		let o = $paging;
@@ -64,8 +68,8 @@ import { beforeUpdate, onMount } from "svelte";
 	}
 
 	$: {
-		if ($keywords.Data.TotalCount > 0) {
-			totalCount = $keywords.Data.TotalCount;
+		if ($notice.Data.TotalCount > 0) {
+			totalCount = $notice.Data.TotalCount;
 		}
 	}
 	function checkedAllchange(e) {
@@ -122,7 +126,7 @@ import { beforeUpdate, onMount } from "svelte";
 								class="form-control form-control-sm"
 								placeholder="주제어"
 								aria-label="Recipient's username with two button addons"
-                                bind:value={oSearch.Keyword}
+                                bind:value={oSearch.Notice}
 							/>
 							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
 							<button class="btn btn-sm btn-primary" type="button"  on:click={fnSearch}>검색</button>
@@ -154,19 +158,19 @@ import { beforeUpdate, onMount } from "svelte";
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
-            {#each $keywords.Data.List as o, index}
-                <tr style="text-align:center" id={o.SeqKeyword}>
+            {#each $notice.Data.List as o, index}
+                <tr style="text-align:center" id={o.SeqNotice}>
                     <td><input class="form-check-input" type="checkbox" 
                          id="defaultCheck3"
                          bind:group={$checkedList} 
-                         value={o.SeqKeyword}
+                         value={o.SeqNotice}
                          checked={$check}
                            /></td>
-                    <td>{o.SeqKeyword}</td>
-                    <td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword} ({o.CntTotal})</a></td>
+                    <td>{o.SeqNotice}</td>
+                    <td><a href="/novel/notice/{o.SeqNotice}">{o.Title}</a></td>
                     <td>{o.ActiveYn ? "노출" : "미노출"}</td>
                   
-                   
+				
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
                     <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
                 </tr>
