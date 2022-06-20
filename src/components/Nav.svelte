@@ -80,7 +80,7 @@
 				{
 					title: "FAQ",
 					icon: "user",
-					src: "/",
+					src: "/novel/faq",
 					subs: [],
 				},
 			],

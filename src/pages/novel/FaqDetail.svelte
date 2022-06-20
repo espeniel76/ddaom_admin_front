@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { keywords ,notice, checkedList , check } from "../../stores";
+	import { faq , checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -22,21 +22,22 @@
 		Updator: "",
 		oTitle:"",
 		oContent:"",
+		ocategory:null,
 	};
 	
 	let Data;
-	let urlList = "/novel/notice";
+	let urlList = "/novel/faq";
 
 	onMount(async () => {
 		if (_id !== "new") {
-			let retVal = await notice.getNotice(_id);
+			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('noticeData',Data);
+		console.log('faqData',Data);
 	
 		
 		
@@ -72,6 +73,7 @@
 			oSave.oTitle.focus();
 			return false;
 		}
+
 		if (oSave.oContent.value.length < 1) {
 			alert("내용을 입력 하세요.");
 			oSave.oContent.focus();
@@ -81,16 +83,16 @@
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await notice.saveNotice(oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await faq.saveFaq(oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 
 			if (retVal.ResultCode === "OK") {
-				router.goto("/novel/notice");
+				router.goto("/novel/faq");
 
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await notice.editNotice(
+			retVal = await faq.editFaq(
 				_id,
 				oSave.oTitle.value,
 				oSave.oContent.value,
@@ -100,7 +102,7 @@
 			);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
-				router.goto("/novel/notice");
+				router.goto("/novel/faq");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -135,6 +137,24 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
+				<tr>
+					<td style="text-align: right;"><h5 class="mb-0">카테고리*</h5></td>
+					<td style="text-align: right;"><h5 class="mb-0">
+						<select
+						class="form-select form-select-sm"
+						id="exampleFormControlSelect1"
+						aria-label="Default select example"
+						
+						>
+							<option value="All" selected>전체</option>
+							<option value="Y">분류1</option>
+							<option value="N">분류2</option>
+							<option value="N">분류3</option>
+							<option value="N">분류4</option>
+							<option value="N">분류5</option>
+						</select>
+					</td>
+				</tr>
 				<DetailCommonYn {oSave} />
 					<tr>
 						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>

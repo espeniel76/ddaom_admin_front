@@ -592,7 +592,6 @@ function setNotice() {
     let url = `/cs/notices/${SeqNotice}`;
     try {
       const getDatas = await getApi(url);
-      console.log('noticeGet2', getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -665,6 +664,103 @@ function setNotice() {
   };
 }
 
+function setFaq() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchFaq = async (o, PageSize, Page) => {
+    let url = `/cs/faqs?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Faq}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('FaqStoreGet', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getFaq = async (SeqFaq) => {
+    let url = `/cs/faqs/${SeqFaq}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editFaq = async (
+    SeqFaq,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/faqs/${SeqFaq}`, {
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveFaq = async (Title, Content, ActiveYn, StartDate, EndDate) => {
+    try {
+      const newData = await postApi(`/cs/faqs`, {
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      console.log('saveFaq', newData);
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delFaq = async (idList) => {
+    let url = `/cs/faqs`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchFaq,
+    getFaq,
+    editFaq,
+    saveFaq,
+    delFaq,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -712,15 +808,8 @@ export const pagingStep4 = writable({
 });
 
 //체크박스
-
 export const checkedList = writable([]);
 export const check = writable(false);
-
-// function setTest() {
-//   const {subscribe,set,update} =
-// }
-
-// export const test = setTest();
 
 export const menu = writable('');
 export const menuSub = writable('');
@@ -743,3 +832,4 @@ export const colors = setColors();
 export const images = setImages();
 
 export const notice = setNotice();
+export const faq = setFaq();
