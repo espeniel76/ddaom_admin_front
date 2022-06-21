@@ -771,6 +771,44 @@ function setFaq() {
   };
 }
 
+function setCategoryFaq() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchCategoryFaq = async () => {
+    let url = `/cs/faqCategory`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('fetchCategoryFaq', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
+    }
+  };
+
+  // const getCategoryFaq = async (SeqFaq) => {
+  //   let url = `/cs/faqs/${SeqFaq}`;
+  //   try {
+  //     const getDatas = await getApi(url);
+  //     console.log('getCategoryFaq Data', getDatas);
+  //     return getDatas;
+  //   } catch (error) {
+  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+  //   }
+  // };
+  return {
+    subscribe,
+    fetchCategoryFaq,
+    // getCategoryFaq,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -843,3 +881,4 @@ export const images = setImages();
 
 export const notice = setNotice();
 export const faq = setFaq();
+export const categoryFaq = setCategoryFaq();

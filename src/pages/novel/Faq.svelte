@@ -1,6 +1,6 @@
 <script>
 import { beforeUpdate, onMount } from "svelte";
-	import { faq, paging, mainAll ,checkedList , check } from "../../stores";
+	import { faq,categoryFaq, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
@@ -34,7 +34,9 @@ import { beforeUpdate, onMount } from "svelte";
 
 		// 게시글 페이지 1번으로 
 	async function fnSearch() { 
-		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
+		// await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
+		await categoryFaq.fetchCategoryFaq() ;
+		 
 	
 	}
 	async function fnDelete() {
@@ -51,6 +53,8 @@ import { beforeUpdate, onMount } from "svelte";
 			totalCount = $faq.Data.TotalCount;
 			
 		}
+	
+		
 	}
 
 
