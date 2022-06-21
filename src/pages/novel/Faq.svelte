@@ -34,7 +34,7 @@ import { beforeUpdate, onMount } from "svelte";
 
 		// 게시글 페이지 1번으로 
 	async function fnSearch() { 
-		// await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
+		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
 		await categoryFaq.fetchCategoryFaq() ;
 		 
 	
@@ -53,6 +53,7 @@ import { beforeUpdate, onMount } from "svelte";
 			totalCount = $faq.Data.TotalCount;
 			
 		}
+		console.log($faq.Data.List);
 	
 		
 	}

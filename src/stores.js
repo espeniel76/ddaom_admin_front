@@ -777,10 +777,10 @@ function setCategoryFaq() {
   const { subscribe, set, update } = writable(values);
 
   const fetchCategoryFaq = async () => {
-    let url = `/cs/faqCategory`;
+    let url = `/cs/faqs/Category`;
     try {
       const getDatas = await getApi(url);
-      console.log('fetchCategoryFaq', getDatas);
+      console.log('FaqStoreGet', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -788,24 +788,23 @@ function setCategoryFaq() {
       }
     } catch (error) {
       console.log(error);
-      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
     }
   };
 
-  // const getCategoryFaq = async (SeqFaq) => {
-  //   let url = `/cs/faqs/${SeqFaq}`;
-  //   try {
-  //     const getDatas = await getApi(url);
-  //     console.log('getCategoryFaq Data', getDatas);
-  //     return getDatas;
-  //   } catch (error) {
-  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-  //   }
-  // };
+  const getCategoryFaq = async (SeqFaq) => {
+    let url = `/cs/faqs/${SeqFaq}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
   return {
     subscribe,
     fetchCategoryFaq,
-    // getCategoryFaq,
+    getCategoryFaq,
   };
 }
 
