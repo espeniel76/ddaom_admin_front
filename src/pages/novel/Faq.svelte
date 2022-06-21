@@ -3,12 +3,14 @@ import { beforeUpdate, onMount } from "svelte";
 	import { faq, paging, mainAll ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
+	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
 
 	let oSearch = {
 		ActiveYn: "All",
 		StartDate: "",
 		EndDate: "",
 		Faq: "",
+		oCategory:"Choice",
 		
 	};
 	let pageSize = 10;
@@ -58,6 +60,7 @@ import { beforeUpdate, onMount } from "svelte";
 		oSearch.StartDate = "";
 		oSearch.EndDate = "";
 		oSearch.Faq = "";
+		oSearch.oCategory = "Choice"; 
 	
 	
 
@@ -67,16 +70,21 @@ import { beforeUpdate, onMount } from "svelte";
 		fnSearch();
 	}
 
+	
+	
+
+	
+		
 	$: {
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
-		}
+		} 
 	}
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
 		$check = checked}
-
-
+		
+		
 
 
 </script>
@@ -91,14 +99,14 @@ import { beforeUpdate, onMount } from "svelte";
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
 							aria-label="Default select example"
-                            bind:value={oSearch.ActiveYn}
+                            bind:value={oSearch.oCategory}
 						>
-							<option value="All" selected>전체</option>
-							<option value="Y">분류1</option>
-							<option value="N">분류2</option>
-							<option value="N">분류3</option>
-							<option value="N">분류4</option>
-							<option value="N">분류5</option>
+							<option value="Choice" selected>전체</option>
+							<option value="1">분류1</option>
+							<option value="2">분류2</option>
+							<option value="3">분류3</option>
+							<option value="4">분류4</option>
+							<option value="5">분류5</option>
 						</select>
 					</td>
 					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
@@ -184,7 +192,7 @@ import { beforeUpdate, onMount } from "svelte";
                          checked={$check}
                            /></td>
                     <td>{o.SeqFaq}</td>
-                    <td>카테고리</td>
+                    <DetailCommonCategory categorylist={o.categoryFaq}/>
                     <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td>
                     <td>{o.ActiveYn ? "노출" : "미노출"}</td>
                   

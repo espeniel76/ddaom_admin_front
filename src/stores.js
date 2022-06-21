@@ -670,7 +670,7 @@ function setFaq() {
   const { subscribe, set, update } = writable(values);
 
   const fetchFaq = async (o, PageSize, Page) => {
-    let url = `/cs/faqs?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Faq}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/cs/faqs?ActiveYn=${o.ActiveYn}&categoryFaq=${o.oCategory}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Faq}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
       console.log('FaqStoreGet', getDatas);
@@ -697,6 +697,7 @@ function setFaq() {
 
   const editFaq = async (
     SeqFaq,
+    categoryFaq,
     Title,
     Content,
     ActiveYn,
@@ -705,6 +706,7 @@ function setFaq() {
   ) => {
     try {
       const newData = await putApi(`/cs/faqs/${SeqFaq}`, {
+        categoryFaq,
         Title,
         Content,
         ActiveYn,
@@ -718,9 +720,17 @@ function setFaq() {
     }
   };
 
-  const saveFaq = async (Title, Content, ActiveYn, StartDate, EndDate) => {
+  const saveFaq = async (
+    categoryFaq,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
     try {
       const newData = await postApi(`/cs/faqs`, {
+        categoryFaq,
         Title,
         Content,
         ActiveYn,

@@ -22,7 +22,7 @@
 		Updator: "",
 		oTitle:"",
 		oContent:"",
-		ocategory:null,
+		oCategory:"Choice",
 	};
 	
 	let Data;
@@ -33,11 +33,14 @@
 			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
+				// Data.categoryFaq = oSave.oCategory;
+			oSave.oCategory = Data.categoryFaq;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('faqData',Data);
+		console.log("retData",Data);
+		
 	
 		
 		
@@ -67,6 +70,10 @@
 	
 			// 사용기간 체크
 			
+			if (oSave.oCategory === "Choice") {
+				alert("카테고리를 선택 하세요 .");
+				return false;
+			}
 	
 		if (oSave.oTitle.value.length < 1) {
 			alert("제목을 입력 하세요.");
@@ -83,10 +90,10 @@
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await faq.saveFaq(oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
-
+			retVal = await faq.saveFaq(oSave.oCategory ,oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/faq");
+				
 
 			} else {
 				alert(retVal.ErrorDesc);
@@ -94,12 +101,16 @@
 		} else {
 			retVal = await faq.editFaq(
 				_id,
+				oSave.oCategory,
 				oSave.oTitle.value,
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
-			);
+				);
+			
+				
+			
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 				router.goto("/novel/faq");
@@ -118,16 +129,24 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-		
+			console.log(Data.categoryFaq);
+			
 			oSave.oTitle.value = Data.Title;
 			oSave.oContent.value = Data.Content;
-		
-		
+			
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
 			oSave.Updator = Data.Updator;
+			
+			
+			
 		}
+		
+		
+		
+
+		
 		
 	
 	}
@@ -144,18 +163,18 @@
 						class="form-select form-select-sm"
 						id="exampleFormControlSelect1"
 						aria-label="Default select example"
-						
+						bind:value={oSave.oCategory}
 						>
-							<option value="All" selected>전체</option>
-							<option value="Y">분류1</option>
-							<option value="N">분류2</option>
-							<option value="N">분류3</option>
-							<option value="N">분류4</option>
-							<option value="N">분류5</option>
+							<option value="Choice">선택해주세요</option>
+							<option value="1">분류1</option>
+							<option value="2">분류2</option>
+							<option value="3">분류3</option>
+							<option value="4">분류4</option>
+							<option value="5">분류5</option>
 						</select>
 					</td>
 				</tr>
-				<DetailCommonYn {oSave} />
+				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출"/>
 					<tr>
 						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">

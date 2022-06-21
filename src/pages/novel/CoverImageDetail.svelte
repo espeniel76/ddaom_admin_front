@@ -102,7 +102,7 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				<DetailCommonYn {oSave} />
+				<DetailCommonYn {oSave} title="사용여부" Y="사용" N="미사용"/>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">

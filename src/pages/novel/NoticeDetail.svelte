@@ -135,7 +135,7 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				<DetailCommonYn {oSave} />
+				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출"/>
 					<tr>
 						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">

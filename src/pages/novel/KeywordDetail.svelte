@@ -144,7 +144,7 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				<DetailCommonYn {oSave} />
+				<DetailCommonYn {oSave} title="사용여부" Y="사용" N="미사용"/>
 				<DetailCommonPeriod {oSave} />
 				{#if _id !== "new"}
 					<tr>
