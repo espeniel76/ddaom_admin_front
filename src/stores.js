@@ -298,7 +298,7 @@ function setKeywords() {
 
     try {
       const getDatas = await getApi(url);
-      console.log('get', getDatas);
+      console.log('keywordGet', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -313,7 +313,7 @@ function setKeywords() {
     let url = `/assets/keywords/${SeqKeyword}`;
     try {
       const getDatas = await getApi(url);
-
+      console.log('getKeyword2', getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -567,6 +567,248 @@ function setDeleteNovel() {
   };
 }
 
+function setNotice() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchNotice = async (o, PageSize, Page) => {
+    let url = `/cs/notices?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Notice}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('noticeGet', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.1');
+    }
+  };
+
+  const getNotice = async (SeqNotice) => {
+    let url = `/cs/notices/${SeqNotice}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editNotice = async (
+    SeqNotice,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/notices/${SeqNotice}`, {
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveNotice = async (Title, Content, ActiveYn, StartDate, EndDate) => {
+    try {
+      const newData = await postApi(`/cs/notices`, {
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      console.log('saveNotice', newData);
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delNotice = async (idList) => {
+    let url = `/cs/notices`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchNotice,
+    getNotice,
+    editNotice,
+    saveNotice,
+    delNotice,
+  };
+}
+
+function setFaq() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchFaq = async (o, PageSize, Page) => {
+    let url = `/cs/faqs?ActiveYn=${o.ActiveYn}&categoryFaq=${o.oCategory}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Faq}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('FaqStoreGet', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getFaq = async (SeqFaq) => {
+    let url = `/cs/faqs/${SeqFaq}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editFaq = async (
+    SeqFaq,
+    categoryFaq,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/faqs/${SeqFaq}`, {
+        categoryFaq,
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveFaq = async (
+    categoryFaq,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await postApi(`/cs/faqs`, {
+        categoryFaq,
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      console.log('saveFaq', newData);
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delFaq = async (idList) => {
+    let url = `/cs/faqs`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchFaq,
+    getFaq,
+    editFaq,
+    saveFaq,
+    delFaq,
+  };
+}
+
+function setCategoryFaq() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchCategoryFaq = async () => {
+    let url = `/cs/faqCategory`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('fetchCategoryFaq', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
+    }
+  };
+
+  // const getCategoryFaq = async (SeqFaq) => {
+  //   let url = `/cs/faqs/${SeqFaq}`;
+  //   try {
+  //     const getDatas = await getApi(url);
+  //     console.log('getCategoryFaq Data', getDatas);
+  //     return getDatas;
+  //   } catch (error) {
+  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+  //   }
+  // };
+  return {
+    subscribe,
+    fetchCategoryFaq,
+    // getCategoryFaq,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -614,15 +856,8 @@ export const pagingStep4 = writable({
 });
 
 //체크박스
-
 export const checkedList = writable([]);
 export const check = writable(false);
-
-// function setTest() {
-//   const {subscribe,set,update} =
-// }
-
-// export const test = setTest();
 
 export const menu = writable('');
 export const menuSub = writable('');
@@ -643,3 +878,7 @@ export const genres = setGenres();
 export const keywords = setKeywords();
 export const colors = setColors();
 export const images = setImages();
+
+export const notice = setNotice();
+export const faq = setFaq();
+export const categoryFaq = setCategoryFaq();

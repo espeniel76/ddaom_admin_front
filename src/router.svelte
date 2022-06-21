@@ -14,6 +14,12 @@
 	import NovelCoverBackgroundDetail from "./pages/novel/CoverBackgroundDetail.svelte";
 	import NovelCoverImage from "./pages/novel/CoverImage.svelte";
 	import NovelCoverImageDetail from "./pages/novel/CoverImageDetail.svelte";
+
+	import Notice from "./pages/novel/Notice.svelte"
+	import NoticeDetail from "./pages/novel/NoticeDetail.svelte"
+
+	import Faq from "./pages/novel/Faq.svelte"
+	import FaqDetail from "./pages/novel/FaqDetail.svelte"
 </script>
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
@@ -31,3 +37,9 @@
 <Route path="/novel/cover/background/:_id"><NovelCoverBackgroundDetail /></Route>
 <Route path="/novel/cover/image"><NovelCoverImage /></Route>
 <Route path="/novel/cover/image/:_id"><NovelCoverImageDetail /></Route>
+
+<Route path="/novel/notice"><Notice/></Route>
+<Route path="/novel/notice/:_id"><NoticeDetail/></Route>
+
+<Route path="/novel/faq"><Faq/></Route>
+<Route path="/novel/faq/:_id"><FaqDetail/></Route>

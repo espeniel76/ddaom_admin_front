@@ -68,7 +68,7 @@
 				{
 					title: "공지사항",
 					icon: "notification",
-					src: "/",
+					src: "/novel/notice",
 					subs: [],
 				},
 				{
@@ -80,7 +80,7 @@
 				{
 					title: "FAQ",
 					icon: "user",
-					src: "/",
+					src: "/novel/faq",
 					subs: [],
 				},
 			],

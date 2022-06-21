@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { keywords , checkedList , check } from "../../stores";
+	import { faq , checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -14,33 +14,36 @@
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		ProcessYn: "",
 		oStartDate: "",
 		oEndDate: "",
-		oKeyword: "",
-		CntTotal: 0,
 		CreatedAt: "",
 		Creator: "",
 		UpdatedAt: "",
 		Updator: "",
+		oTitle:"",
+		oContent:"",
+		oCategory:"Choice",
 	};
+	
 	let Data;
-	let nowDate = Dates.getYYYYMMTZ();
-	let urlList = "/novel/keywords";
+	let urlList = "/novel/faq";
 
 	onMount(async () => {
 		if (_id !== "new") {
-			let retVal = await keywords.getKeyword(_id);
-			
+			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
+				// Data.categoryFaq = oSave.oCategory;
+			oSave.oCategory = Data.faqCategory;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('a',_id);
+		console.log("retData",Data);
 		
-		console.log('kk',Data);
+	
+		
+		
 		
 	}
 	);
@@ -59,53 +62,58 @@
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
 			fnPageNavSet();
-			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
+			
 			isActive = false;
 			
 		}
-		// 사용기간 체크
-		if (oSave.oStartDate.value.length < 1) {
-			alert("사용기간 시작일을 선택 하세요.");
-			oSave.oStartDate.focus();
-			return false;
-		}
-		if (oSave.oEndDate.value.length < 1) {
-			alert("사용기간 종료일을 선택 하세요.");
-			oSave.oEndDate.focus();
-			return false;
-		}
-		if (oSave.oEndDate.value < oSave.oStartDate.value) {
-			alert("시작일이 종료일보다 큽니다.");
-			oSave.oStartDate.focus();
-			return false;
-		}
-		if (oSave.oKeyword.value.length < 1) {
-			alert("주제어를 입력 하세요.");
-			oSave.oKeyword.focus();
+	
+			// 사용기간 체크
+			
+			if (oSave.oCategory === "Choice") {
+				alert("카테고리를 선택 하세요 .");
+				return false;
+			}
+	
+		if (oSave.oTitle.value.length < 1) {
+			alert("제목을 입력 하세요.");
+			oSave.oTitle.focus();
 			return false;
 		}
 
+		if (oSave.oContent.value.length < 1) {
+			alert("내용을 입력 하세요.");
+			oSave.oContent.focus();
+			return false;
+		}
 
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await keywords.saveKeyword(oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await faq.saveFaq(oSave.oCategory ,oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 			if (retVal.ResultCode === "OK") {
-				router.goto("/novel/keywords");
+				router.goto("/novel/faq");
+				
+
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await keywords.editKeyword(
+			retVal = await faq.editFaq(
 				_id,
-				oSave.oKeyword.value,
+				oSave.oCategory,
+				oSave.oTitle.value,
+				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
-			);
+				);
+			
+				
+			
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
+				router.goto("/novel/faq");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -121,22 +129,26 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-			oSave.oStartDate.value = Dates.defaultConvertFullT(Data.StartDate);
-			oSave.oEndDate.value = Dates.defaultConvertFullT(Data.EndDate);
-			oSave.oKeyword.value = Data.Keyword;
-			if (nowDate < Data.StartDate) {
-				oSave.ProcessYn = "예정";
-			} else if (nowDate < Data.EndDate) {
-				oSave.ProcessYn = "진행";
-			} else {
-				oSave.ProcessYn = "종료";
-			}
-			oSave.CntTotal = Data.CntTotal;
+			console.log(Data.categoryFaq);
+			
+			oSave.oTitle.value = Data.Title;
+			oSave.oContent.value = Data.Content;
+			
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
 			oSave.Updator = Data.Updator;
+			
+			
+			
 		}
+		
+		
+		
+
+		
+		
+	
 	}
 </script>
 
@@ -144,32 +156,48 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				<DetailCommonYn {oSave} title="사용여부" Y="사용" N="미사용"/>
-				<DetailCommonPeriod {oSave} />
-				{#if _id !== "new"}
-					<tr>
-						<td style="text-align: right;"><h5 class="mb-0">진행여부</h5></td>
-						<td width="*" style="vertical-align: middle;" colspan="3">{oSave.ProcessYn}</td>
-					</tr>
-				{/if}
 				<tr>
-					<td style="text-align: right;"><h5 class="mb-0">주제어*</h5></td>
+					<td style="text-align: right;"><h5 class="mb-0">카테고리*</h5></td>
+					<td style="text-align: right;"><h5 class="mb-0">
+						<select
+						class="form-select form-select-sm"
+						id="exampleFormControlSelect1"
+						aria-label="Default select example"
+						bind:value={oSave.oCategory}
+						>
+							<option value="Choice">선택해주세요</option>
+							<option value="1">분류1</option>
+							<option value="2">분류2</option>
+							<option value="3">분류3</option>
+							<option value="4">분류4</option>
+							<option value="5">분류5</option>
+						</select>
+					</td>
+				</tr>
+				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출"/>
+					<tr>
+						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oTitle} />
+					</td>
+					</tr>
+				
+				<tr>
+					<td style="text-align: right;"><h5 class="mb-0">내용*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<textarea
 							type="text"
-							rows="2"
+							rows="10"
 							style="resize:none"
 							wrap="hard"
 							class="form-control form-control-sm"
-							placeholder="주제어"
+							placeholder=""
 							aria-label="Recipient's username with two button addons"
-							bind:this={oSave.oKeyword}
+							bind:this={oSave.oContent}
 						/>
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: right;"><h5 class="mb-0">연재 소설 수</h5></td>
-					<td width="*" style="vertical-align: middle;" colspan="3">{oSave.CntTotal}</td>
 				</tr>
 				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />
