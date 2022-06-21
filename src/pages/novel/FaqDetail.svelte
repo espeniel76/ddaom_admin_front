@@ -34,7 +34,7 @@
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 				// Data.categoryFaq = oSave.oCategory;
-			oSave.oCategory = Data.categoryFaq;
+			oSave.oCategory = Data.faqCategory;
 			} else {
 				alert(retVal.ErrorDesc);
 			}

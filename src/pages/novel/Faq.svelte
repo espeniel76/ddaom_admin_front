@@ -192,7 +192,7 @@ import { beforeUpdate, onMount } from "svelte";
                          checked={$check}
                            /></td>
                     <td>{o.SeqFaq}</td>
-                    <DetailCommonCategory categorylist={o.categoryFaq}/>
+                    <DetailCommonCategory categorylist={o.faqCategory}/>
                     <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td>
                     <td>{o.ActiveYn ? "노출" : "미노출"}</td>
                   
