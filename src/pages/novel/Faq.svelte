@@ -4,6 +4,7 @@ import { beforeUpdate, onMount } from "svelte";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
+import { each } from "svelte/internal";
 
 	let oSearch = {
 		ActiveYn: "All",
@@ -17,6 +18,7 @@ import { beforeUpdate, onMount } from "svelte";
 	let totalCount = 0;
 	let registUrl = "/novel/faq/new";
 	let nowUnixtime = Dates.getUnixtime();
+	
 
 
 	onMount(() => {
@@ -25,20 +27,23 @@ import { beforeUpdate, onMount } from "svelte";
 	});
 
 
+	
+
+
     // 체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
 
-
 		// 게시글 페이지 1번으로 
 	async function fnSearch() { 
+		await categoryFaq.fetchCategoryFaq();
 		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
-		await categoryFaq.fetchCategoryFaq() ;
 		 
 	
 	}
+
 	async function fnDelete() {
 		await faq.delFaq($checkedList);
 		console.log("삭제클릭");
@@ -51,10 +56,9 @@ import { beforeUpdate, onMount } from "svelte";
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
-			
 		}
-		console.log($faq.Data.List);
-	
+
+		
 		
 	}
 
@@ -80,11 +84,7 @@ import { beforeUpdate, onMount } from "svelte";
 
 	
 		
-	$: {
-		if ($faq.Data.TotalCount > 0) {
-			totalCount = $faq.Data.TotalCount;
-		} 
-	}
+
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
 		$check = checked}
@@ -107,12 +107,9 @@ import { beforeUpdate, onMount } from "svelte";
                             bind:value={oSearch.oCategory}
 						>
 							<option value="Choice" selected>전체</option>
-							<option value="1">분류1</option>
-							<option value="2">분류2</option>
-							<option value="3">분류3</option>
-							<option value="4">분류4</option>
-							<option value="5">분류5</option>
-						</select>
+							{#each $categoryFaq.Data.List as o ,index}
+							<option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
+							{/each}
 					</td>
 					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
 					<td width="100" style="vertical-align: middle;text-align:center">
@@ -197,15 +194,18 @@ import { beforeUpdate, onMount } from "svelte";
                          checked={$check}
                            /></td>
                     <td>{o.SeqFaq}</td>
-                    <DetailCommonCategory categorylist={o.faqCategory}/>
+                    <!-- <td>{o.faqCategory}</td> -->
+					<td>{$categoryFaq.Data.List[o.faqCategory-1].CategoryFaq}</td>
+					
+					
                     <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td>
                     <td>{o.ActiveYn ? "노출" : "미노출"}</td>
-                  
-				
+					
+					
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
                     <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
                 </tr>
-            {/each}
+				{/each}
         </tbody>
     </table>
 

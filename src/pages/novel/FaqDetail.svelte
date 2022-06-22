@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { faq , checkedList , check } from "../../stores";
+	import { faq, categoryFaq, checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -33,22 +33,22 @@
 			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
-				// Data.categoryFaq = oSave.oCategory;
-			oSave.oCategory = Data.faqCategory;
+				oSave.oCategory=Data.faqCategory
+				
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log("retData",Data);
-		
-	
-		
-		
+		fnSearch();
 		
 	}
 	);
 
-
+	async function fnSearch() { 
+		await categoryFaq.fetchCategoryFaq() ;
+		 
+	
+	}
 
 	//체크 초기화 
 	function fnPageNavSet() {
@@ -87,10 +87,11 @@
 			return false;
 		}
 
-		//수정 
+		//수정 생성
 		let retVal;
 		if (_id === "new") {
 			retVal = await faq.saveFaq(oSave.oCategory ,oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+		
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/faq");
 				
@@ -129,7 +130,6 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-			console.log(Data.categoryFaq);
 			
 			oSave.oTitle.value = Data.Title;
 			oSave.oContent.value = Data.Content;
@@ -142,13 +142,6 @@
 			
 			
 		}
-		
-		
-		
-
-		
-		
-	
 	}
 </script>
 
@@ -165,12 +158,11 @@
 						aria-label="Default select example"
 						bind:value={oSave.oCategory}
 						>
-							<option value="Choice">선택해주세요</option>
-							<option value="1">분류1</option>
-							<option value="2">분류2</option>
-							<option value="3">분류3</option>
-							<option value="4">분류4</option>
-							<option value="5">분류5</option>
+						
+							<option value="Choice" selected>선택해주세요</option>
+							{#each $categoryFaq.Data.List as o ,index}
+							<option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
+							{/each}
 						</select>
 					</td>
 				</tr>
