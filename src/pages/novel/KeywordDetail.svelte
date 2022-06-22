@@ -38,9 +38,6 @@
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('a',_id);
-		
-		console.log('kk',Data);
 		
 	}
 	);
