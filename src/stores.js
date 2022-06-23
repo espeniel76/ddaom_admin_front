@@ -808,6 +808,107 @@ function setCategoryFaq() {
   };
 }
 
+function setInquiries() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchInquiries = async (o, PageSize, Page) => {
+    let url = `/cs/inquiries?Status=${o.Status}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Inquiries}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('fetchInquiries', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getInquiries = async (SeqServiceInquiry) => {
+    let url = `/cs/inquiries/${SeqServiceInquiry}`;
+    console.log(url);
+    try {
+      const getDatas = await getApi(url);
+      console.log('fetchInquiries2', getDatas);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editInquiries = async (
+    SeqServiceInquiry,
+    Title,
+    Answer,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/inquiries/${SeqServiceInquiry}`, {
+        SeqServiceInquiry,
+        Answer,
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveInquiries = async (Content, ActiveYn, StartDate, EndDate) => {
+    try {
+      const newData = await postApi(`/cs/inquiries`, {
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+      });
+      console.log('saveInquiries', newData);
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delInquiries = async (idList) => {
+    let url = `/cs/inquiries`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchInquiries,
+    getInquiries,
+    editInquiries,
+    saveInquiries,
+    delInquiries,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -881,3 +982,4 @@ export const images = setImages();
 export const notice = setNotice();
 export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
+export const inquiries = setInquiries();

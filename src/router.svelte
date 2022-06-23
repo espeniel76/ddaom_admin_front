@@ -20,6 +20,9 @@
 
 	import Faq from "./pages/novel/Faq.svelte"
 	import FaqDetail from "./pages/novel/FaqDetail.svelte"
+
+	import Inquiry from "./pages/novel/Inquiries.svelte";
+	import InquiryDetail from "./pages/novel/InquiriesDetail.svelte";
 </script>
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
@@ -43,3 +46,6 @@
 
 <Route path="/novel/faq"><Faq/></Route>
 <Route path="/novel/faq/:_id"><FaqDetail/></Route>
+
+<Route path="/novel/inquiry"><Inquiry/></Route>
+<Route path="/novel/inquiry/:_id"><InquiryDetail/></Route>
