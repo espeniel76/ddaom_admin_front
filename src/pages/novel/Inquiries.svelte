@@ -184,11 +184,12 @@ import { each } from "svelte/internal";
                          checked={$check}
                            /></td>
                     <td>{o.SeqServiceInquiry}</td>
-                    <td>{(o.Status = 1) ? "미답변": (o.Status = 2) ? "답변중" : "답변완료"}</td>
+                    <td>{o.Status == 3 ? "답변완료": o.Status == 2 ? "답변중":"미답변"}</td>
                     <td><a href="/novel/inquiry/{o.SeqServiceInquiry}">{o.Title}</a></td>
                     <td>ID={o.SeqMember}</td>
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-                    <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+                    <!-- <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td> -->
+                    <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td>
                 </tr>
 				{/each}
         </tbody>

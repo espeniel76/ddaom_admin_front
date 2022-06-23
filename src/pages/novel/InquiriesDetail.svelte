@@ -6,9 +6,8 @@
 	import { Dates } from "../../utils/date";
 	import DetailCommonInquiriesBottom from "../../components/DetailCommonInquiriesBottom.svelte";
 	import DetailAnswerYn from "../../components/DetailAnswerYn.svelte";
-	import DetailCommonPeriod from "../../components/DetailCommonPeriod.svelte";
 	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
-import { bind } from "svelte/internal";
+
 	const route = meta();
 	let _id = route.params._id;
 
@@ -24,6 +23,7 @@ import { bind } from "svelte/internal";
 		oContent:"",
 		oAnswer:"",
 		oTitle:"",
+		oStatus: "",
 	
 
 	};
@@ -43,9 +43,9 @@ import { bind } from "svelte/internal";
 			}
 		}
 		
-		console.log("ret",Data.Title);
 	
-		console.log("oSave",oSave);
+	
+		
 	}
 	);
 
@@ -129,7 +129,9 @@ import { bind } from "svelte/internal";
 			oSave.oContent.value = Data.Content;
 			oSave.EmailYn = Data.EmailYn;
 			oSave.oAnswer.value = Data.Answer;
-			
+			oSave.oStatus = Data.Status
+
+
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;

@@ -74,7 +74,7 @@
 				{
 					title: "1:1문의",
 					icon: "chat",
-					src: "/",
+					src: "/novel/inquiry",
 					subs: [],
 				},
 				{

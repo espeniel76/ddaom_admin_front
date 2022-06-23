@@ -831,10 +831,9 @@ function setInquiries() {
 
   const getInquiries = async (SeqServiceInquiry) => {
     let url = `/cs/inquiries/${SeqServiceInquiry}`;
-    console.log(url);
+
     try {
       const getDatas = await getApi(url);
-      console.log('fetchInquiries2', getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -980,6 +979,8 @@ export const colors = setColors();
 export const images = setImages();
 
 export const notice = setNotice();
+
 export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
+
 export const inquiries = setInquiries();
