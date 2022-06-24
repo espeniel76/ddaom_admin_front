@@ -1,5 +1,7 @@
 <script>
 	import { Route } from "tinro";
+	// import Router, {location, link} from 'svelte-spa-router';
+	// import { Route } from "tinro";
 
 	import NovelMainAll from "./pages/novel/MainAll.svelte";
 	import NovelMainAllDetail from "./pages/novel/MainAllDetail.svelte";
@@ -24,6 +26,7 @@
 	import Inquiry from "./pages/novel/Inquiries.svelte";
 	import InquiryDetail from "./pages/novel/InquiriesDetail.svelte";
 </script>
+
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
 

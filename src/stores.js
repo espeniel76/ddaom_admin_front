@@ -864,21 +864,21 @@ function setInquiries() {
     }
   };
 
-  const saveInquiries = async (Answer, ActiveYn, StartDate, EndDate) => {
-    try {
-      const newData = await postApi(`/cs/inquiries`, {
-        Answer,
-        ActiveYn,
-        StartDate,
-        EndDate,
-      });
-      console.log('saveInquiries', newData);
-      return newData;
-    } catch (error) {
-      console.log(error);
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-    }
-  };
+  // const saveInquiries = async (Answer, ActiveYn, StartDate, EndDate) => {
+  //   try {
+  //     const newData = await postApi(`/cs/inquiries`, {
+  //       Answer,
+  //       ActiveYn,
+  //       StartDate,
+  //       EndDate,
+  //     });
+  //     console.log('saveInquiries', newData);
+  //     return newData;
+  //   } catch (error) {
+  //     console.log(error);
+  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+  //   }
+  // };
 
   const delInquiries = async (idList) => {
     let url = `/cs/inquiries`;
@@ -901,8 +901,44 @@ function setInquiries() {
     fetchInquiries,
     getInquiries,
     editInquiries,
-    saveInquiries,
+    // saveInquiries,
     delInquiries,
+  };
+}
+
+function setMemberDetails() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchMemberDetails = async () => {
+    let url = `/cs/faqs/Category`;
+    try {
+      const getDatas = await getApi(url);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getMemberDetails = async (SeqFaq) => {
+    let url = `/cs/faqs/${SeqFaq}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+  return {
+    subscribe,
+    fetch,
+    getMemberDetails,
   };
 }
 
@@ -982,3 +1018,4 @@ export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
 
 export const inquiries = setInquiries();
+export const MemberDetails = setMemberDetails();
