@@ -2,7 +2,7 @@
 	import { Dates } from "../utils/date";
 	export let oSave;
 
-	console.log("skfwk",oSave); 
+
 
 </script>
 

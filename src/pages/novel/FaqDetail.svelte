@@ -61,7 +61,7 @@
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
-			fnPageNavSet();
+			
 		} else if (oSave.oActiveYnFalse.checked) {
 			
 			isActive = false;

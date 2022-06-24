@@ -189,7 +189,7 @@ import { each } from "svelte/internal";
                     <td>ID={o.SeqMember}</td>
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
                     <!-- <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td> -->
-                    <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td>
+                    <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? "-": "-"}</td>
                 </tr>
 				{/each}
         </tbody>

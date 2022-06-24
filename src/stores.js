@@ -842,34 +842,31 @@ function setInquiries() {
 
   const editInquiries = async (
     SeqServiceInquiry,
-    Title,
+    Status,
     Answer,
-    Content,
-    ActiveYn,
+
     StartDate,
     EndDate
   ) => {
     try {
       const newData = await putApi(`/cs/inquiries/${SeqServiceInquiry}`, {
         SeqServiceInquiry,
+        Status,
         Answer,
-        Title,
-        Content,
-        ActiveYn,
         StartDate,
         EndDate,
       });
-
+      console.log('newData', newData);
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
     }
   };
 
-  const saveInquiries = async (Content, ActiveYn, StartDate, EndDate) => {
+  const saveInquiries = async (Answer, ActiveYn, StartDate, EndDate) => {
     try {
       const newData = await postApi(`/cs/inquiries`, {
-        Content,
+        Answer,
         ActiveYn,
         StartDate,
         EndDate,

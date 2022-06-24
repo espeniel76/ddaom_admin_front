@@ -5,7 +5,7 @@
 	import { inquiries, checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonInquiriesBottom from "../../components/DetailCommonInquiriesBottom.svelte";
-	import DetailAnswerYn from "../../components/DetailAnswerYn.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
 	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
 
 	const route = meta();
@@ -45,33 +45,26 @@
 		
 	
 	
+		console.log('datra',Data);	
 		
 	}
+	
 	);
 
-	async function fnSearch() { 
 	
-		 
-	
-	}
-
-	//체크 초기화 
-	function fnPageNavSet() {
-		$checkedList=[];	
-		$check=false;
-		}
 
 	//생성 
 	async function fnSave() {
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
-			fnPageNavSet();
+			// fnPageNavSet();
+			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
-			
 			isActive = false;
 			
 		}
+		
 	
 			// 사용기간 체크
 		
@@ -92,21 +85,17 @@
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await inquiries.saveInquiries(oSave.oAdContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
-			if (retVal.ResultCode === "OK") {
-				router.goto("/novel/keywords");
-			} else {
-				alert(retVal.ErrorDesc);
-			}
+		
+
 		} else {
-			retVal = await inquiries.editinquiries(
+			retVal = await inquiries.editInquiries(
 				_id,
+				oSave.oStatus,
 				oSave.oAnswer.value,
-				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
-		
+			console.log('sss',retVal);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -114,24 +103,29 @@
 			}
 		}
 	}
-
+	
 	$: {
+	
 		if (Data) {
-			if (Data.EmailYn) {
+			if (Data.Status==3) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
-			} else {
+			} else if (Data.Status ==2) {
+				oSave.oActiveYnTrue.checked = false;
+				oSave.oActiveYnFalse.checked = true;
+			}
+			else{
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
 			
 			oSave.oTitle = Data.Title;
 			oSave.oContent.value = Data.Content;
-			oSave.EmailYn = Data.EmailYn;
+			oSave.oStatus = Data.Status;
 			oSave.oAnswer.value = Data.Answer;
-			oSave.oStatus = Data.Status
-
-
+			
+			
+			
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
@@ -140,8 +134,12 @@
 			
 			
 		}
-		console.log(Data);
-	
+		console.log('Data',Data);
+		
+		console.log('a',oSave.oStatus);
+		
+		
+		
 	}
 </script>
 
@@ -182,7 +180,7 @@
 						{oSave.EmailYn  ? "Y" : "N"}
 					</td>
 				</tr>
-				<DetailAnswerYn {oSave} title="답변여부" Y="답변완료" B="답변중"/>
+				<DetailCommonYn {oSave} title="답변여부" Y="답변완료" N="답변중"/>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">답변내용*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
