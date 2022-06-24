@@ -46,6 +46,7 @@
 	
 	
 		console.log('datra',Data);	
+		console.log('Data',Data.Status);
 		
 	}
 	
@@ -58,10 +59,12 @@
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
+			oSave.oStatus = 3;
 			// fnPageNavSet();
 			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
+			oSave.oStatus = 2;
 			
 		}
 		
@@ -95,9 +98,10 @@
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
-			console.log('sss',retVal);
+			console.log('sss',oSave.oStatus);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
+				router.goto("/novel/inquiry");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -107,23 +111,20 @@
 	$: {
 	
 		if (Data) {
-			if (Data.Status==3) {
+			if (Data.Status == 3) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
-			} else if (Data.Status ==2) {
+			} else if(Data.Status == 2) {
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
-			}
-			else{
+			}else if(Data.Status == 1) {
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
 			
 			oSave.oTitle = Data.Title;
 			oSave.oContent.value = Data.Content;
-			oSave.oStatus = Data.Status;
 			oSave.oAnswer.value = Data.Answer;
-			
 			
 			
 			oSave.CreatedAt = Data.CreatedAt;
@@ -134,9 +135,11 @@
 			
 			
 		}
-		console.log('Data',Data);
+	
+		
 		
 		console.log('a',oSave.oStatus);
+		console.log('a',oSave);
 		
 		
 		

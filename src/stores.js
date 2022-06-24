@@ -853,6 +853,7 @@ function setInquiries() {
         SeqServiceInquiry,
         Status,
         Answer,
+
         StartDate,
         EndDate,
       });
