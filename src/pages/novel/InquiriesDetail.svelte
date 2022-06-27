@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { inquiries, checkedList , check } from "../../stores";
+	import { inquiries, memberDetails  } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonInquiriesBottom from "../../components/DetailCommonInquiriesBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -42,16 +42,19 @@
 				alert(retVal.ErrorDesc);
 			}
 		}
+
 		
-	
-	
-		console.log('datra',Data);	
-		console.log('Data',Data.Status);
-		
+	fnSearch()		
 	}
 	
 	);
 
+	async function fnSearch() { 
+		await memberDetails.fetchMemberDetails()
+
+		 
+	
+	}
 	
 
 	//생성 
@@ -98,7 +101,7 @@
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
-			console.log('sss',oSave.oStatus);
+		
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 				router.goto("/novel/inquiry");
@@ -138,8 +141,7 @@
 	
 		
 		
-		console.log('a',oSave.oStatus);
-		console.log('a',oSave);
+		
 		
 		
 		

@@ -23,7 +23,6 @@ import { each } from "svelte/internal";
 
 	onMount(() => {
 		fnSearch(); 
-		
 	});
 
 

@@ -25,6 +25,8 @@
 
 	import Inquiry from "./pages/novel/Inquiries.svelte";
 	import InquiryDetail from "./pages/novel/InquiriesDetail.svelte";
+
+	import MemberInformation from "./pages/novel/MemberInformation.svelte"
 </script>
 
 
@@ -52,3 +54,5 @@
 
 <Route path="/novel/inquiry"><Inquiry/></Route>
 <Route path="/novel/inquiry/:_id"><InquiryDetail/></Route>
+
+<!-- <Route path="/novel/inquiry"><MemberInformation/></Route> -->

@@ -1,6 +1,6 @@
 <script>
 import { beforeUpdate, onMount } from "svelte";
-	import { inquiries, paging, mainAll ,checkedList , check } from "../../stores";
+	import { inquiries, paging, memberDetails ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
@@ -21,30 +21,29 @@ import { each } from "svelte/internal";
 	let registUrl = "";
 	let nowUnixtime = Dates.getUnixtime();
 	
-
-
+	
+	
 	onMount(() => {
 		fnSearch(); 
 		
 	});
-
-
 	
 
 
+	
     // 체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
-
+		
 		// 게시글 페이지 1번으로 
-	async function fnSearch() { 
+		async function fnSearch() { 
+		await memberDetails.fetchMemberDetails()
 		await inquiries.fetchInquiries(oSearch, $paging.pageSize, $paging.nowPage);
-		 
-	
 	}
-
+	
+	
 	async function fnDelete() {
 		await inquiries.delInquiries($checkedList);
 		console.log("삭제클릭");
@@ -52,45 +51,71 @@ import { each } from "svelte/internal";
 		fnSearch();
 	}
 
-
-	$: {
-		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($inquiries.Data.TotalCount > 0) {
-			totalCount = $inquiries.Data.TotalCount;
+		function fnInit() {
+			oSearch.Status = "All";
+			oSearch.StartDate = "";
+			oSearch.EndDate = "";
+			oSearch.Inquiries = "";
+			
+			
+			
+			
+			let o = $paging;
+			o.nowPage = 1;
+			paging.update((paging) => o);
+			fnSearch();
 		}
+		
+		
+		
+	
+		
+			
+	
+		function checkedAllchange(e) {
+			const checked = e.target.checked;
+			$check = checked}
+			
+			
+	
+	$: {
+		
+		const test=[
+		...$inquiries.Data.List , 
+	];
+	const test2=[
+		...$memberDetails.Data.List , 
+	];
+	
+	const test3 = test.concat(test2);
+	// 현재 페이지 게시물 갯수 TOTAL DATA
+	if ($inquiries.Data.TotalCount > 0) {
+			totalCount = $inquiries.Data.TotalCount;
+			
 
+			
+			// test[0].asd=10;
+			// test[0].SeqMember = 1
+			
+			// 	console.log("test11",test.length);
+			// 	// if(test.)
+			// console.log("test",test[0].SeqMember);
+			// console.log("test2",test2);
+		console.log("3",test3);
+		}
 		
 		
+	
+	
+		
+	
 	}
 
 
 
-	function fnInit() {
-		oSearch.Status = "All";
-		oSearch.StartDate = "";
-		oSearch.EndDate = "";
-		oSearch.Inquiries = "";
-	 
-	
-	
 
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
-		fnSearch();
-	}
 
-	
-	
 
-	
-		
-
-	function checkedAllchange(e) {
-		const checked = e.target.checked;
-		$check = checked}
-		
-		
 
 
 </script>
@@ -187,6 +212,7 @@ import { each } from "svelte/internal";
                     <td>{o.Status == 3 ? "답변완료": o.Status == 2 ? "답변중":"미답변"}</td>
                     <td><a href="/novel/inquiry/{o.SeqServiceInquiry}">{o.Title}</a></td>
                     <td>ID={o.SeqMember}</td>
+					
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
                     <!-- <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td> -->
                     <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? "-": "-"}</td>

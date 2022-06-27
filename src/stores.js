@@ -778,7 +778,7 @@ function setCategoryFaq() {
   const { subscribe, set, update } = writable(values);
 
   const fetchCategoryFaq = async () => {
-    let url = `/cs/faqs/Category`;
+    let url = `/cs/faqs/category`;
     try {
       const getDatas = await getApi(url);
       if (getDatas.ResultCode !== 'OK') {
@@ -901,7 +901,6 @@ function setInquiries() {
     fetchInquiries,
     getInquiries,
     editInquiries,
-    // saveInquiries,
     delInquiries,
   };
 }
@@ -912,9 +911,11 @@ function setMemberDetails() {
   const { subscribe, set, update } = writable(values);
 
   const fetchMemberDetails = async () => {
-    let url = `/cs/faqs/Category`;
+    let url = `/cs/inquiries/MemberDetails`;
+
     try {
       const getDatas = await getApi(url);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -922,26 +923,15 @@ function setMemberDetails() {
       }
     } catch (error) {
       console.log(error);
-      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
     }
   };
 
-  const getMemberDetails = async (SeqFaq) => {
-    let url = `/cs/faqs/${SeqFaq}`;
-    try {
-      const getDatas = await getApi(url);
-      return getDatas;
-    } catch (error) {
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-    }
-  };
   return {
     subscribe,
-    fetch,
-    getMemberDetails,
+    fetchMemberDetails,
   };
 }
-
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -1018,4 +1008,4 @@ export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
 
 export const inquiries = setInquiries();
-export const MemberDetails = setMemberDetails();
+export const memberDetails = setMemberDetails();
