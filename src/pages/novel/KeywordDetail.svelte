@@ -55,7 +55,7 @@
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
-			fnPageNavSet();
+			// fnPageNavSet();
 			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;

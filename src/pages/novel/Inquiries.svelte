@@ -1,94 +1,121 @@
 <script>
 import { beforeUpdate, onMount } from "svelte";
-	import { faq,categoryFaq, paging, mainAll ,checkedList , check } from "../../stores";
+	import { inquiries, paging, memberDetails ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
 import { each } from "svelte/internal";
 
 	let oSearch = {
-		ActiveYn: "All",
-		StartDate: "",
+		Status: "All",  //답변여부
+		StartDate: "", 
 		EndDate: "",
-		Faq: "",
-		oCategory:"Choice",
+		Inquiries: "", //제목 
+		
+		
 		
 	};
+	
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/novel/faq/new";
+	let registUrl = "";
 	let nowUnixtime = Dates.getUnixtime();
 	
-
-
+	
+	
 	onMount(() => {
 		fnSearch(); 
+		
 	});
-
-
 	
 
 
+	
     // 체크 초기화 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
-
+		
 		// 게시글 페이지 1번으로 
-	async function fnSearch() { 
-		await categoryFaq.fetchCategoryFaq();
-		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
-		 
-	
+		async function fnSearch() { 
+		await memberDetails.fetchMemberDetails()
+		await inquiries.fetchInquiries(oSearch, $paging.pageSize, $paging.nowPage);
 	}
-
+	
+	
 	async function fnDelete() {
-		await faq.delFaq($checkedList);
+		await inquiries.delInquiries($checkedList);
 		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
 	}
 
-
-	$: {
-		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($faq.Data.TotalCount > 0) {
-			totalCount = $faq.Data.TotalCount;
+		function fnInit() {
+			oSearch.Status = "All";
+			oSearch.StartDate = "";
+			oSearch.EndDate = "";
+			oSearch.Inquiries = "";
+			
+			
+			
+			
+			let o = $paging;
+			o.nowPage = 1;
+			paging.update((paging) => o);
+			fnSearch();
 		}
+		
+		
+		
+	
+		
+			
+	
+		function checkedAllchange(e) {
+			const checked = e.target.checked;
+			$check = checked}
+			
+			
+	
+	$: {
+		
+		const test=[
+		...$inquiries.Data.List , 
+	];
+	const test2=[
+		...$memberDetails.Data.List , 
+	];
+	
+	const test3 = test.concat(test2);
+	// 현재 페이지 게시물 갯수 TOTAL DATA
+	if ($inquiries.Data.TotalCount > 0) {
+			totalCount = $inquiries.Data.TotalCount;
+			
 
+			
+			// test[0].asd=10;
+			// test[0].SeqMember = 1
+			
+			// 	console.log("test11",test.length);
+			// 	// if(test.)
+			// console.log("test",test[0].SeqMember);
+			// console.log("test2",test2);
+		console.log("3",test3);
+		}
 		
 		
+	
+	
+		
+	
 	}
 
 
 
-	function fnInit() {
-		oSearch.ActiveYn = "All";
-		oSearch.StartDate = "";
-		oSearch.EndDate = "";
-		oSearch.Faq = "";
-		oSearch.oCategory = "Choice"; 
-	
-	
 
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
-		fnSearch();
-	}
 
-	
-	
 
-	
-		
-
-	function checkedAllchange(e) {
-		const checked = e.target.checked;
-		$check = checked}
-		
-		
 
 
 </script>
@@ -97,34 +124,23 @@ import { each } from "svelte/internal";
         <table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">카테고리</h5></td>
+					
+					<td width="100" style="text-align: left;"><h5 class="mb-0">답변여부</h5></td>
 					<td width="100" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
 							aria-label="Default select example"
-                            bind:value={oSearch.oCategory}
-						>
-							<option value="Choice" selected>전체</option>
-							{#each $categoryFaq.Data.List as o ,index}
-							<option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
-							{/each}
-					</td>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
-						<select
-							class="form-select form-select-sm"
-							id="exampleFormControlSelect1"
-							aria-label="Default select example"
-                            bind:value={oSearch.ActiveYn}
+                            bind:value={oSearch.Status}
 						>
 							<option value="All" selected>전체</option>
-							<option value="Y">노출</option>
-							<option value="N">미노출</option>
+							<option value="Y">답변완료</option>
+							<option value="N">미답변</option>
+							<option value="B">답변중</option>
 						</select>
 					</td>
 				
-					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/수정일</h5></td>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/답변일</h5></td>
 					<td width="100" style="vertical-align: middle;text-align:center">
 						<input
 							class="form-control form-control-sm"
@@ -143,7 +159,7 @@ import { each } from "svelte/internal";
 					</td>
 				</tr>
 				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용</h5></td>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용/등록자</h5></td>
 					<td width="*" colspan="4">
 						<div class="input-group">
 							<input
@@ -151,7 +167,7 @@ import { each } from "svelte/internal";
 								class="form-control form-control-sm"
 								placeholder="주제어"
 								aria-label="Recipient's username with two button addons"
-                                bind:value={oSearch.Faq}
+                                bind:value={oSearch.Inquiries}
 							/>
 							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
 							<button class="btn btn-sm btn-primary" type="button"  on:click={fnSearch}>검색</button>
@@ -176,33 +192,30 @@ import { each } from "svelte/internal";
                        on:click={checkedAllchange}
                          /></th>
                 <th width="50">No</th>
-                <th width="50">카테고리</th>
+                <th width="50">답변여부</th>
                 <th width="*">제목</th>
-                <th width="100">노출여부</th>
+                <th width="100">등록자</th>
                 <th width="100">등록일</th>
-                <th width="200">수정일</th>
+                <th width="200">답변일</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
-            {#each $faq.Data.List as o, index}
-                <tr style="text-align:center" id={o.SeqFaq}>
+            {#each $inquiries.Data.List as o, index}
+                <tr style="text-align:center" id={o.SeqServiceInquiry}>
                     <td><input class="form-check-input" type="checkbox" 
                          id="defaultCheck3"
                          bind:group={$checkedList} 
-                         value={o.SeqFaq}
+                         value={o.SeqServiceInquiry}
                          checked={$check}
                            /></td>
-                    <td>{o.SeqFaq}</td>
-                    <!-- <td>{o.faqCategory}</td> -->
-					<td>{$categoryFaq.Data.List[o.faqCategory-1].CategoryFaq}</td>
-					
-					
-                    <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td>
-                    <td>{o.ActiveYn ? "노출" : "미노출"}</td>
-					
+                    <td>{o.SeqServiceInquiry}</td>
+                    <td>{o.Status == 3 ? "답변완료": o.Status == 2 ? "답변중":"미답변"}</td>
+                    <td><a href="/novel/inquiry/{o.SeqServiceInquiry}">{o.Title}</a></td>
+                    <td>ID={o.SeqMember}</td>
 					
                     <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-                    <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+                    <!-- <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td> -->
+                    <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? "-": "-"}</td>
                 </tr>
 				{/each}
         </tbody>

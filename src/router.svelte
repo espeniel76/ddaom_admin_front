@@ -1,5 +1,7 @@
 <script>
 	import { Route } from "tinro";
+	// import Router, {location, link} from 'svelte-spa-router';
+	// import { Route } from "tinro";
 
 	import NovelMainAll from "./pages/novel/MainAll.svelte";
 	import NovelMainAllDetail from "./pages/novel/MainAllDetail.svelte";
@@ -20,7 +22,13 @@
 
 	import Faq from "./pages/novel/Faq.svelte"
 	import FaqDetail from "./pages/novel/FaqDetail.svelte"
+
+	import Inquiry from "./pages/novel/Inquiries.svelte";
+	import InquiryDetail from "./pages/novel/InquiriesDetail.svelte";
+
+	// import MemberInformation from "./pages/novel/MemberInformation.svelte"
 </script>
+
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
 
@@ -43,3 +51,8 @@
 
 <Route path="/novel/faq"><Faq/></Route>
 <Route path="/novel/faq/:_id"><FaqDetail/></Route>
+
+<Route path="/novel/inquiry"><Inquiry/></Route>
+<Route path="/novel/inquiry/:_id"><InquiryDetail/></Route>
+
+<!-- <Route path="/novel/MemberInformation"><MemberInformation/></Route> -->

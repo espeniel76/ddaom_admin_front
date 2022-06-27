@@ -778,7 +778,7 @@ function setCategoryFaq() {
   const { subscribe, set, update } = writable(values);
 
   const fetchCategoryFaq = async () => {
-    let url = `/cs/faqs/Category`;
+    let url = `/cs/faqs/category`;
     try {
       const getDatas = await getApi(url);
       if (getDatas.ResultCode !== 'OK') {
@@ -805,6 +805,131 @@ function setCategoryFaq() {
     subscribe,
     fetchCategoryFaq,
     getCategoryFaq,
+  };
+}
+
+function setInquiries() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchInquiries = async (o, PageSize, Page) => {
+    let url = `/cs/inquiries?Status=${o.Status}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Inquiries}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('fetchInquiries', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getInquiries = async (SeqServiceInquiry) => {
+    let url = `/cs/inquiries/${SeqServiceInquiry}`;
+
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editInquiries = async (
+    SeqServiceInquiry,
+    Status,
+    Answer,
+
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/inquiries/${SeqServiceInquiry}`, {
+        SeqServiceInquiry,
+        Status,
+        Answer,
+
+        StartDate,
+        EndDate,
+      });
+      console.log('newData', newData);
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  // const saveInquiries = async (Answer, ActiveYn, StartDate, EndDate) => {
+  //   try {
+  //     const newData = await postApi(`/cs/inquiries`, {
+  //       Answer,
+  //       ActiveYn,
+  //       StartDate,
+  //       EndDate,
+  //     });
+  //     console.log('saveInquiries', newData);
+  //     return newData;
+  //   } catch (error) {
+  //     console.log(error);
+  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+  //   }
+  // };
+
+  const delInquiries = async (idList) => {
+    let url = `/cs/inquiries`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchInquiries,
+    getInquiries,
+    editInquiries,
+    delInquiries,
+  };
+}
+
+function setMemberDetails() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchMemberDetails = async () => {
+    let url = `/cs/inquiries/MemberDetails`;
+
+    try {
+      const getDatas = await getApi(url);
+
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchMemberDetails,
   };
 }
 
@@ -879,5 +1004,9 @@ export const colors = setColors();
 export const images = setImages();
 
 export const notice = setNotice();
+
 export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
+
+export const inquiries = setInquiries();
+export const memberDetails = setMemberDetails();
