@@ -17,18 +17,17 @@
 	import NovelCoverImage from "./pages/novel/CoverImage.svelte";
 	import NovelCoverImageDetail from "./pages/novel/CoverImageDetail.svelte";
 
-	import Notice from "./pages/novel/Notice.svelte"
-	import NoticeDetail from "./pages/novel/NoticeDetail.svelte"
+	import Notice from "./pages/novel/Notice.svelte";
+	import NoticeDetail from "./pages/novel/NoticeDetail.svelte";
 
-	import Faq from "./pages/novel/Faq.svelte"
-	import FaqDetail from "./pages/novel/FaqDetail.svelte"
+	import Faq from "./pages/novel/Faq.svelte";
+	import FaqDetail from "./pages/novel/FaqDetail.svelte";
 
 	import Inquiry from "./pages/novel/Inquiries.svelte";
 	import InquiryDetail from "./pages/novel/InquiriesDetail.svelte";
 
 	// import MemberInformation from "./pages/novel/MemberInformation.svelte"
 </script>
-
 
 <Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
 
@@ -46,13 +45,13 @@
 <Route path="/novel/cover/image"><NovelCoverImage /></Route>
 <Route path="/novel/cover/image/:_id"><NovelCoverImageDetail /></Route>
 
-<Route path="/novel/notice"><Notice/></Route>
-<Route path="/novel/notice/:_id"><NoticeDetail/></Route>
+<Route path="/novel/notice"><Notice /></Route>
+<Route path="/novel/notice/:_id"><NoticeDetail /></Route>
 
-<Route path="/novel/faq"><Faq/></Route>
-<Route path="/novel/faq/:_id"><FaqDetail/></Route>
+<Route path="/novel/faq"><Faq /></Route>
+<Route path="/novel/faq/:_id"><FaqDetail /></Route>
 
-<Route path="/novel/inquiry"><Inquiry/></Route>
-<Route path="/novel/inquiry/:_id"><InquiryDetail/></Route>
+<Route path="/novel/inquiry"><Inquiry /></Route>
+<Route path="/novel/inquiry/:_id"><InquiryDetail /></Route>
 
 <!-- <Route path="/novel/MemberInformation"><MemberInformation/></Route> -->
