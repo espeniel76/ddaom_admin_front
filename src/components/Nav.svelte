@@ -91,7 +91,7 @@
 				{
 					title: "회원관리 정보",
 					icon: "user-pin",
-					src: "/",
+					src: "/novel/memberInformation",
 					subs: [],
 				},
 			],

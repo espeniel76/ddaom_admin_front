@@ -932,6 +932,7 @@ function setMemberDetails() {
     fetchMemberDetails,
   };
 }
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
