@@ -844,7 +844,6 @@ function setInquiries() {
     SeqServiceInquiry,
     Status,
     Answer,
-
     StartDate,
     EndDate
   ) => {
@@ -926,10 +925,139 @@ function setMemberDetails() {
       alert('오류가 발생했습니다. 다시 시도해 주세요.22');
     }
   };
+  const getMemberDetails = async (SeqMember) => {
+    let url = `/cs/memberInformation/${SeqMember}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
 
   return {
     subscribe,
     fetchMemberDetails,
+    getMemberDetails,
+  };
+}
+
+function setMemberInformation() {
+  let values = { ...initListValues };
+
+  const { subscribe, set, update } = writable(values);
+
+  const fetchMemberInformation = async (o, PageSize, Page) => {
+    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log('FaqStoreGet', getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  const getMemberInformation = async (SeqMember) => {
+    let url = `/cs/memberInformation/${SeqMember}`;
+    try {
+      const getDatas = await getApi(url);
+
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+  const getMemberInformationReadMembers = async (SeqMember) => {
+    //Members
+    let url = `/cs/memberInformation/readMembers/${SeqMember}`;
+    try {
+      const getDatas = await getApi(url);
+
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const editMemberInformation = async (
+    SeqMember,
+    Title,
+    Content,
+    StartDate,
+    EndDate
+  ) => {
+    try {
+      const newData = await putApi(`/cs/memberInformation/${SeqMember}`, {
+        SeqMember,
+        Title,
+        Content,
+        StartDate,
+        EndDate,
+      });
+
+      return newData;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const saveMemberInformation = async (
+    SeqMember,
+    Title,
+    Content,
+    ActiveYn,
+    StartDate,
+    EndDate,
+    CntLike
+  ) => {
+    try {
+      const newData = await postApi(`/cs/memberInformation`, {
+        SeqMember,
+        Title,
+        Content,
+        ActiveYn,
+        StartDate,
+        EndDate,
+        CntLike,
+      });
+      console.log('saveFaq', newData);
+      return newData;
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const delMemberInformation = async (idList) => {
+    let url = `/cs/memberInformation`;
+    try {
+      const getDatas = await delApi(url, idList);
+      if (getDatas.ResultCode !== 'OK') {
+        // alert(getDatas.ErrorDesc);
+        alert('삭제리스트 체크하기');
+      } else {
+        alert('삭제확인');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetchMemberInformation,
+    getMemberInformation,
+    getMemberInformationReadMembers,
+    editMemberInformation,
+    saveMemberInformation,
+    delMemberInformation,
   };
 }
 
@@ -978,6 +1106,15 @@ export const pagingStep4 = writable({
   startPage: 0,
   endPage: 0,
 });
+export const memberDetailsPage = writable({
+  nowPage: 1,
+  totalCount: 0,
+  totalPage: 0,
+  pageSize: 5,
+  pageListSize: 10,
+  startPage: 0,
+  endPage: 0,
+});
 
 //체크박스
 export const checkedList = writable([]);
@@ -1010,3 +1147,4 @@ export const categoryFaq = setCategoryFaq();
 
 export const inquiries = setInquiries();
 export const memberDetails = setMemberDetails();
+export const memberInformation = setMemberInformation();

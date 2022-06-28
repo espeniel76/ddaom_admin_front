@@ -79,7 +79,7 @@ import { each } from "svelte/internal";
 			
 	
 	$: {
-		
+	
 		const test=[
 		...$inquiries.Data.List , 
 	];
@@ -101,7 +101,7 @@ import { each } from "svelte/internal";
 			// 	// if(test.)
 			// console.log("test",test[0].SeqMember);
 			// console.log("test2",test2);
-		console.log("3",test3);
+		// console.log("3",test3);
 		}
 		
 		
