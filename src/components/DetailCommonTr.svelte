@@ -13,7 +13,7 @@
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">상태</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		test
+		{oSave.oDeletedYn ? "탈퇴":"정상"}
 	</td>
 
 	<td style="text-align: left;"><h5 class="mb-0">블랙리스트 여부</h5></td>
@@ -35,7 +35,7 @@
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">가입일/탈퇴일</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		{Dates.defaultConvert(oSave.CreatedAt)} / 탈퇴일시 조건넣기
+		{Dates.defaultConvert(oSave.CreatedAt)} / {oSave.oDeletedYn ? Dates.defaultConvert(oSave.oDeletedAt):""} 
 	</td>
 	
 	<td style="text-align: left;"><h5 class="mb-0">최근 접속일</h5></td>

@@ -5,7 +5,6 @@
         import Paging from "../../components/Paging.svelte";
     
         let oSearch = {
-            ActiveYn: "All",
 			StartDate: "",
 			EndDate: "",
 			NickName:"",
@@ -194,7 +193,9 @@
                         <td><input class="form-check-input" type="hidden" /></td>
                         <td>{o.SeqMemberDetail}</td> 
                         <!-- <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td> -->
-                        <td>{o.ActiveYn ? "노출" : "미노출"}</td> 
+                        <td>{o.DeletedYn ? "탈퇴":"정상"}</td> 
+                        <td>{o.ActiveYn ? "등록" : "미등록"}</td> 
+                        
                         <td>{o.CntLike}</td>
                         <td>{o.CntLike}</td>
                         <td>{o.CntLike}</td>

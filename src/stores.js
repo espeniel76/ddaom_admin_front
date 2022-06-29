@@ -987,16 +987,16 @@ function setMemberInformation() {
 
   const editMemberInformation = async (
     SeqMember,
-    Title,
-    Content,
+    isBlocked,
+    BlockedReason,
     StartDate,
     EndDate
   ) => {
     try {
       const newData = await putApi(`/cs/memberInformation/${SeqMember}`, {
         SeqMember,
-        Title,
-        Content,
+        isBlocked,
+        BlockedReason,
         StartDate,
         EndDate,
       });
@@ -1009,22 +1009,18 @@ function setMemberInformation() {
 
   const saveMemberInformation = async (
     SeqMember,
-    Title,
-    Content,
-    ActiveYn,
+    isBlocked,
+    BlockedReason,
     StartDate,
-    EndDate,
-    CntLike
+    EndDate
   ) => {
     try {
       const newData = await postApi(`/cs/memberInformation`, {
         SeqMember,
-        Title,
-        Content,
-        ActiveYn,
+        isBlocked,
+        BlockedReason,
         StartDate,
         EndDate,
-        CntLike,
       });
       console.log('saveFaq', newData);
       return newData;

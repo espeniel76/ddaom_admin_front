@@ -2,10 +2,10 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { inquiries, memberDetails ,memberDetailsPage ,memberInformation} from "../../stores";
+	import { memberDetails ,memberDetailsPage ,memberInformation} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
-	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonBlockedYn  from "../../components/DetailCommonBlockedYn .svelte";
 	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
 	import DetailCommonTr from "../../components/DetailCommonTr.svelte";
 
@@ -13,8 +13,11 @@
 	let _id = route.params._id;
 
 	let oSave = {
-		oActiveYnTrue: null,
-		oActiveYnFalse: null,
+		oBlockedYnTrue: null,
+		oBlockedYnFalse: null,
+		oBlockedYn: "",
+		oDeletedAt:"",
+		oDeletedYn: "",
 		oStartDate: "",
 		oEndDate: "",
 		CreatedAt: "",
@@ -22,19 +25,13 @@
 		oEmail:"",
 		oStartEmail:"",
 		oSnsType:"",
-		oBlockedYn:'',
 		oCntSubscribe:'',
-	
-		
-		
-		
 		oNickName: "",
-	
-
+		oBlockedReason:"",
 	};
 
 	let oSearch = {
-		ActiveYn: "All",
+			BlockedYn: "All",
 			StartDate: "",
 			EndDate: "",
 			NickName:"",
@@ -44,33 +41,26 @@
         };
 		let pageSize = 5;
 		let totalCount = 0;
-	let Data;
-	let Data2;
-	let urlList = "/novel/inquiry";
+	let MembersDetail;
+	let Members;
+	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
-			if (retVal.ResultCode === "OK") {
-				Data = retVal.Data;
+			let retVal2 = await memberInformation.getMemberInformationReadMembers(_id);
+			if (retVal.ResultCode === "OK",retVal.ResultCode === "OK") {
+				MembersDetail = retVal.Data;
+				Members = retVal2.Data;
 				
 				
 			} else {
 				alert(retVal.ErrorDesc);
+				alert(retVal2.ErrorDesc);
 			}
 		}
 
-		if (_id !== "new") {
-			let retVal2 = await memberInformation.getMemberInformationReadMembers(_id);
-			if (retVal2.ResultCode === "OK") {
-				Data2 = retVal2.Data;
-				
-				
-			} else {
-				alert(retVal2.ErrorDesc);
-			}
-		
-		}
+	
 
 
 
@@ -93,15 +83,13 @@
 
 	//생성 
 	async function fnSave() {
-		let isActive = false;
-		if (oSave.oActiveYnTrue.checked) {
-			isActive = true;
-			oSave.oStatus = 3;
+		let isBlocked = false;
+		if (oSave.oBlockedYnTrue.checked) {
+			isBlocked = true;
 			// fnPageNavSet();
 			console.log("등록");
-		} else if (oSave.oActiveYnFalse.checked) {
-			isActive = false;
-			oSave.oStatus = 2;
+		} else if (oSave.oBlockedYnFalse.checked) {
+			isBlocked = false;
 			
 		}
 		
@@ -128,17 +116,17 @@
 		
 
 		} else {
-			retVal = await inquiries.editInquiries(
+			retVal = await memberInformation.editMemberInformation(
 				_id,
-				oSave.oStatus,
-				oSave.oAnswer.value,
+				isBlocked,
+				oSave.oBlockedReason.value,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
 		
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
-				router.goto("/novel/inquiry");
+				router.goto("/novel/memberInformation");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -147,35 +135,39 @@
 	
 	$: {
 	
-		if (Data,Data2) {
-			if (Data.Status == 3) {
-				oSave.oActiveYnTrue.checked = true;
-				oSave.oActiveYnFalse.checked = false;
-			} else if(Data.Status == 2) {
-				oSave.oActiveYnTrue.checked = false;
-				oSave.oActiveYnFalse.checked = true;
-			}else if(Data.Status == 1) {
-				oSave.oActiveYnTrue.checked = false;
-				oSave.oActiveYnFalse.checked = true;
+		if (MembersDetail,Members) {
+			if (Members.BlockedYn) {
+				oSave.oBlockedYnTrue.checked = true;
+				oSave.oBlockedYnFalse.checked = false;
+				oSave.oBlockedYn = Members.BlockedYn
+
+			} else {
+				oSave.oBlockedYnTrue.checked = false;
+				oSave.oBlockedYnFalse.checked = true;
+				oSave.oBlockedYn = Members.BlockedYn
 			}
 			
-			oSave.oTitle = Data.Title;
 			
 			
 			
 			
-			oSave.CreatedAt = Data.CreatedAt;
-			oSave.UpdatedAt = Data.UpdatedAt;
-			oSave.Creator = Data.Creator;
-			oSave.Updator = Data.Updator;
-			oSave.oNickName = Data.NickName;
-			oSave.oEmail = Data.Email;
-			oSave.oStartEmail = Data2.Email;
-			oSave.oBlockedYn = Data2.BlockedYn;
-			oSave.oSnsType = Data2.SnsType;
-			oSave.oCntSubscribe = Data.CntSubscribe;
+			oSave.oTitle = MembersDetail.Title;
+			oSave.CreatedAt = MembersDetail.CreatedAt;
+			oSave.UpdatedAt = MembersDetail.UpdatedAt;
+			oSave.Creator = MembersDetail.Creator;
+			oSave.Updator = MembersDetail.Updator;
+			oSave.oNickName = MembersDetail.NickName;
+			oSave.oEmail = MembersDetail.Email;
+			oSave.oCntSubscribe = MembersDetail.CntSubscribe;
+			oSave.oDeletedYn = MembersDetail.DeletedYn;
+			oSave.oDeletedAt = MembersDetail.DeletedAt;
 			
-			console.log('asd',Data);
+			oSave.oStartEmail = Members.Email;
+			oSave.oSnsType = Members.SnsType;
+			
+			console.log('oSave',oSave);
+			console.log('MembersDetail',MembersDetail);
+			console.log('Members',Members);
 		}
 	
 		
@@ -231,14 +223,14 @@
 							<td><input class="form-check-input" type="hidden" /></td>
 							<td>{o.SeqMemberDetail}</td> 
 							<!-- <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td> -->
-							<td>{o.ActiveYn ? "노출" : "미노출"}</td> 
+							<td>삭제or등록</td>	 
+							<td>진행or종료</td> 
+							<td>주제어</td>
+							<td>장르</td>
+							<td>제목</td>
+							<td>스텝</td>
 							<td>{o.CntLike}</td>
-							<td>{o.CntLike}</td>
-							<td>{o.CntLike}</td>
-							<td>{o.NickName}</td>
-							<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
 							<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-							<td>{o.DeletedAt ? Dates.defaultConvert(o.DeletedAt) : ""}</td>
 							<td><a href="/novel/memberInformation/{o.SeqMemberDetail}">보기</a></td>
 						  
 							
@@ -252,7 +244,7 @@
 				<table class="table">
 					<thead>블랙리스트 설정</thead>
 				<tbody class="table-border-bottom-0">
-					<DetailCommonYn {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
+					<DetailCommonBlockedYn  {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">블랙리스트 사유*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="12">
@@ -264,7 +256,7 @@
 							class="form-control form-control-sm"
 							placeholder="블랙리스트 등록 시 사유를 반드시 작성해주세요."
 							aria-label="Recipient's username with two button addons"
-							
+							bind:this={oSave.oBlockedReason}
 							/>
 						</td>
 					</tr>
