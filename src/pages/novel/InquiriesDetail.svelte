@@ -29,7 +29,7 @@
 	
 
 	};
-	
+
 	let Data;
 	let urlList = "/novel/inquiry";
 
@@ -46,8 +46,6 @@
 		
 
 	}
-	
-	);
 
 	
 	
@@ -63,19 +61,15 @@
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
 			oSave.oStatus = 2;
-			
 		}
-		
-	
-			// 사용기간 체크
-		
-	
+
+		// 사용기간 체크
+
 		// if (oSave.oTitle.value.length < 1) {
 		// 	alert("제목을 입력 하세요.");
 		// 	oSave.oTitle.focus();
 		// 	return false;
 		// }
-
 
 		// if (oSave.oContent.value.length < 1) {
 		// 	alert("내용을 입력 하세요.");
@@ -83,20 +77,12 @@
 		// 	return false;
 		// }
 
-		//수정 
+		//수정
 		let retVal;
 		if (_id === "new") {
-		
-
 		} else {
-			retVal = await inquiries.editInquiries(
-				_id,
-				oSave.oStatus,
-				oSave.oAnswer.value,
-				oSave.oStartDate.value,
-				oSave.oEndDate.value
-			);
-		
+			retVal = await inquiries.editInquiries(_id, oSave.oStatus, oSave.oAnswer.value, oSave.oStartDate.value, oSave.oEndDate.value);
+
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 				router.goto("/novel/inquiry");
@@ -105,9 +91,8 @@
 			}
 		}
 	}
-	
+
 	$: {
-	
 		if (Data) {
 			if (Data.status == 3) {
 				oSave.oActiveYnTrue.checked = true;
@@ -136,13 +121,6 @@
 			
 			
 		}
-	
-		
-		
-		
-		
-		
-		
 	}
 </script>
 
@@ -150,25 +128,17 @@
 	<div class="table-responsive text-nowrap">
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						{oSave.oTitle}
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">문의내용*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						<textarea
-							type="text"
-							rows="10"
-							style="resize:none"
-							class="form-control-plaintext"
-							aria-label="Recipient's username with two button addons"
-							bind:this={oSave.oContent}
-						/>
+						<textarea type="text" rows="10" style="resize:none" class="form-control-plaintext" aria-label="Recipient's username with two button addons" bind:this={oSave.oContent} />
 					</td>
 				</tr>
 				<tr>
@@ -183,7 +153,7 @@
 						{oSave.oEmailYn=1  ? "Y" : "N"}
 					</td>
 				</tr>
-				<DetailCommonYn {oSave} title="답변여부" Y="답변완료" N="답변중"/>
+				<DetailCommonYn {oSave} title="답변여부" Y="답변완료" N="답변중" />
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">답변내용*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
@@ -196,13 +166,12 @@
 							placeholder=""
 							aria-label="Recipient's username with two button addons"
 							bind:this={oSave.oAnswer}
-							/>
+						/>
 					</td>
 				</tr>
-				<tr>
-				</tr>
+				<tr />
 				{#if _id !== "new"}
-				<DetailCommonInquiriesBottom {oSave} />
+					<DetailCommonInquiriesBottom {oSave} />
 				{/if}
 			</tbody>
 		</table>

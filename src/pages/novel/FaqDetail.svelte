@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { faq, categoryFaq, checkedList , check } from "../../stores";
+	import { faq, categoryFaq, checkedList, check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -20,11 +20,11 @@
 		Creator: "",
 		UpdatedAt: "",
 		Updator: "",
-		oTitle:"",
-		oContent:"",
-		oCategory:"Choice",
+		oTitle: "",
+		oContent: "",
+		oCategory: "Choice",
 	};
-	
+
 	let Data;
 	let urlList = "/novel/faq";
 
@@ -33,48 +33,40 @@
 			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
-				oSave.oCategory=Data.faqCategory
-				
+				oSave.oCategory = Data.faqCategory;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
 		fnSearch();
-		
-	}
-	);
+	});
 
-	async function fnSearch() { 
-		await categoryFaq.fetchCategoryFaq() ;
-		 
-	
+	async function fnSearch() {
+		await categoryFaq.fetchCategoryFaq();
 	}
 
-	//체크 초기화 
+	//체크 초기화
 	function fnPageNavSet() {
-		$checkedList=[];	
-		$check=false;
-		}
+		$checkedList = [];
+		$check = false;
+	}
 
-	//생성 
+	//생성
 	async function fnSave() {
 		let isActive = false;
 		if (oSave.oActiveYnTrue.checked) {
 			isActive = true;
-			
 		} else if (oSave.oActiveYnFalse.checked) {
-			
 			isActive = false;
-			
 		}
-	
-			// 사용기간 체크
-			
-			if (oSave.oCategory === "Choice") {
-				alert("카테고리를 선택 하세요 .");
-				return false;
-			}
-	
+
+		// 사용기간 체크
+
+		if (oSave.oCategory === "Choice") {
+			alert("카테고리를 선택 하세요 .");
+			return false;
+		}
+
 		if (oSave.oTitle.value.length < 1) {
 			alert("제목을 입력 하세요.");
 			oSave.oTitle.focus();
@@ -90,28 +82,16 @@
 		//수정 생성
 		let retVal;
 		if (_id === "new") {
-			retVal = await faq.saveFaq(oSave.oCategory ,oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
-		
+			retVal = await faq.saveFaq(oSave.oCategory, oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/faq");
-				
-
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await faq.editFaq(
-				_id,
-				oSave.oCategory,
-				oSave.oTitle.value,
-				oSave.oContent.value,
-				isActive,
-				oSave.oStartDate.value,
-				oSave.oEndDate.value
-				);
-			
-				
-			
+			retVal = await faq.editFaq(_id, oSave.oCategory, oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 				router.goto("/novel/faq");
@@ -130,17 +110,14 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-			
+
 			oSave.oTitle.value = Data.Title;
 			oSave.oContent.value = Data.Content;
-			
+
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
 			oSave.Updator = Data.Updator;
-			
-			
-			
 		}
 	}
 </script>
@@ -151,29 +128,25 @@
 			<tbody class="table-border-bottom-0">
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">카테고리*</h5></td>
-					<td style="text-align: right;"><h5 class="mb-0">
-						<select
-						class="form-select form-select-sm"
-						id="exampleFormControlSelect1"
-						aria-label="Default select example"
-						bind:value={oSave.oCategory}
-						>
-						
-							<option value="Choice" selected>선택해주세요</option>
-							{#each $categoryFaq.Data.List as o ,index}
-							<option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
-							{/each}
-						</select>
-					</td>
+					<td style="text-align: right;"
+						><h5 class="mb-0">
+							<select class="form-select form-select-sm" id="exampleFormControlSelect1" aria-label="Default select example" bind:value={oSave.oCategory}>
+								<option value="Choice" selected>선택해주세요</option>
+								{#each $categoryFaq.Data.List as o, index}
+									<option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
+								{/each}
+							</select>
+						</h5></td
+					>
 				</tr>
-				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출"/>
-					<tr>
-						<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출" />
+				<tr>
+					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oTitle} />
 					</td>
-					</tr>
-				
+				</tr>
+
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">내용*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
@@ -189,8 +162,7 @@
 						/>
 					</td>
 				</tr>
-				<tr>
-				</tr>
+				<tr />
 				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />
 				{/if}
