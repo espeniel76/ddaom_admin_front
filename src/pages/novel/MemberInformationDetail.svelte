@@ -15,19 +15,23 @@
 	let oSave = {
 		oBlockedYnTrue: null,
 		oBlockedYnFalse: null,
-		oBlockedYn: "",
-		oDeletedAt:"",
 		oDeletedYn: "",
-		oStartDate: "",
-		oEndDate: "",
-		CreatedAt: "",
-		UpdatedAt: "",
+		oBlockedYn: "",
+		oNickName: "",
 		oEmail:"",
+		CreatedAt: "",
+		oDeletedAt:"",
+		UpdatedAt: "",
+		oCntSubscribe:'',
+		//보낸구독수
+		//소설등록수
+		//소설완결수
 		oStartEmail:"",
 		oSnsType:"",
-		oCntSubscribe:'',
-		oNickName: "",
+		//탈퇴사유
+		oStartDate: "",
 		oBlockedReason:"",
+		oEndDate: "",
 	};
 
 	let oSearch = {
@@ -39,46 +43,25 @@
 		
             
         };
-		let pageSize = 5;
-		let totalCount = 0;
-	let MembersDetail;
-	let Members;
+
+	
+	let Data;
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
-			let retVal2 = await memberInformation.getMemberInformationReadMembers(_id);
 			if (retVal.ResultCode === "OK",retVal.ResultCode === "OK") {
-				MembersDetail = retVal.Data;
-				Members = retVal2.Data;
-				
-				
+				Data = retVal.Data;	
 			} else {
 				alert(retVal.ErrorDesc);
-				alert(retVal2.ErrorDesc);
+			
 			}
-		}
-
-	
-
-
-
-		
-
-		fnSearch();		
+		}	
+		console.log('dd',Data);
 	}
 	
 	);
-
-	async function fnSearch() { 
-		await memberDetails.fetchMemberDetails()
-		await memberInformation.fetchMemberInformation(oSearch, $memberDetailsPage.pageSize, $memberDetailsPage.nowPage)
-	;
-
-		 
-	
-	}
 	
 
 	//생성 
@@ -135,39 +118,39 @@
 	
 	$: {
 	
-		if (MembersDetail,Members) {
-			if (Members.BlockedYn) {
+		if (Data) {
+			if (Data.BlockedYn) {
 				oSave.oBlockedYnTrue.checked = true;
 				oSave.oBlockedYnFalse.checked = false;
-				oSave.oBlockedYn = Members.BlockedYn
+			
 
 			} else {
 				oSave.oBlockedYnTrue.checked = false;
 				oSave.oBlockedYnFalse.checked = true;
-				oSave.oBlockedYn = Members.BlockedYn
+				
 			}
 			
 			
 			
 			
+			oSave.oDeletedYn = Data.deleted_yn;
+			oSave.oDeletedAt = Data.DeletedAt;
+			oSave.oNickName = Data.nick_name;
+			oSave.oEmail = Data.email;
+			oSave.CreatedAt = Data.created_at;
+			oSave.UpdatedAt = Data.UpdatedAt;
 			
-			oSave.oTitle = MembersDetail.Title;
-			oSave.CreatedAt = MembersDetail.CreatedAt;
-			oSave.UpdatedAt = MembersDetail.UpdatedAt;
-			oSave.Creator = MembersDetail.Creator;
-			oSave.Updator = MembersDetail.Updator;
-			oSave.oNickName = MembersDetail.NickName;
-			oSave.oEmail = MembersDetail.Email;
-			oSave.oCntSubscribe = MembersDetail.CntSubscribe;
-			oSave.oDeletedYn = MembersDetail.DeletedYn;
-			oSave.oDeletedAt = MembersDetail.DeletedAt;
+		
+			oSave.Creator = Data.Creator;
+			oSave.Updator = Data.Updator;
+			oSave.oNickName = Data.NickName;
+			oSave.oCntSubscribe = Data.CntSubscribe;
 			
-			oSave.oStartEmail = Members.Email;
-			oSave.oSnsType = Members.SnsType;
+			oSave.oStartEmail = Data.Email;
+			oSave.oSnsType = Data.SnsType;
 			
-			console.log('oSave',oSave);
-			console.log('MembersDetail',MembersDetail);
-			console.log('Members',Members);
+		
+		
 		}
 	
 		
@@ -193,54 +176,7 @@
 			
 		</table>
 		<br>
-			<table class="table">
-				<thead>
-					<th colspan="9">
-						Total data: {$memberDetailsPage.totalCount}
-						, Now page: {$memberDetailsPage.nowPage}
-						, TOTAL page: {$memberDetailsPage.totalPage}
-					</th>
-					<tr style="text-align:center">
-						<th width="50"><input class="form-check-input"
-							 type="hidden"
-							   id="defaultCheck3"
-								 /></th>
-						<th width="50">No</th>
-						<th width="50">상태</th>
-						<th width="50">진행여부</th>
-						<th width="50">주제어</th>
-						<th width="50">장르</th>
-						<th width="50">제목</th>
-						<th width="50">step</th>
-						<th width="50">좋아요 수</th>
-						<th width="50">등록일</th>
-						<th width="50">내용</th>
-					</tr>
-				</thead>
-				<tbody class="table-border-bottom-0">
-					{#each $memberInformation.Data.List as o, index}
-						<tr style="text-align:center">
-							<td><input class="form-check-input" type="hidden" /></td>
-							<td>{o.SeqMemberDetail}</td> 
-							<!-- <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td> -->
-							<td>삭제or등록</td>	 
-							<td>진행or종료</td> 
-							<td>주제어</td>
-							<td>장르</td>
-							<td>제목</td>
-							<td>스텝</td>
-							<td>{o.CntLike}</td>
-							<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-							<td><a href="/novel/memberInformation/{o.SeqMemberDetail}">보기</a></td>
-						  
-							
-						</tr>
-						{/each}
-					</tbody>
-				</table>
-				<Paging {fnSearch} {pageSize} {totalCount}  />
-				
-				
+		<!-- 메모장에있음 -->
 				<table class="table">
 					<thead>블랙리스트 설정</thead>
 				<tbody class="table-border-bottom-0">

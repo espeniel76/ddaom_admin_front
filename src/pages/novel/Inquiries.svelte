@@ -3,8 +3,6 @@ import { beforeUpdate, onMount } from "svelte";
 	import { inquiries, paging, memberDetails ,checkedList , check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
-	import DetailCommonCategory from "../../components/DetailCommonCategory.svelte"
-import { each } from "svelte/internal";
 
 	let oSearch = {
 		Status: "All",  //답변여부
@@ -21,7 +19,7 @@ import { each } from "svelte/internal";
 	let registUrl = "";
 	let nowUnixtime = Dates.getUnixtime();
 	
-	
+	let quData = "";
 	
 	onMount(() => {
 		fnSearch(); 
@@ -39,7 +37,6 @@ import { each } from "svelte/internal";
 		
 		// 게시글 페이지 1번으로 
 		async function fnSearch() { 
-		await memberDetails.fetchMemberDetails()
 		await inquiries.fetchInquiries(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 	
@@ -80,28 +77,11 @@ import { each } from "svelte/internal";
 	
 	$: {
 	
-		const test=[
-		...$inquiries.Data.List , 
-	];
-	const test2=[
-		...$memberDetails.Data.List , 
-	];
 	
-	const test3 = test.concat(test2);
 	// 현재 페이지 게시물 갯수 TOTAL DATA
 	if ($inquiries.Data.TotalCount > 0) {
 			totalCount = $inquiries.Data.TotalCount;
-			
-
-			
-			// test[0].asd=10;
-			// test[0].SeqMember = 1
-			
-			// 	console.log("test11",test.length);
-			// 	// if(test.)
-			// console.log("test",test[0].SeqMember);
-			// console.log("test2",test2);
-		// console.log("3",test3);
+			quData = $inquiries.Data.queryList;
 		}
 		
 		
@@ -199,26 +179,27 @@ import { each } from "svelte/internal";
                 <th width="200">답변일</th>
             </tr>
         </thead>
+		
+		<!-- $inquiries.Data.queryList  -->
         <tbody class="table-border-bottom-0">
-            {#each $inquiries.Data.List as o, index}
-                <tr style="text-align:center" id={o.SeqServiceInquiry}>
+            {#each quData as o, index}
+                <tr style="text-align:center" id={o.seq_service_inquiry}>
                     <td><input class="form-check-input" type="checkbox" 
                          id="defaultCheck3"
                          bind:group={$checkedList} 
-                         value={o.SeqServiceInquiry}
+                         value={o.seq_service_inquiry}
                          checked={$check}
                            /></td>
-                    <td>{o.SeqServiceInquiry}</td>
-                    <td>{o.Status == 3 ? "답변완료": o.Status == 2 ? "답변중":"미답변"}</td>
-                    <td><a href="/novel/inquiry/{o.SeqServiceInquiry}">{o.Title}</a></td>
-                    <td>ID={o.SeqMember}</td>
-					
-                    <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-                    <!-- <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : "-"}</td> -->
-                    <td>{o.Status==3 ? Dates.defaultConvert(o.UpdatedAt) : o.Status == 2 ? "-": "-"}</td>
+                    <td>{o.seq_service_inquiry}</td>
+                    <td>{o.status == 3 ? "답변완료": o.status == 2 ? "답변중":"미답변"}</td>
+                    <td><a href="/novel/inquiry/{o.seq_service_inquiry}">{o.title}</a></td>
+                    <td>{o.nick_name}</td>
+                    <td>{o.created_at ? Dates.defaultConvert(o.created_at) : ""}</td>
+                    <td>{o.status==3 ? Dates.defaultConvert(o.updated_at) : o.status == 2 ? "-": "-"}</td>
                 </tr>
 				{/each}
-        </tbody>
+			</tbody>
+			
     </table>
 
     <Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} />

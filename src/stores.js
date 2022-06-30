@@ -914,7 +914,7 @@ function setMemberDetails() {
 
     try {
       const getDatas = await getApi(url);
-
+      console.log('fetchMemberDetails', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -963,8 +963,8 @@ function setMemberInformation() {
     }
   };
 
-  const getMemberInformation = async (SeqMember) => {
-    let url = `/cs/memberInformation/${SeqMember}`;
+  const getMemberInformation = async (seqMemberDtail) => {
+    let url = `/cs/memberInformation/${seqMemberDtail}`;
     try {
       const getDatas = await getApi(url);
 

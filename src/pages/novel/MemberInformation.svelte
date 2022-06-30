@@ -16,8 +16,8 @@
         let totalCount = 0;
         let registUrl = "/novel/faq/new";
         let nowUnixtime = Dates.getUnixtime();
-        
-    
+        let quData = "";
+
     
         onMount(() => {
             fnSearch(); 
@@ -39,10 +39,10 @@
         }
     
         async function fnDelete() {
-            await memberInformation.delMemberInformation($checkedList);
-            console.log("삭제클릭");
-            fnPageNavSet();
-            fnSearch();
+            // await memberInformation.delMemberInformation($checkedList);
+            // console.log("삭제클릭");
+            // fnPageNavSet();
+            // fnSearch();
         }
     
     
@@ -50,9 +50,9 @@
             // 현재 페이지 게시물 갯수 TOTAL DATA
             if ($memberInformation.Data.TotalCount > 0) {
                 totalCount = $memberInformation.Data.TotalCount;
-
+                quData = $memberInformation.Data.queryList;
 				
-				console.log($memberInformation.Data.List);
+				
             }
     
             
@@ -188,21 +188,20 @@
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                {#each $memberInformation.Data.List as o, index}
+                {#each quData as o, index}
                     <tr style="text-align:center">
                         <td><input class="form-check-input" type="hidden" /></td>
-                        <td>{o.SeqMemberDetail}</td> 
+                        <td>{o.seq_member_detail}</td> 
                         <!-- <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td> -->
-                        <td>{o.DeletedYn ? "탈퇴":"정상"}</td> 
-                        <td>{o.ActiveYn ? "등록" : "미등록"}</td> 
-                        
-                        <td>{o.CntLike}</td>
-                        <td>{o.CntLike}</td>
-                        <td>{o.CntLike}</td>
-                        <td><a href="/novel/memberInformation/{o.SeqMember}">{o.NickName}</a></td>
-                        <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
-                        <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-                        <td>{o.DeletedAt ? Dates.defaultConvert(o.DeletedAt) : ""}</td>
+                        <td>{o.deleted_yn==1 ? "탈퇴":"정상"}</td> 
+                        <td>{o.blocked_yn==1 ? "등록" : "미등록"}</td> 
+                        <td>{o.cnt_subscribe}</td>
+                        <td>소설등록수</td>
+                        <td>소설완결수</td>
+                        <td><a href="/novel/memberInformation/{o.seq_member}">{o.nick_name}</a></td>
+                        <td>{o.updated_at ? Dates.defaultConvert(o.updated_at) : ""}</td>
+                        <td>{o.created_at ? Dates.defaultConvert(o.created_at) : ""}</td>
+                        <td>{o.deleted_at ? Dates.defaultConvert(o.deleted_at) : ""}</td>
                       
                         
                     </tr>

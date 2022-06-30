@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { inquiries, memberDetails  } from "../../stores";
+	import { inquiries  } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import DetailCommonInquiriesBottom from "../../components/DetailCommonInquiriesBottom.svelte";
 	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
@@ -20,10 +20,12 @@
 		Creator: "",
 		UpdatedAt: "",
 		Updator: "",
-		oContent:"",
-		oAnswer:"",
 		oTitle:"",
+		oContent:"",
+		oEmail:"",
+		oEmailYn:"",
 		oStatus: "",
+		oAnswer:"",
 	
 
 	};
@@ -35,26 +37,19 @@
 		if (_id !== "new") {
 			let retVal = await inquiries.getInquiries(_id);
 			if (retVal.ResultCode === "OK") {
-				Data = retVal.Data;
-				
-				
+				Data = retVal.Data.List[0];
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		}
-
+		console.log('dd',Data);
 		
-	fnSearch()		
+
 	}
 	
 	);
 
-	async function fnSearch() { 
-		await memberDetails.fetchMemberDetails()
-
-		 
 	
-	}
 	
 
 	//생성 
@@ -114,27 +109,30 @@
 	$: {
 	
 		if (Data) {
-			if (Data.Status == 3) {
+			if (Data.status == 3) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
-			} else if(Data.Status == 2) {
+			} else if(Data.status == 2) {
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
-			}else if(Data.Status == 1) {
+			}else if(Data.status == 1) {
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
 			
-			oSave.oTitle = Data.Title;
-			oSave.oContent.value = Data.Content;
-			oSave.oAnswer.value = Data.Answer;
+			oSave.oTitle = Data.title;
+			oSave.oContent.value = Data.content;
+			oSave.oEmail = Data.email;
+			oSave.oAnswer.value = Data.answer;
 			
 			
-			oSave.CreatedAt = Data.CreatedAt;
-			oSave.UpdatedAt = Data.UpdatedAt;
-			oSave.Creator = Data.Creator;
-			oSave.Updator = Data.Updator;
+			oSave.CreatedAt = Data.created_at;
+			oSave.UpdatedAt = Data.updated_at;
+			oSave.Creator = Data.nick_name;
+			oSave.Updator = Data.updator;
+			oSave.oStatus = Data.status;
 			
+			// console.log(Data.List[0].title);
 			
 			
 		}
@@ -176,13 +174,13 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">이메일</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						{oSave.EmailYn}		
+						{oSave.oEmail}		
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">이메일로 답변 받기</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="3">
-						{oSave.EmailYn  ? "Y" : "N"}
+						{oSave.oEmailYn=1  ? "Y" : "N"}
 					</td>
 				</tr>
 				<DetailCommonYn {oSave} title="답변여부" Y="답변완료" N="답변중"/>
