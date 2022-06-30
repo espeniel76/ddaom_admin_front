@@ -134,7 +134,7 @@
 						>
 						<td>{o.SeqImage}</td>
 						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
-						<td><img alt="" src="{consts.urls.IMAGE_SERVER}{o.Image}" width="100" />우헤헤</td>
+						<td><img alt="" src="{consts.urls.IMAGE_SERVER}{o.Image}" width="100" height="70" /></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
 						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
