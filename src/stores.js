@@ -925,7 +925,17 @@ function setMemberInformation() {
   };
 
   const getMemberInformation = async (seqMemberDtail) => {
-    let url = `/cs/memberInformation/${seqMemberDtail}`;
+    let url = `/cs/memberInformation/seqMemberDtail/${seqMemberDtail}`;
+    try {
+      const getDatas = await getApi(url);
+      return getDatas;
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  const getMemberInformationList = async (SeqMember) => {
+    let url = `/cs/memberInformationList/ListData/${SeqMember}`;
     try {
       const getDatas = await getApi(url);
       return getDatas;
@@ -974,8 +984,8 @@ function setMemberInformation() {
     subscribe,
     fetchMemberInformation,
     getMemberInformation,
+    getMemberInformationList,
     editMemberInformation,
-
     delMemberInformation,
   };
 }

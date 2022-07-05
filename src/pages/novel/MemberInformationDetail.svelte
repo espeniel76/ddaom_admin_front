@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import {  memberDetailsPage ,memberInformation} from "../../stores";
+	import {  paging ,memberInformation} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonBlockedYn  from "../../components/DetailCommonBlockedYn .svelte";
@@ -11,7 +11,10 @@
 
 	const route = meta();
 	let _id = route.params._id;
- 
+	let pageSize = 10;
+	let totalCount = 0;
+	let registUrl = "";
+
 	let oSave = {
 		oBlockedYnTrue: null,
 		oBlockedYnFalse: null,
@@ -38,23 +41,32 @@
 
 	
 	let Data;
+	let listData="";
+
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
+		fnSearch()
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
-			if (retVal.ResultCode === "OK",retVal.ResultCode === "OK") {
+			let retVal2 = await memberInformation.getMemberInformationList(_id);
+			if (retVal.ResultCode === "OK",retVal2.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
+				listData = retVal2.Data.List;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
-			console.log("data",Data);
+			
 
 
 		}	
 	}
 	
 	);
+
+	async function fnSearch() { 
+		
+	}
 	
 
 	//생성 
@@ -144,12 +156,13 @@
 			oSave.oStartEmail = Data.startEmail; //가입이메일
 			oSave.oSnsType = Data.sns_type; // 가입경로 
 			//탈퇴사유
+
+			 
 			
 
 			
 		
 		
-			console.log("save",oSave);
 		
 		
 		}
@@ -157,9 +170,9 @@
 		
 		
 		// 현재 페이지 게시물 갯수 TOTAL DATA
-		// if ($memberInformation.Data.TotalCount > 0) {
-		// 	totalCount = $memberInformation.Data.TotalCount;
-        //     }
+		if ($memberInformation.Data.TotalCount > 0) {
+			totalCount = $memberInformation.Data.TotalCount;
+            }
     
 		
 	}
@@ -177,7 +190,45 @@
 			
 		</table>
 		<br>
-		<!-- 메모장에있음 -->
+		<table class="table">
+			<thead>
+				<th colspan="9">
+					Total data: {$paging.totalCount}
+					, Now page: {$paging.nowPage}
+					, TOTAL page: {$paging.totalPage}
+				</th>
+				<tr style="text-align:center">
+				
+					<th width="50">No</th>
+					<th width="50">상태</th>
+					<th width="*">주제어</th>
+					<th width="100">장르</th>
+					<th width="100">제목</th>
+					<th width="200">step</th>
+					<th width="200">좋아요수</th>
+					<th width="200">등록일</th>
+					<th width="200">내용</th>
+				</tr>
+			</thead>
+			
+			<!-- $inquiries.Data.queryList  -->
+			<tbody class="table-border-bottom-0">
+				{#each listData as o, index}
+				<tr style="text-align:center" >
+					<td>{o.deleted_yn == 1 ? "삭제":"등록"}</td>
+					<td>{o.active_yn == 1 ? "진행":"종료"}</td>
+					<td>{o.keyword}</td>
+					<td>{o.genres}</td>
+					<td>{o.title}</td>
+					<td>{o.step}</td>
+					<td>{o.cnt_like}</td>
+					<td>{ Dates.defaultConvert(o.created_at)}</td> 
+					<td>보기</td>
+				</tr>
+				{/each}
+			</tbody>
+		</table>
+		<Paging {pageSize} {totalCount} />
 				<table class="table">
 					<thead>블랙리스트 설정</thead>
 				<tbody class="table-border-bottom-0">
