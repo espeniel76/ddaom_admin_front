@@ -51,7 +51,8 @@
             if ($memberInformation.Data.TotalCount > 0) {
                 totalCount = $memberInformation.Data.TotalCount;
                 quData = $memberInformation.Data.queryList;
-				
+			
+                
 				
             }
     
@@ -110,8 +111,20 @@
 							</select>
 						</td>
 						
-                    
-                        <td width="100" style="text-align: left;"><h5 class="mb-0">등록일/수정일</h5></td>
+                        
+						<td width="200" style="vertical-align: middle;text-align:center">
+							<select
+								class="form-select form-select-sm"
+								id="exampleFormControlSelect1"
+								aria-label="Default select example"
+								bind:value={oSearch.ActiveYn}
+							>
+								<option value="All" selected>전체</option>
+								<option value="Y">정상</option>
+								<option value="N">탈퇴</option>
+								<option value="B">휴면</option>
+							</select>
+						</td>
                         <td width="100" style="vertical-align: middle;text-align:center">
                             <input
                                 class="form-control form-control-sm"
@@ -145,12 +158,13 @@
 							</select>
 						</td>
 
-                        <td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용</h5></td>
+                        <td width="100" style="text-align: left; "><h5 class="mb-0">닉네임</h5></td>
                         <td width="*" colspan="4">
                             <div class="input-group">
                                 <input
                                     type="text"
                                     class="form-control form-control-sm"
+                                    
                                     placeholder="주제어"
                                     aria-label="Recipient's username with two button addons"
                                    

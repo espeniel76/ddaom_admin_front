@@ -42,7 +42,7 @@
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('dd',Data);
+	
 		
 
 	}
@@ -58,7 +58,6 @@
 			isActive = true;
 			oSave.oStatus = 3;
 			// fnPageNavSet();
-			console.log("등록");
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
 			oSave.oStatus = 2;
@@ -118,7 +117,7 @@
 			oSave.Updator = Data.updator;
 			oSave.oStatus = Data.status;
 			
-			// console.log(Data.List[0].title);
+			
 			
 			
 		}

@@ -1,6 +1,6 @@
 <script>
 	import { beforeUpdate, onMount } from "svelte";
-	import { inquiries, paging, memberDetails, checkedList, check } from "../../stores";
+	import { inquiries, paging, checkedList, check } from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 

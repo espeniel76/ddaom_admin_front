@@ -2,7 +2,7 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import { memberDetails ,memberDetailsPage ,memberInformation} from "../../stores";
+	import {  memberDetailsPage ,memberInformation} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonBlockedYn  from "../../components/DetailCommonBlockedYn .svelte";
@@ -11,7 +11,7 @@
 
 	const route = meta();
 	let _id = route.params._id;
-
+ 
 	let oSave = {
 		oBlockedYnTrue: null,
 		oBlockedYnFalse: null,
@@ -34,15 +34,7 @@
 		oEndDate: "",
 	};
 
-	let oSearch = {
-			BlockedYn: "All",
-			StartDate: "",
-			EndDate: "",
-			NickName:"",
-			CntLike:"",
-		
-            
-        };
+
 
 	
 	let Data;
@@ -52,13 +44,14 @@
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
 			if (retVal.ResultCode === "OK",retVal.ResultCode === "OK") {
-				Data = retVal.Data;	
+				Data = retVal.Data.List[0];
 			} else {
 				alert(retVal.ErrorDesc);
-			
 			}
+			console.log("data",Data);
+
+
 		}	
-		console.log('dd',Data);
 	}
 	
 	);
@@ -86,13 +79,15 @@
 		// 	return false;
 		// }
 
-
-		// if (oSave.oContent.value.length < 1) {
-		// 	alert("내용을 입력 하세요.");
-		// 	oSave.oContent.focus();
+		// if(isBlocked = true)
+		// {
+		// 	if (oSave.oBlockedReason.value.length < 1) {
+		// 	alert("블랙리스트 사유 를 입력 하세요.");
 		// 	return false;
 		// }
-
+		// alert("블랙여부 x ");
+		// }
+	
 		//수정 
 		let retVal;
 		if (_id === "new") {
@@ -104,12 +99,12 @@
 				isBlocked,
 				oSave.oBlockedReason.value,
 				oSave.oStartDate.value,
-				oSave.oEndDate.value
+			
 			);
-		
+		console.log("수정",retVal);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
-				router.goto("/novel/memberInformation");
+				// router.goto("/novel/memberInformation");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -119,10 +114,10 @@
 	$: {
 	
 		if (Data) {
-			if (Data.BlockedYn) {
+			if (Data.blocked_yn) {
 				oSave.oBlockedYnTrue.checked = true;
 				oSave.oBlockedYnFalse.checked = false;
-			
+				oSave.oBlockedReason.value = Data.member_blocks;
 
 			} else {
 				oSave.oBlockedYnTrue.checked = false;
@@ -133,22 +128,28 @@
 			
 			
 			
-			oSave.oDeletedYn = Data.deleted_yn;
-			oSave.oDeletedAt = Data.DeletedAt;
-			oSave.oNickName = Data.nick_name;
-			oSave.oEmail = Data.email;
-			oSave.CreatedAt = Data.created_at;
-			oSave.UpdatedAt = Data.UpdatedAt;
+			oSave.oDeletedYn = Data.deleted_yn; //상태
+			oSave.oBlockedYn = Data.blocked_yn;
+			//블랙여부
+			oSave.oDeletedAt = Data.DeletedAt;  //탈퇴일
+			oSave.oNickName = Data.nick_name;	//닉네임
+			oSave.oEmail = Data.email;			//이메일
+			oSave.CreatedAt = Data.created_at;	//가입일
+			//탈퇴일
+			oSave.UpdatedAt = Data.updated_at;	//최근접속일
+			oSave.oCntSubscribe = Data.cnt_subscribe; //받은구독수
+			//보낸구독수
+			//소설등록수
+			//소설완결수
+			oSave.oStartEmail = Data.startEmail; //가입이메일
+			oSave.oSnsType = Data.sns_type; // 가입경로 
+			//탈퇴사유
+			
+
 			
 		
-			oSave.Creator = Data.Creator;
-			oSave.Updator = Data.Updator;
-			oSave.oNickName = Data.NickName;
-			oSave.oCntSubscribe = Data.CntSubscribe;
-			
-			oSave.oStartEmail = Data.Email;
-			oSave.oSnsType = Data.SnsType;
-			
+		
+			console.log("save",oSave);
 		
 		
 		}
@@ -156,9 +157,9 @@
 		
 		
 		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($memberInformation.Data.TotalCount > 0) {
-			totalCount = $memberInformation.Data.TotalCount;
-            }
+		// if ($memberInformation.Data.TotalCount > 0) {
+		// 	totalCount = $memberInformation.Data.TotalCount;
+        //     }
     
 		
 	}
@@ -192,7 +193,7 @@
 							class="form-control form-control-sm"
 							placeholder="블랙리스트 등록 시 사유를 반드시 작성해주세요."
 							aria-label="Recipient's username with two button addons"
-							bind:this={oSave.oBlockedReason}
+							bind:this={oSave.oBlockedReason} 
 							/>
 						</td>
 					</tr>
