@@ -305,5 +305,5 @@
 		<DetailCommonBottomBtns {urlList} {fnSave} {_id} />
 	</div>
 </div>
-
 <DetailCommonNovelViewLayer {oModal} {fnInitModal} />
+

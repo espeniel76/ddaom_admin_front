@@ -907,44 +907,6 @@ function setInquiries() {
   };
 }
 
-function setMemberDetails() {
-  let values = { ...initListValues };
-
-  const { subscribe, set, update } = writable(values);
-
-  const fetchMemberDetails = async () => {
-    let url = `/cs/inquiries/MemberDetails`;
-
-    try {
-      const getDatas = await getApi(url);
-      console.log('fetchMemberDetails', getDatas);
-      if (getDatas.ResultCode !== 'OK') {
-        alert(getDatas.ErrorDesc);
-      } else {
-        set(getDatas);
-      }
-    } catch (error) {
-      console.log(error);
-      alert('오류가 발생했습니다. 다시 시도해 주세요.22');
-    }
-  };
-  const getMemberDetails = async (SeqMember) => {
-    let url = `/cs/memberInformation/${SeqMember}`;
-    try {
-      const getDatas = await getApi(url);
-      return getDatas;
-    } catch (error) {
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-    }
-  };
-
-  return {
-    subscribe,
-    fetchMemberDetails,
-    getMemberDetails,
-  };
-}
-
 function setMemberInformation() {
   let values = { ...initListValues };
 
@@ -968,16 +930,6 @@ function setMemberInformation() {
 
   const getMemberInformation = async (seqMemberDtail) => {
     let url = `/cs/memberInformation/seqMemberDtail/${seqMemberDtail}`;
-    try {
-      const getDatas = await getApi(url);
-      return getDatas;
-    } catch (error) {
-      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-    }
-  };
-
-  const getMemberInformationList = async (SeqMember) => {
-    let url = `/cs/memberInformationList/ListData/${SeqMember}`;
     try {
       const getDatas = await getApi(url);
       return getDatas;
@@ -1026,12 +978,35 @@ function setMemberInformation() {
     subscribe,
     fetchMemberInformation,
     getMemberInformation,
-    getMemberInformationList,
     editMemberInformation,
     delMemberInformation,
   };
 }
+function setMemberInformationList() {
+  let values = { ...initListValues };
 
+  const { subscribe, set, update } = writable(values);
+
+  const setMemberInformationList = async (SeqMember, PageSize, Page) => {
+    let url = `/cs/memberInformationList/ListData?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+  };
+
+  return {
+    subscribe,
+    setMemberInformationList,
+  };
+}
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -1118,3 +1093,4 @@ export const categoryFaq = setCategoryFaq();
 
 export const inquiries = setInquiries();
 export const memberInformation = setMemberInformation();
+export const memberInformationList = setMemberInformationList();

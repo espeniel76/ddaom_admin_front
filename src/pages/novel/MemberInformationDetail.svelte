@@ -2,13 +2,25 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import {  paging ,memberInformation} from "../../stores";
+	import {  paging ,memberInformation,memberInformationList} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import DetailCommonBlockedYn  from "../../components/DetailCommonBlockedYn .svelte";
 	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
 	import DetailCommonTr from "../../components/DetailCommonTr.svelte";
+	import DetailCommonNovelViewLayer from "../../components/DetailCommonNovelViewLayer.svelte";
+	let oModal = {
+		class: "modal fade",
+		style: "display: none",
+		item: {},
+	};
+	function fnInitModal() {
+		oModal.class = "modal fade";
+		oModal.style = "display: none";
+		oModal.item = {};
+	}
 
+	
 	const route = meta();
 	let _id = route.params._id;
 	let pageSize = 10;
@@ -27,8 +39,11 @@
 		UpdatedAt: "",
 		oCntSubscribe:'',
 		//보낸구독수
+		oFollowing:'',
 		//소설등록수
+		oCntTotal:'',
 		//소설완결수
+		oCntFinish:'',
 		oStartEmail:"",
 		oSnsType:"",
 		//탈퇴사유
@@ -41,31 +56,29 @@
 
 	
 	let Data;
-	let listData="";
+
 
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
-		fnSearch()
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
-			let retVal2 = await memberInformation.getMemberInformationList(_id);
-			if (retVal.ResultCode === "OK",retVal2.ResultCode === "OK") {
+			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
-				listData = retVal2.Data.List;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 			
-
-
+			console.log(Data);
+			
 		}	
+		fnSearch()
 	}
 	
 	);
 
 	async function fnSearch() { 
-		
+		await memberInformationList.setMemberInformationList(_id,$paging.pageSize,$paging.nowPage);
 	}
 	
 
@@ -141,18 +154,17 @@
 			
 			
 			oSave.oDeletedYn = Data.deleted_yn; //상태
-			oSave.oBlockedYn = Data.blocked_yn;
-			//블랙여부
-			oSave.oDeletedAt = Data.DeletedAt;  //탈퇴일
+			oSave.oBlockedYn = Data.blocked_yn;//블랙여부
 			oSave.oNickName = Data.nick_name;	//닉네임
 			oSave.oEmail = Data.email;			//이메일
 			oSave.CreatedAt = Data.created_at;	//가입일
-			//탈퇴일
+			oSave.oDeletedAt = Data.DeletedAt;  //탈퇴일
 			oSave.UpdatedAt = Data.updated_at;	//최근접속일
 			oSave.oCntSubscribe = Data.cnt_subscribe; //받은구독수
-			//보낸구독수
-			//소설등록수
-			//소설완결수
+			oSave.oFollowing = Data.following;	//보낸구독수
+			oSave.oCntTotal = Data.cnt_total;		//소설등록수
+			oSave.oCntFinish = Data.cnt_finish;	//소설완결수
+
 			oSave.oStartEmail = Data.startEmail; //가입이메일
 			oSave.oSnsType = Data.sns_type; // 가입경로 
 			//탈퇴사유
@@ -160,19 +172,20 @@
 			 
 			
 
+		
+		
 			
-		
-		
-		
+			
+			
 		
 		}
 	
 		
 		
 		// 현재 페이지 게시물 갯수 TOTAL DATA
-		if ($memberInformation.Data.TotalCount > 0) {
-			totalCount = $memberInformation.Data.TotalCount;
-            }
+		if ($memberInformationList.Data.TotalCount > 0) {
+			totalCount = $memberInformationList.Data.TotalCount;
+		}
     
 		
 	}
@@ -192,11 +205,13 @@
 		<br>
 		<table class="table">
 			<thead>
-				<th colspan="9">
-					Total data: {$paging.totalCount}
-					, Now page: {$paging.nowPage}
-					, TOTAL page: {$paging.totalPage}
-				</th>
+				<tr>
+                    <th colspan="9">
+                        Total data: {$paging.totalCount}
+                        , Now page: {$paging.nowPage}
+                        , TOTAL page: {$paging.totalPage}
+                    </th>
+                </tr>
 				<tr style="text-align:center">
 				
 					<th width="50">No</th>
@@ -213,7 +228,7 @@
 			
 			<!-- $inquiries.Data.queryList  -->
 			<tbody class="table-border-bottom-0">
-				{#each listData as o, index}
+				{#each  $memberInformationList.Data.List as o, index}
 				<tr style="text-align:center" >
 					<td>{o.deleted_yn == 1 ? "삭제":"등록"}</td>
 					<td>{o.active_yn == 1 ? "진행":"종료"}</td>
@@ -221,14 +236,14 @@
 					<td>{o.genres}</td>
 					<td>{o.title}</td>
 					<td>{o.step}</td>
-					<td>{o.cnt_like}</td>
+					<td>{o.deleted_yn == 1 ? "-": o.cnt_like }</td>
 					<td>{ Dates.defaultConvert(o.created_at)}</td> 
 					<td>보기</td>
 				</tr>
 				{/each}
 			</tbody>
 		</table>
-		<Paging {pageSize} {totalCount} />
+		<Paging {fnSearch} {pageSize} {totalCount} />
 				<table class="table">
 					<thead>블랙리스트 설정</thead>
 				<tbody class="table-border-bottom-0">
@@ -250,7 +265,6 @@
 					</tr>
 				</tbody>
 		</table>
-				
 		<DetailCommonInquirieBottomBtns {urlList} {fnSave} {_id} />
 	</div>
 </div>

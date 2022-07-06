@@ -112,11 +112,13 @@
 		</table>
 		<table class="table">
 			<thead>
-				<th colspan="9">
-					Total data: {$paging.totalCount}
-					, Now page: {$paging.nowPage}
-					, TOTAL page: {$paging.totalPage}
-				</th>
+				<tr>
+                    <th colspan="9">
+                        Total data: {$paging.totalCount}
+                        , Now page: {$paging.nowPage}
+                        , TOTAL page: {$paging.totalPage}
+                    </th>
+                </tr>
 				<tr style="text-align:center">
 					<th width="50"><input class="form-check-input" type="checkbox" id="defaultCheck3" bind:group={$checkedList} on:click={checkedAllchange} /></th>
 					<th width="50">No</th>

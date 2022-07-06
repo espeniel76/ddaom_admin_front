@@ -52,18 +52,18 @@
 	
 	<td style="text-align: left;"><h5 class="mb-0">보낸 구독 수 (명)</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		test
+		{oSave.oFollowing}
 	</td>
 </tr>
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">소설 등록 수 (건)</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		test
+		{oSave.oCntTotal}
 	</td>
 	
 	<td style="text-align: left;"><h5 class="mb-0">소설 완결 수 (건)</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		test
+		{oSave.oCntFinish}
 	</td>
 </tr>
 <tr>

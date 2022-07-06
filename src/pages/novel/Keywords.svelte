@@ -159,8 +159,6 @@
 							style="width:200px"
 							on:change={() => {
 								fnSearch();
-								console.log("선택했나");
-								
 							}}
 						>
 							<option value="startDateASC" selected >등록일 순</option>
