@@ -9,12 +9,15 @@
 			EndDate: "",
 			NickName:"",
 			CntLike:"",
+            BlackedYn:"All",
+            ActiveYn:"All",
+            DateSelect:"All",
 		
             
         };
         let pageSize = 10;
         let totalCount = 0;
-        let registUrl = "/novel/faq/new";
+       
         let nowUnixtime = Dates.getUnixtime();
         let quData = "";
 
@@ -27,15 +30,12 @@
         
     
     
-        // 체크 초기화 
-        function fnPageNavSet() {
-            $checkedList=[];	
-            $check=false;
-            }
+      
     
             // 게시글 페이지 1번으로 
         async function fnSearch() { 
             await memberInformation.fetchMemberInformation(oSearch, $paging.pageSize, $paging.nowPage);
+            
         }
     
         async function fnDelete() {
@@ -52,7 +52,7 @@
                 totalCount = $memberInformation.Data.TotalCount;
                 quData = $memberInformation.Data.queryList;
 			
-                
+                console.log(quData);
 				
             }
     
@@ -63,11 +63,12 @@
     
     
         function fnInit() {
-            oSearch.ActiveYn = "All";
             oSearch.StartDate = "";
             oSearch.EndDate = "";
             oSearch.NickName = "";
-            oSearch.oCategory = "Choice"; 
+            oSearch.ActiveYn = "All";
+            oSearch.BlackedYn = "All";
+            oSearch.DateSelect = "All";
         
         
     
@@ -117,12 +118,13 @@
 								class="form-select form-select-sm"
 								id="exampleFormControlSelect1"
 								aria-label="Default select example"
-								bind:value={oSearch.ActiveYn}
+								bind:value={oSearch.DateSelect}
 							>
-								<option value="All" selected>전체</option>
-								<option value="Y">정상</option>
-								<option value="N">탈퇴</option>
-								<option value="B">휴면</option>
+								<option value="All" selected>최종접속일</option>
+								<option value="LastDay" >최종접속일</option>
+								<option value="CreateDay">가입일</option>
+								<option value="DelectDay">탈퇴일</option>
+							
 							</select>
 						</td>
                         <td width="100" style="vertical-align: middle;text-align:center">
@@ -149,7 +151,7 @@
 								class="form-select form-select-sm"
 								id="exampleFormControlSelect1"
 								aria-label="Default select example"
-								bind:value={oSearch.ActiveYn}
+								bind:value={oSearch.BlackedYn}
 							>
 								<option value="All" selected>전체</option>
 								<option value="Y">등록</option>
@@ -164,8 +166,8 @@
                                 <input
                                     type="text"
                                     class="form-control form-control-sm"
-                                    
-                                    placeholder="주제어"
+                                    bind:value={oSearch.NickName}
+                                    placeholder="닉네임 검색"
                                     aria-label="Recipient's username with two button addons"
                                    
                                 />

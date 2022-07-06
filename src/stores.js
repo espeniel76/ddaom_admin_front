@@ -913,7 +913,7 @@ function setMemberInformation() {
   const { subscribe, set, update } = writable(values);
 
   const fetchMemberInformation = async (o, PageSize, Page) => {
-    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
 
