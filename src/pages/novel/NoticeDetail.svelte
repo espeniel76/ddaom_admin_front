@@ -36,7 +36,7 @@
 				alert(retVal.ErrorDesc);
 			}
 		}
-		console.log('noticeData',Data);
+	
 	
 		
 		

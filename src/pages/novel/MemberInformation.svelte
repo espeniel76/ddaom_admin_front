@@ -12,6 +12,8 @@
             BlackedYn:"All",
             ActiveYn:"All",
             DateSelect:"All",
+            Value:"",
+            
 		
             
         };
@@ -20,10 +22,11 @@
        
         let nowUnixtime = Dates.getUnixtime();
         let quData = "";
+        let quData2 = "";
 
     
         onMount(() => {
-            fnSearch(); 
+            fnSearch();  
         });
     
     
@@ -33,34 +36,80 @@
       
     
             // 게시글 페이지 1번으로 
-        async function fnSearch() { 
-            await memberInformation.fetchMemberInformation(oSearch, $paging.pageSize, $paging.nowPage);
+            async function fnSearch() { 
+                await memberInformation.fetchMemberInformation(oSearch, $paging.pageSize, $paging.nowPage);
+            }
+        
             
-        }
-    
-        async function fnDelete() {
-            // await memberInformation.delMemberInformation($checkedList);
-            // console.log("삭제클릭");
-            // fnPageNavSet();
-            // fnSearch();
-        }
-    
     
         $: {
+            
             // 현재 페이지 게시물 갯수 TOTAL DATA
             if ($memberInformation.Data.TotalCount > 0) {
                 totalCount = $memberInformation.Data.TotalCount;
                 quData = $memberInformation.Data.queryList;
-			
-                console.log(quData);
-				
+               
+              
+              
+        
             }
-    
+            
+        
+         
             
             
         }
-    
-    
+       
+        function fnButton(e) {
+           const data = e.target.value
+           switch (data) {
+            case "SubscribeDESC":
+            oSearch.Value = "SubscribeDESC"
+                break;
+            case "SubscribeASC":
+            oSearch.Value = "SubscribeASC"
+                break;
+            case "CntNovelDESC":
+            oSearch.Value = "CntNovelDESC"
+                break;
+            case "CntNovelASC":
+            oSearch.Value = "CntNovelASC"
+                break;
+            case "FinishNovelDESC":
+            oSearch.Value = "FinishNovelDESC"
+                break;
+            case "FinishNovelASC":
+            oSearch.Value = "FinishNovelASC"
+                break;
+                //
+            case "LastDayDESC":
+            oSearch.Value = "FinishNovelDESC"
+                break;
+            case "LastDayASC":
+            oSearch.Value = "FinishNovelASC"
+                break;
+            case "CreateedDESC":
+            oSearch.Value = "FinishNovelDESC"
+                break;
+            case "CreateedASC":
+            oSearch.Value = "FinishNovelASC"
+                break;
+            case "DeleteedDESC":
+            oSearch.Value = "FinishNovelDESC"
+                break;
+            case "DeleteedASC":
+            oSearch.Value = "FinishNovelASC"
+                break;
+          
+        
+            }
+            fnSearch()
+           
+         
+            };
+     
+
+
     
         function fnInit() {
             oSearch.StartDate = "";
@@ -69,6 +118,7 @@
             oSearch.ActiveYn = "All";
             oSearch.BlackedYn = "All";
             oSearch.DateSelect = "All";
+            oSearch.Value="";
         
         
     
@@ -77,13 +127,10 @@
             paging.update((paging) => o);
             fnSearch();
         }
-    
+
+
         
-        
-    
-        
-            
-    
+
         function checkedAllchange(e) {
             const checked = e.target.checked;
             $check = checked}
@@ -92,6 +139,9 @@
     
     
     </script>
+
+
+
     <div class="card mb-4">
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -179,34 +229,41 @@
                 </tbody>
             
         </table>
-        <table class="table">
+        <table class="table" style="">
             <thead>
                 <tr>
-                    <th colspan="9">
+                    <th colspan="12">
                         Total data: {$paging.totalCount}
                         , Now page: {$paging.nowPage}
                         , TOTAL page: {$paging.totalPage}
                     </th>
                 </tr>
-                <tr style="text-align:center">
+                <tr style="text-align:center; ">
                     <th width="50"><input class="form-check-input"
                          type="hidden"
                            id="defaultCheck3"
                              /></th>
-                    <th width="50">No</th>
+                    <th width="50" style="">No</th>
                     <th width="50">상태</th>
                     <th width="50">블랙리스트 여부</th>
-                    <th width="50">받은 구독 수</th>
-                    <th width="50">소설 등록 수</th>
-                    <th width="50">소설 완결 수</th>
+                    <th width="50" style="">받은 구독 수<button type="button" class="btn btn-sm" value="SubscribeDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="SubscribeASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">소설 등록 수<button type="button" class="btn btn-sm" value="CntNovelDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="CntNovelASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">소설 완결 수<button type="button" class="btn btn-sm" value="FinishNovelDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="FinishNovelASC"on:click={fnButton}>▼</button></th>
                     <th width="50">닉네임</th>
-                    <th width="50">최종 접속일</th>
-                    <th width="50">가입일</th>
-                    <th width="50">탈퇴일</th>
+                    <th width="50">최종 접속일<button type="button" class="btn btn-sm" value="LastDayDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="LastDayASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">가입일<button type="button" class="btn btn-sm" value="CreateedDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="CreateedASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">탈퇴일<button type="button" class="btn btn-sm" value="DeleteedDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="DeleteedASC"on:click={fnButton}>▼</button></th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 {#each quData as o, index}
+                <td><input class="form-check-input" type="hidden" value={o.allocated_db}/></td>
                     <tr style="text-align:center">
                         <td><input class="form-check-input" type="hidden" /></td>
                         <td>{o.seq_member_detail}</td> 
@@ -214,14 +271,12 @@
                         <td>{o.deleted_yn==1 ? "탈퇴":"정상"}</td> 
                         <td>{o.blocked_yn==1 ? "등록" : "미등록"}</td> 
                         <td>{o.cnt_subscribe}</td>
-                        <td>소설등록수</td>
-                        <td>소설완결수</td>
+                        <td>{o.cnt_total}</td>
+                        <td>{o.cnt_finsh}</td>
                         <td><a href="/novel/memberInformation/{o.seq_member}">{o.nick_name}</a></td>
-                        <td>{o.updated_at ? Dates.defaultConvert(o.updated_at) : ""}</td>
-                        <td>{o.created_at ? Dates.defaultConvert(o.created_at) : ""}</td>
-                        <td>{o.deleted_at ? Dates.defaultConvert(o.deleted_at) : ""}</td>
-                      
-                        
+                        <td>{o.updated_at ? Dates.defaultConvert(o.updated_at) : "-"}</td>
+                        <td>{o.created_at ? Dates.defaultConvert(o.created_at) : "-"}</td>
+                        <td>{o.deleted_yn==1? Dates.defaultConvert(o.deleted_at) : "-"}</td>
                     </tr>
                     {/each}
             </tbody>

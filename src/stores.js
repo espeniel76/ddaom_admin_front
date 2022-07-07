@@ -298,7 +298,7 @@ function setKeywords() {
 
     try {
       const getDatas = await getApi(url);
-      console.log('keywordGet', getDatas);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -313,7 +313,7 @@ function setKeywords() {
     let url = `/assets/keywords/${SeqKeyword}`;
     try {
       const getDatas = await getApi(url);
-      console.log('getKeyword2', getDatas);
+
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -576,7 +576,6 @@ function setNotice() {
     let url = `/cs/notices?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Notice}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log('noticeGet', getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -630,7 +629,7 @@ function setNotice() {
         StartDate,
         EndDate,
       });
-      console.log('saveNotice', newData);
+
       return newData;
     } catch (error) {
       console.log(error);
@@ -673,7 +672,7 @@ function setFaq() {
     let url = `/cs/faqs?ActiveYn=${o.ActiveYn}&faqCategory=${o.oCategory}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Faq}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log('FaqStoreGet', getDatas);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -738,7 +737,7 @@ function setFaq() {
         StartDate,
         EndDate,
       });
-      console.log('saveFaq', newData);
+
       return newData;
     } catch (error) {
       console.log(error);
@@ -817,7 +816,7 @@ function setInquiries() {
     let url = `/cs/inquiries?Status=${o.Status}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Inquiries}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log('fetchInquiries', getDatas);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -859,29 +858,14 @@ function setInquiries() {
         Title,
         SeqMember,
       });
-      console.log('newData', newData);
+
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
     }
   };
 
-  // const saveInquiries = async (Answer, ActiveYn, StartDate, EndDate) => {
-  //   try {
-  //     const newData = await postApi(`/cs/inquiries`, {
-  //       Answer,
-  //       ActiveYn,
-  //       StartDate,
-  //       EndDate,
-  //     });
-  //     console.log('saveInquiries', newData);
-  //     return newData;
-  //   } catch (error) {
-  //     console.log(error);
-  //     alert('오류가 발생했습니다. 다시 시도해 주세요. ');
-  //   }
-  // };
-
+  //
   const delInquiries = async (idList) => {
     let url = `/cs/inquiries`;
     try {
@@ -913,7 +897,7 @@ function setMemberInformation() {
   const { subscribe, set, update } = writable(values);
 
   const fetchMemberInformation = async (o, PageSize, Page) => {
-    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&Value=${o.Value}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
 
@@ -951,7 +935,7 @@ function setMemberInformation() {
         BlockedReason,
         StartDate,
       });
-      console.log('editData', newData);
+
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');

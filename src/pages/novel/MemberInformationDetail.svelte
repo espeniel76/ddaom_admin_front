@@ -61,6 +61,8 @@
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
+		$paging.nowPage = 1;
+		fnSearch()
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id);
 			if (retVal.ResultCode === "OK") {
@@ -68,11 +70,9 @@
 			} else {
 				alert(retVal.ErrorDesc);
 			}
-			
-			console.log(Data);
+		
 			
 		}	
-		fnSearch()
 	}
 	
 	);
@@ -82,7 +82,7 @@
 	}
 	
 
-	//생성 
+	//등록
 	async function fnSave() {
 		let isBlocked = false;
 		if (oSave.oBlockedYnTrue.checked) {

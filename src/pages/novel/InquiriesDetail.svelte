@@ -119,7 +119,7 @@
 			oSave.oStatus = Data.status;
 			oSave.SeqMember = Data.seq_member;
 
-			// console.log(Data.List[0].title);
+		
 		}
 	}
 

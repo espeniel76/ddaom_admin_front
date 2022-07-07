@@ -20,13 +20,10 @@
 	
 	onMount(() => {
 		fnSearch();
+
 	});
 
-	// 체크 초기화
-	function fnPageNavSet() {
-		$checkedList=[];	
-		$check=false;
-		}
+
 		
 		// 게시글 페이지 1번으로 
 		async function fnSearch() { 
