@@ -23,9 +23,17 @@
 	
 	const route = meta();
 	let _id = route.params._id;
+	let allocatedDb = route.params.allocatedDb;
+	console.log(_id);
+	console.log(route.params._id2);
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = "";
+
+	let NonData = [
+		'a','b','c'
+	]; 
+	console.log(NonData);
 
 	let oSave = {
 		oBlockedYnTrue: null,
@@ -64,14 +72,12 @@
 		$paging.nowPage = 1;
 		fnSearch()
 		if (_id !== "new") {
-			let retVal = await memberInformation.getMemberInformation(_id);
+			let retVal = await memberInformation.getMemberInformation(_id,allocatedDb);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
 			} else {
 				alert(retVal.ErrorDesc);
 			}
-		
-			
 		}	
 	}
 	
@@ -143,7 +149,6 @@
 				oSave.oBlockedYnTrue.checked = true;
 				oSave.oBlockedYnFalse.checked = false;
 				oSave.oBlockedReason.value = Data.member_blocks;
-
 			} else {
 				oSave.oBlockedYnTrue.checked = false;
 				oSave.oBlockedYnFalse.checked = true;
@@ -171,7 +176,7 @@
 
 			 
 			
-
+			console.log(Data);
 		
 		
 			
@@ -196,7 +201,7 @@
 	<div class="table-responsive text-nowrap">
 		<br>
 		<table class="table">
-			<thead><h5>회원 정보</thead>
+			<thead><tr style="font-weight: bold; font-size:large;">회원정보</tr></thead>
 			<tbody class="table-border-bottom-0">
 				<DetailCommonTr {oSave}/>
 			</tbody>
@@ -244,9 +249,10 @@
 			</tbody>
 		</table>
 		<Paging {fnSearch} {pageSize} {totalCount} />
+		
 				<table class="table">
-					<thead>블랙리스트 설정</thead>
-				<tbody class="table-border-bottom-0">
+					<thead><tr style="font-weight: bold; font-size:large;">블랙리스트 설정</tr></thead>
+					<tbody class="table-border-bottom-0">
 					<DetailCommonBlockedYn  {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">블랙리스트 사유*</h5></td>
@@ -265,6 +271,37 @@
 					</tr>
 				</tbody>
 		</table>
-		<DetailCommonInquirieBottomBtns {urlList} {fnSave} {_id} />
+		<DetailCommonInquirieBottomBtns {fnSave} {_id} />
+		<br>
+		<table class="table">
+			<thead>
+				<tr style="font-weight: bold; font-size:large;">
+                   접속/변경 내역
+                </tr>
+				<tr style="text-align:center">
+				
+					<th width="50">No</th>
+					<th width="50">일시</th>
+					<th width="*">내용</th>
+					
+				</tr>
+			</thead>
+			
+			<!-- $inquiries.Data.queryList  -->
+			<tbody class="table-border-bottom-0">
+				{#each NonData as o, index}
+				<tr style="text-align:center" >
+					<td>{o}</td>
+					<td>{o}</td>
+					<td>{o}</td>
+				</tr>
+				{/each}
+				
+			</tbody>
+		</table>
+
+		<br>	<br>
+		<DetailCommonInquirieBottomBtns {urlList}  />
+	
 	</div>
 </div>

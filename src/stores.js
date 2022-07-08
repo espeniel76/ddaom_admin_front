@@ -893,7 +893,7 @@ function setInquiries() {
 
 function setMemberInformation() {
   let values = { ...initListValues };
-
+  //////
   const { subscribe, set, update } = writable(values);
 
   const fetchMemberInformation = async (o, PageSize, Page) => {
@@ -912,10 +912,12 @@ function setMemberInformation() {
     }
   };
 
-  const getMemberInformation = async (seqMemberDtail) => {
-    let url = `/cs/memberInformation/seqMemberDtail/${seqMemberDtail}`;
+  const getMemberInformation = async (seqMemberDtail, allocatedDb) => {
+    let url = `/cs/memberInformation/seqMemberDtail?seqMemberDtail=${seqMemberDtail}&allocatedDb=${allocatedDb}`;
     try {
       const getDatas = await getApi(url);
+      console.log(url);
+      console.log(getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');

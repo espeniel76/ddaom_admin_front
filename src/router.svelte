@@ -56,4 +56,4 @@
 <Route path="/novel/inquiry/:_id"><InquiryDetail /></Route>
 
 <Route path="/novel/memberInformation"><MemberInformation/></Route>
-<Route path="/novel/memberInformation/:_id"><MemberInformationDetail/></Route>
+<Route path="/novel/memberInformation/:_id/:allocatedDb"><MemberInformationDetail/></Route>

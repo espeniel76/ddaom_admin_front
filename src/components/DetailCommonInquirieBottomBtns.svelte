@@ -6,6 +6,7 @@
 
 <table class="table">
 	<tr>
+		{#if urlList}
 		<td width="100">
 			<div class="demo-inline-spacing">
 				<a href={urlList}>
@@ -13,6 +14,7 @@
 				</a>
 			</div>
 		</td>
+		{/if}
 		<td width="*" />
 		{#if fnSave}
 			<td width="100">

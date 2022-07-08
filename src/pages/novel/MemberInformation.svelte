@@ -54,7 +54,8 @@
         
             }
             
-        
+        	console.log(quData);
+        	console.log(totalCount);
          
             
             
@@ -83,26 +84,27 @@
                 break;
                 //
             case "LastDayDESC":
-            oSearch.Value = "FinishNovelDESC"
+            oSearch.Value = "LastDayDESC"
                 break;
             case "LastDayASC":
-            oSearch.Value = "FinishNovelASC"
+            oSearch.Value = "LastDayASC"
                 break;
-            case "CreateedDESC":
-            oSearch.Value = "FinishNovelDESC"
+            case "CreatedDESC":
+            oSearch.Value = "CreatedDESC"
                 break;
-            case "CreateedASC":
-            oSearch.Value = "FinishNovelASC"
+            case "CreatedASC":
+            oSearch.Value = "CreatedASC"
                 break;
-            case "DeleteedDESC":
-            oSearch.Value = "FinishNovelDESC"
+            case "DeletedDESC":
+            oSearch.Value = "DeletedDESC"
                 break;
-            case "DeleteedASC":
-            oSearch.Value = "FinishNovelASC"
+            case "DeletedASC":
+            oSearch.Value = "DeletedASC"
                 break;
           
         
             }
+            
             fnSearch()
            
          
@@ -133,7 +135,9 @@
 
         function checkedAllchange(e) {
             const checked = e.target.checked;
-            $check = checked}
+            $check = checked
+        
+        }
             
             
     
@@ -255,10 +259,10 @@
                     <th width="50">닉네임</th>
                     <th width="50">최종 접속일<button type="button" class="btn btn-sm" value="LastDayDESC" on:click={fnButton}>▲</button>
                         <button class="btn btn-sm" value="LastDayASC"on:click={fnButton}>▼</button></th>
-                    <th width="50">가입일<button type="button" class="btn btn-sm" value="CreateedDESC" on:click={fnButton}>▲</button>
-                        <button class="btn btn-sm" value="CreateedASC"on:click={fnButton}>▼</button></th>
-                    <th width="50">탈퇴일<button type="button" class="btn btn-sm" value="DeleteedDESC" on:click={fnButton}>▲</button>
-                        <button class="btn btn-sm" value="DeleteedASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">가입일<button type="button" class="btn btn-sm" value="CreatedDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="CreatedASC"on:click={fnButton}>▼</button></th>
+                    <th width="50">탈퇴일<button type="button" class="btn btn-sm" value="DeletedDESC" on:click={fnButton}>▲</button>
+                        <button class="btn btn-sm" value="DeletedASC"on:click={fnButton}>▼</button></th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -273,7 +277,7 @@
                         <td>{o.cnt_subscribe}</td>
                         <td>{o.cnt_total}</td>
                         <td>{o.cnt_finsh}</td>
-                        <td><a href="/novel/memberInformation/{o.seq_member}">{o.nick_name}</a></td>
+                        <td><a href="/novel/memberInformation/{o.seq_member}/{o.allocated_db}">{o.nick_name}</a></td>
                         <td>{o.updated_at ? Dates.defaultConvert(o.updated_at) : "-"}</td>
                         <td>{o.created_at ? Dates.defaultConvert(o.created_at) : "-"}</td>
                         <td>{o.deleted_yn==1? Dates.defaultConvert(o.deleted_at) : "-"}</td>
@@ -283,5 +287,7 @@
         </table>
     
         <Paging {fnSearch} {pageSize} {totalCount} />
+
+        
         </div>
     </div>
