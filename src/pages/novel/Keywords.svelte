@@ -167,7 +167,7 @@
 							<option value="EndDateDESC" >종료일 늦은 순</option>
 						</select>
 					</th>
-					<th colspan="9">
+					<th colspan="12">
 						Total data: {$paging.totalCount}
 						, Now page: {$paging.nowPage}
 						, TOTAL page: {$paging.totalPage}
@@ -184,7 +184,7 @@
 					<th width="*">주제어</th>
 					<th width="100">사용여부</th>
 					<th width="100">진행여부</th>
-					<th width="200">사용기간</th>
+					<th width="100">사용기간</th>
 					<th width="100">등록일</th>
 					<th width="100">수정일</th>
 				</tr>
@@ -196,10 +196,9 @@
 							 id="defaultCheck3"
 							 bind:group={$checkedList} 
 							 value={o.SeqKeyword}
-							 checked={$check}
-							   /></td>
+							 checked={$check}/></td>
 						<td>{o.SeqKeyword}</td>
-						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword} ({o.CntTotal})</a></td>
+						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}({o.CntTotal})</a></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>
 							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
@@ -213,7 +212,7 @@
 						<td>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(o.EndDate)}</td>
 						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
 						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
-					</tr>
+					<tr/>
 				{/each}
 			</tbody>
 		</table>

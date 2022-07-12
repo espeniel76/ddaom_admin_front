@@ -27,6 +27,8 @@
 	let Data;
 	let nowDate = Dates.getYYYYMMTZ();
 	let urlList = "/novel/keywords";
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 
 	onMount(async () => {
 		if (_id !== "new") {
@@ -87,7 +89,7 @@
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await keywords.saveKeyword(oSave.oKeyword.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await keywords.saveKeyword(oSave.oKeyword.value.replace(regex, ''), isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/keywords");
 			} else {
@@ -96,7 +98,7 @@
 		} else {
 			retVal = await keywords.editKeyword(
 				_id,
-				oSave.oKeyword.value,
+				oSave.oKeyword.value.replace(regex, ''),
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value

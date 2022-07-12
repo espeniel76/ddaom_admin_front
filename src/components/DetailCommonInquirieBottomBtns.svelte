@@ -1,7 +1,12 @@
 <script>
-	export let urlList;
-	export let fnSave;
-	export let _id;
+	export let urlList = undefined;
+	export let fnSave = undefined;
+	export let _id = undefined;
+	
+
+
+
+
 </script>
 
 <table class="table">
@@ -19,9 +24,8 @@
 		{#if fnSave}
 			<td width="100">
 				<div class="demo-inline-spacing">
-					<button type="button" class="btn btn-sm btn-primary" on:click={fnSave}
-						>{_id === "new" ? "등록" : "등록"}</button
-					>
+					<button type="button" class="btn btn-sm btn-primary" on:click={fnSave} 
+						>{_id === "new" ? "등록" : "등록"}</button> 
 				</div>
 			</td>
 		{/if}

@@ -56,23 +56,27 @@
 		oModal.class = "modal fade";
 		oModal.style = "display: none";
 		oModal.item = {};
+	
 	}
 	
 	async function fnShowModal(seqKeyword) {
 		oModal.class = "modal fade show";
 		oModal.style = "display: block";
-		
 		await mainAllFinish.fetch(seqKeyword);
+	
 	}
 	
 	$: {
 		if ($mainAll.Data.TotalCount > 0) {
 			totalCount = $mainAll.Data.TotalCount;
+		
 		}
 		
 		if ($mainAllFinish.Data.totalCount > 0) {
 			console.log("ㅇㅇ?",$mainAllFinish.Data);
+			
 		}
+		
 	}
 	
 	

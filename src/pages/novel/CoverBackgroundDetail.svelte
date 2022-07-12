@@ -21,11 +21,14 @@
 	};
 	let Data;
 	let urlList = "/novel/cover/background";
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 
 	function fnPageNavSet() {
 		$checkedList=[];	
 		$check=false;
 		}
+		
 
 	onMount(async () => {
 		if (_id !== "new") {
@@ -60,14 +63,14 @@
 
 		let retVal;
 		if (_id === "new") {
-			retVal = await colors.save(oSave.oName.value, oSave.Color, isActive);
+			retVal = await colors.save(oSave.oName.value.replace(regex, ''), oSave.Color, isActive);
 			if (retVal.ResultCode === "OK") {
 				router.goto(urlList);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await colors.edit(_id, oSave.oName.value, oSave.Color, isActive);
+			retVal = await colors.edit(_id, oSave.oName.value.replace(regex, ''), oSave.Color, isActive);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {
@@ -103,13 +106,15 @@
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">컬러명*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="4">
-						<input type="text" class="form-control form-control-sm" placeholder="컬러명" bind:this={oSave.oName} />
+						<input type="text" class="form-control form-control-sm" placeholder="컬러명" bind:this={oSave.oName}
+						 />
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">코드*</h5></td>
 					<td width="200" style="vertical-align: middle">
-						<input type="text" class="form-control form-control-sm" placeholder="코드" bind:value={oSave.Color} />
+						<input type="text" class="form-control form-control-sm" placeholder="코드"  bind:value={oSave.Color} 
+						oninput="this.value = this.value.replace(/[^A-Za-z0-9#{1,1}]/ig, '')" minlength=7 maxlength=7/>
 					</td>
 					<td width="100" style="vertical-align: middle; background-color: {oSave.Color}" />
 					<td width="200" style="vertical-align: middle;">

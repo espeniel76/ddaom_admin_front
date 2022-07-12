@@ -2,13 +2,15 @@
 	import { beforeUpdate, onMount } from "svelte";
 
 	import { meta, router } from "tinro";
-	import {  paging ,memberInformation,memberInformationList} from "../../stores";
+	import { paging,pagingLog,memberInformation,memberInformationList,novelFetch,novelLog} from "../../stores";
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
+	import Paging2 from "../../components/PagingLog.svelte";
+
+	
 	import DetailCommonBlockedYn  from "../../components/DetailCommonBlockedYn .svelte";
 	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
 	import DetailCommonTr from "../../components/DetailCommonTr.svelte";
-	import DetailCommonNovelViewLayer from "../../components/DetailCommonNovelViewLayer.svelte";
 	let oModal = {
 		class: "modal fade",
 		style: "display: none",
@@ -19,21 +21,26 @@
 		oModal.style = "display: none";
 		oModal.item = {};
 	}
+	async function fnShowModal(SeqMember,novelStep,step) {
+		oModal.class = "modal fade show";
+		oModal.style = "display: block";
+		await novelFetch.fetch(SeqMember,novelStep,step);
+		oModal.item = $novelFetch.Data.List[0].content;
+	}
 
 	
 	const route = meta();
 	let _id = route.params._id;
 	let allocatedDb = route.params.allocatedDb;
-	console.log(_id);
-	console.log(route.params._id2);
+	
 	let pageSize = 10;
 	let totalCount = 0;
+	let pagingLogPageSize = 10;
+	let logTotalCount = 0;
 	let registUrl = "";
-
 	let NonData = [
 		'a','b','c'
 	]; 
-	console.log(NonData);
 
 	let oSave = {
 		oBlockedYnTrue: null,
@@ -60,43 +67,85 @@
 		oEndDate: "",
 	};
 
-
-
+	
 	
 	let Data;
+	let LogData;
 
 
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
 		$paging.nowPage = 1;
-		fnSearch()
+		$pagingLog.nowPage = 1;
+		fnSearch1();
+		fnSearch2();
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id,allocatedDb);
 			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
+				
 			} else {
 				alert(retVal.ErrorDesc);
 			}
+
 		}	
 	}
 	
 	);
 
-	async function fnSearch() { 
+	async function fnSearch1() { 
 		await memberInformationList.setMemberInformationList(_id,$paging.pageSize,$paging.nowPage);
+		
+	}
+	async function fnSearch2() { 
+		await novelLog.fetchLog(_id,$pagingLog.pageSize,$pagingLog.nowPage);
+	}
+
+
+	function test(e,contents) {
+		switch (e) {
+			case 8:
+				return "블랙 리스트 미등록 (수동)"
+				break;
+			case 7:
+				return "블랙 리스트 미등록 (자동)"
+				break;
+			case 6:
+				return "블랙 리스트 (등록)\n[사유]\n" + (contents)
+				break;
+			case 5:
+				return "회원 상태 변경 (탈퇴)"
+				break;
+			case 4:
+				return "회원 상태 변경 (휴면)"
+				break;
+			case 3:
+				return "회원 상태 변경 (정상)"
+				break;
+			case 2:
+				return "로그인/접속"
+				break;
+			case 1:
+				return "회원가입/접속"
+				break;
+			
+		}
 	}
 	
-
-	//등록
+	
 	async function fnSave() {
 		let isBlocked = false;
 		if (oSave.oBlockedYnTrue.checked) {
 			isBlocked = true;
+			test=true;
+		
 			// fnPageNavSet();
 			console.log("등록");
 		} else if (oSave.oBlockedYnFalse.checked) {
 			isBlocked = false;
+			test=false;
+	
 			
 		}
 		
@@ -104,9 +153,13 @@
 			// 사용기간 체크
 		
 	
-		// if (oSave.oTitle.value.length < 1) {
-		// 	alert("제목을 입력 하세요.");
-		// 	oSave.oTitle.focus();
+		if (oSave.oBlockedYnTrue =false) {
+			alert("제목을 입력 하세요.");
+			return false;
+		}
+		// if (oSave.oBlockedYnTrue =true) {
+		// 	alert("내용을 입력 하세요.");
+		// 	oSave.oBlockedReason.focus();
 		// 	return false;
 		// }
 
@@ -130,10 +183,10 @@
 				isBlocked,
 				oSave.oBlockedReason.value,
 				oSave.oStartDate.value,
-			
+				
 			);
 		console.log("수정",retVal);
-			if (retVal.ResultCode === "OK") {
+			if (retVal) {
 				alert("정상적으로 수정 되었습니다");
 				// router.goto("/novel/memberInformation");
 			} else {
@@ -141,17 +194,22 @@
 			}
 		}
 	}
+
+
+
+	
 	
 	$: {
-	
 		if (Data) {
 			if (Data.blocked_yn) {
 				oSave.oBlockedYnTrue.checked = true;
 				oSave.oBlockedYnFalse.checked = false;
 				oSave.oBlockedReason.value = Data.member_blocks;
+				
 			} else {
 				oSave.oBlockedYnTrue.checked = false;
 				oSave.oBlockedYnFalse.checked = true;
+				
 				
 			}
 			
@@ -173,11 +231,8 @@
 			oSave.oStartEmail = Data.startEmail; //가입이메일
 			oSave.oSnsType = Data.sns_type; // 가입경로 
 			//탈퇴사유
-
-			 
 			
-			console.log(Data);
-		
+			// console.log('ddd',$novelFetch.Data.List[0].Content);
 		
 			
 			
@@ -190,6 +245,11 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformationList.Data.TotalCount > 0) {
 			totalCount = $memberInformationList.Data.TotalCount;
+			
+		}
+		if ($novelLog.Data.TotalCount > 0) {
+			logTotalCount = $novelLog.Data.TotalCount;
+			console.log(logTotalCount);
 		}
     
 		
@@ -216,6 +276,7 @@
                         , Now page: {$paging.nowPage}
                         , TOTAL page: {$paging.totalPage}
                     </th>
+					
                 </tr>
 				<tr style="text-align:center">
 				
@@ -233,7 +294,7 @@
 			
 			<!-- $inquiries.Data.queryList  -->
 			<tbody class="table-border-bottom-0">
-				{#each  $memberInformationList.Data.List as o, index}
+				{#each $memberInformationList.Data.List as o, index}
 				<tr style="text-align:center" >
 					<td>{o.deleted_yn == 1 ? "삭제":"등록"}</td>
 					<td>{o.active_yn == 1 ? "진행":"종료"}</td>
@@ -243,17 +304,17 @@
 					<td>{o.step}</td>
 					<td>{o.deleted_yn == 1 ? "-": o.cnt_like }</td>
 					<td>{ Dates.defaultConvert(o.created_at)}</td> 
-					<td>보기</td>
+					<td on:click={fnShowModal(o.seq_member,o.novel_step,o.step)} style="cursor:pointer"><b>보기</b></td>
 				</tr>
 				{/each}
 			</tbody>
 		</table>
-		<Paging {fnSearch} {pageSize} {totalCount} />
+		<Paging fnSearch={fnSearch1} {pageSize} {totalCount} />
 		
 				<table class="table">
 					<thead><tr style="font-weight: bold; font-size:large;">블랙리스트 설정</tr></thead>
 					<tbody class="table-border-bottom-0">
-					<DetailCommonBlockedYn  {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
+					<DetailCommonBlockedYn {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
 				<tr>
 					<td style="text-align: right;"><h5 class="mb-0">블랙리스트 사유*</h5></td>
 					<td width="*" style="vertical-align: middle" height="55" colspan="12">
@@ -271,13 +332,23 @@
 					</tr>
 				</tbody>
 		</table>
-		<DetailCommonInquirieBottomBtns {fnSave} {_id} />
+		<!-- 등록버튼 -->
+		<DetailCommonInquirieBottomBtns {fnSave} {_id}  />
 		<br>
+		<!-- 로그 -->
 		<table class="table">
 			<thead>
-				<tr style="font-weight: bold; font-size:large;">
-                   접속/변경 내역
+				<tr>
+                    <th colspan="9">
+                        Total data: {$pagingLog.totalCount}
+                        , Now page: {$pagingLog.nowPage}
+                        , TOTAL page: {$paging.totalPage}
+                    </th>
+					
                 </tr>
+				<tr style="font-weight: bold; font-size:large;">
+				   접속/변경 내역
+				</tr>
 				<tr style="text-align:center">
 				
 					<th width="50">No</th>
@@ -289,19 +360,45 @@
 			
 			<!-- $inquiries.Data.queryList  -->
 			<tbody class="table-border-bottom-0">
-				{#each NonData as o, index}
+				{#each $novelLog.Data.List as o, index}
 				<tr style="text-align:center" >
-					<td>{o}</td>
-					<td>{o}</td>
-					<td>{o}</td>
+					<td>{o.seq_member_log}</td>
+					<td>{Dates.defaultConvertFull(o.created_at)}</td>
+					<td>{test(o.type,o.contents)}</td>
 				</tr>
 				{/each}
 				
 			</tbody>
 		</table>
-
+		<Paging2 fnSearch={fnSearch2} pageSize={pagingLogPageSize} totalCount={logTotalCount} fnDelete={undefined} registUrl={undefined}/>
+		<!-- <Paging fnSearch1={fnSearch2} {pageSize} {totalCount} /> -->
 		<br>	<br>
+		<!-- 목록버튼 -->
 		<DetailCommonInquirieBottomBtns {urlList}  />
 	
 	</div>
+</div>
+
+
+<!-- 모달 부분 -->
+<div class={oModal.class} tabindex="-1" style={oModal.style}>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title">내용 상세</h5>
+			<button
+				type="button"
+				class="btn-close"
+				data-bs-dismiss="modal"
+				aria-label="Close"
+				on:click={() => {
+					fnInitModal();
+				}}
+			/>
+		</div>
+		<div class="modal-body">
+			<textarea class="form-control form-control-sm" rows="10">{oModal.item}</textarea>
+		</div>
+	</div>
+</div>
 </div>

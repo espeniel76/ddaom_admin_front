@@ -31,6 +31,8 @@
 
 	let Data;
 	let urlList = "/novel/inquiry";
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 
 	onMount(async () => {
 		if (_id !== "new") {

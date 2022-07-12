@@ -916,8 +916,6 @@ function setMemberInformation() {
     let url = `/cs/memberInformation/seqMemberDtail?seqMemberDtail=${seqMemberDtail}&allocatedDb=${allocatedDb}`;
     try {
       const getDatas = await getApi(url);
-      console.log(url);
-      console.log(getDatas);
       return getDatas;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -937,7 +935,6 @@ function setMemberInformation() {
         BlockedReason,
         StartDate,
       });
-
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -977,6 +974,7 @@ function setMemberInformationList() {
     let url = `/cs/memberInformationList/ListData?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
+      console.log(getDatas);
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -993,6 +991,54 @@ function setMemberInformationList() {
     setMemberInformationList,
   };
 }
+
+function setNobel() {
+  let values = { ...initListValues };
+  const { subscribe, set, update } = writable(values);
+  const fetch = async (SeqMember, novelStep, step) => {
+    let url = `/cs/memberInformationList/novelData?SeqMember=${SeqMember}&step=${step}&novelStep=${novelStep}`;
+    try {
+      const getDatas = await getApi(url);
+
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+
+  return {
+    subscribe,
+    fetch,
+  };
+}
+// novelLog
+function setMemLog() {
+  let values = { ...initListValues };
+  const { subscribe, set, update } = writable(values);
+  const fetchLog = async (SeqMember, PageSize, Page) => {
+    let url = `/cs/memberInformationList/ListLog?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
+    try {
+      const getDatas = await getApi(url);
+      console.log(getDatas);
+      if (getDatas.ResultCode !== 'OK') {
+        alert(getDatas.ErrorDesc);
+      } else {
+        set(getDatas);
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+    }
+  };
+  return {
+    subscribe,
+    fetchLog,
+  };
+}
+
 export const paging = writable({
   nowPage: 1,
   totalCount: 0,
@@ -1002,6 +1048,17 @@ export const paging = writable({
   startPage: 0,
   endPage: 0,
 });
+
+export const pagingLog = writable({
+  nowPage: 1,
+  totalCount: 0,
+  totalPage: 0,
+  pageSize: 10,
+  pageListSize: 10,
+  startPage: 0,
+  endPage: 0,
+});
+
 export const pagingStep1 = writable({
   nowPage: 1,
   totalCount: 0,
@@ -1038,11 +1095,11 @@ export const pagingStep4 = writable({
   startPage: 0,
   endPage: 0,
 });
-export const memberDetailsPage = writable({
+export const memberLogPage = writable({
   nowPage: 1,
   totalCount: 0,
   totalPage: 0,
-  pageSize: 5,
+  pageSize: 10,
   pageListSize: 10,
   startPage: 0,
   endPage: 0,
@@ -1080,3 +1137,5 @@ export const categoryFaq = setCategoryFaq();
 export const inquiries = setInquiries();
 export const memberInformation = setMemberInformation();
 export const memberInformationList = setMemberInformationList();
+export const novelFetch = setNobel();
+export const novelLog = setMemLog();

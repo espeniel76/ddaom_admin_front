@@ -4,6 +4,9 @@
         import { Dates } from "../../utils/date";
         import Paging from "../../components/Paging.svelte";
     
+
+
+
         let oSearch = {
 			StartDate: "",
 			EndDate: "",
@@ -22,7 +25,7 @@
        
         let nowUnixtime = Dates.getUnixtime();
         let quData = "";
-        let quData2 = "";
+        
 
     
         onMount(() => {
@@ -30,7 +33,7 @@
         });
     
     
-        
+
     
     
       
@@ -43,7 +46,6 @@
             
     
         $: {
-            
             // 현재 페이지 게시물 갯수 TOTAL DATA
             if ($memberInformation.Data.TotalCount > 0) {
                 totalCount = $memberInformation.Data.TotalCount;
@@ -54,8 +56,7 @@
         
             }
             
-        	console.log(quData);
-        	console.log(totalCount);
+        	
          
             
             
@@ -291,3 +292,4 @@
         
         </div>
     </div>
+   

@@ -27,6 +27,8 @@
 
 	let Data;
 	let urlList = "/novel/faq";
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 
 	onMount(async () => {
 		if (_id !== "new") {
@@ -82,7 +84,7 @@
 		//수정 생성
 		let retVal;
 		if (_id === "new") {
-			retVal = await faq.saveFaq(oSave.oCategory, oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await faq.saveFaq(oSave.oCategory.replace(regex, ''), oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/faq");
@@ -90,7 +92,7 @@
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await faq.editFaq(_id, oSave.oCategory, oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await faq.editFaq(_id, oSave.oCategory.replace(regex, ''), oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");

@@ -26,6 +26,8 @@
 	
 	let Data;
 	let urlList = "/novel/notice";
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 
 	onMount(async () => {
 		if (_id !== "new") {
@@ -81,7 +83,7 @@
 		//수정 
 		let retVal;
 		if (_id === "new") {
-			retVal = await notice.saveNotice(oSave.oTitle.value, oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
+			retVal = await notice.saveNotice(oSave.oTitle.value.replace(regex, ''), oSave.oContent.value, isActive, oSave.oStartDate.value, oSave.oEndDate.value);
 
 			if (retVal.ResultCode === "OK") {
 				router.goto("/novel/notice");
@@ -92,7 +94,7 @@
 		} else {
 			retVal = await notice.editNotice(
 				_id,
-				oSave.oTitle.value,
+				oSave.oTitle.value.replace(regex, ''),
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,

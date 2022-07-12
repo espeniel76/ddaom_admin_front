@@ -25,6 +25,9 @@
 	let urlList = "/novel/cover/image";
 	let oImage = null;
 
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
+
 	onMount(async () => {
 		if (_id !== "new") {
 			let retVal = await images.get(_id);
@@ -52,14 +55,14 @@
 
 		let retVal;
 		if (_id === "new") {
-			retVal = await images.save(oSave.oName.value, oSave.oFile, isActive);
+			retVal = await images.save(oSave.oName.value.replace(regex, ''), oSave.oFile, isActive);
 			if (retVal.ResultCode === "OK") {
 				router.goto(urlList);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await images.edit(_id, oSave.oName.value, oSave.oFile, isActive);
+			retVal = await images.edit(_id, oSave.oName.value.replace(regex, ''), oSave.oFile, isActive);
 			if (retVal.ResultCode === "OK") {
 				alert("정상적으로 수정 되었습니다");
 			} else {

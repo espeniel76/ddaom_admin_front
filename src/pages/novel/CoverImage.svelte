@@ -17,9 +17,7 @@
 		fnSearch();
 	});
 
-	beforeUpdate(() => {
-		console.log("삭제클릭2", $checkedList);
-	});
+
 
 	async function fnSearch() {
 		await images.fetch(oSearch, $paging.pageSize, $paging.nowPage);

@@ -591,6 +591,6 @@
 				</div>
 			</div>
 		</div>
-		s
+		
 	{/if}
 </div>
