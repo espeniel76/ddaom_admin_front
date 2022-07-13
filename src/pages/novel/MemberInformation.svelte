@@ -41,7 +41,10 @@
             // 게시글 페이지 1번으로 
             async function fnSearch() { 
                 await memberInformation.fetchMemberInformation(oSearch, $paging.pageSize, $paging.nowPage);
-            }
+                let o = $paging;
+                o.nowPage = 1;
+                paging.update((paging) => o);
+             }
         
             
     
@@ -125,10 +128,10 @@
         
         
     
+            fnSearch();
             let o = $paging;
             o.nowPage = 1;
             paging.update((paging) => o);
-            fnSearch();
         }
 
 

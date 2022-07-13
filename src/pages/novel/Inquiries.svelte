@@ -158,6 +158,6 @@
 		
 		</table>
 
-		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} {registUrl} />
+		<Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} {registUrl} />
 	</div>
 </div>

@@ -34,7 +34,6 @@
 		// 게시글 페이지 1번으로 
 	async function fnSearch() {
 		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
-	
 	}
 	async function fnDelete() {
 		await keywords.delKeyword($checkedList);
@@ -63,11 +62,11 @@
 		oSearch.Keyword = "";
 		oSearch.CntTotal = 0;
 	
+		fnSearch();
 
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	$: {

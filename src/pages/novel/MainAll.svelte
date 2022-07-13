@@ -26,6 +26,9 @@
 	
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
+		let o = $paging;
+		o.nowPage = 1;
+		paging.update((paging) => o);
 		
 	}
 
@@ -41,10 +44,10 @@
 		oSearch.EndDate = "";
 		oSearch.Keyword = "";
 		
+		fnSearch();
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	let oModal = {

@@ -974,7 +974,7 @@ function setMemberInformationList() {
     let url = `/cs/memberInformationList/ListData?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log(getDatas);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {
@@ -1023,7 +1023,7 @@ function setMemLog() {
     let url = `/cs/memberInformationList/ListLog?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-      console.log(getDatas);
+
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {

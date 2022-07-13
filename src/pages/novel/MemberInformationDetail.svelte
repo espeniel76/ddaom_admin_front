@@ -78,8 +78,8 @@
 	onMount(async () => {
 		$paging.nowPage = 1;
 		$pagingLog.nowPage = 1;
-		fnSearch1();
-		fnSearch2();
+		fnSearch();
+	
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id,allocatedDb);
 			if (retVal.ResultCode === "OK") {
@@ -94,14 +94,12 @@
 	
 	);
 
-	async function fnSearch1() { 
+	async function fnSearch() { 
 		await memberInformationList.setMemberInformationList(_id,$paging.pageSize,$paging.nowPage);
+		await novelLog.fetchLog(_id,$pagingLog.pageSize,$pagingLog.nowPage);
 		
 	}
-	async function fnSearch2() { 
-		await novelLog.fetchLog(_id,$pagingLog.pageSize,$pagingLog.nowPage);
-	}
-
+	
 
 	function test(e,contents) {
 		switch (e) {
@@ -112,7 +110,7 @@
 				return "블랙 리스트 미등록 (자동)"
 				break;
 			case 6:
-				return "블랙 리스트 (등록)\n[사유]\n" + (contents)
+				return `블랙 리스트 (등록)\n[사유]\n` + (contents)
 				break;
 			case 5:
 				return "회원 상태 변경 (탈퇴)"
@@ -245,7 +243,7 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformationList.Data.TotalCount > 0) {
 			totalCount = $memberInformationList.Data.TotalCount;
-			
+			console.log(totalCount);
 		}
 		if ($novelLog.Data.TotalCount > 0) {
 			logTotalCount = $novelLog.Data.TotalCount;
@@ -309,7 +307,7 @@
 				{/each}
 			</tbody>
 		</table>
-		<Paging fnSearch={fnSearch1} {pageSize} {totalCount} />
+		<Paging {fnSearch} {pageSize} {totalCount} />
 		
 				<table class="table">
 					<thead><tr style="font-weight: bold; font-size:large;">블랙리스트 설정</tr></thead>
@@ -342,7 +340,7 @@
                     <th colspan="9">
                         Total data: {$pagingLog.totalCount}
                         , Now page: {$pagingLog.nowPage}
-                        , TOTAL page: {$paging.totalPage}
+                        , TOTAL page: {$pagingLog.totalPage}
                     </th>
 					
                 </tr>
@@ -370,7 +368,7 @@
 				
 			</tbody>
 		</table>
-		<Paging2 fnSearch={fnSearch2} pageSize={pagingLogPageSize} totalCount={logTotalCount} fnDelete={undefined} registUrl={undefined}/>
+		<Paging2 fnSearch={fnSearch} pageSize={pagingLogPageSize} totalCount={logTotalCount} fnDelete={undefined} registUrl={undefined}/>
 		<!-- <Paging fnSearch1={fnSearch2} {pageSize} {totalCount} /> -->
 		<br>	<br>
 		<!-- 목록버튼 -->

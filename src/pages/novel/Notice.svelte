@@ -33,7 +33,9 @@ import { beforeUpdate, onMount } from "svelte";
 		// 게시글 페이지 1번으로 
 	async function fnSearch() { 
 		await notice.fetchNotice(oSearch, $paging.pageSize, $paging.nowPage);
-	
+		let o = $paging;
+		o.nowPage = 1;
+		paging.update((paging) => o);
 	}
 	async function fnDelete() {
 		await notice.delNotice($checkedList);
@@ -61,10 +63,10 @@ import { beforeUpdate, onMount } from "svelte";
 	
 	
 
+		fnSearch();
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	$: {

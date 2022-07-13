@@ -82,15 +82,18 @@
 
 	async function fnSearch() {
 		await genres.fetchGenres(oSearch.ActiveYn, oSearch.Genre, $paging.pageSize, $paging.nowPage);
+		let o = $paging;
+		o.nowPage = 1;
+		paging.update((paging) => o);
 	}
 
 	function fnInit() {
 		oSearch.ActiveYn = "All";
 		oSearch.Genre = "";
 		let o = $paging;
+		fnSearch();
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	$: {

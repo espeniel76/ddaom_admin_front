@@ -32,6 +32,9 @@
 	async function fnSearch() {
 		await categoryFaq.fetchCategoryFaq();
 		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
+		let o = $paging;
+		o.nowPage = 1;
+		paging.update((paging) => o);
 	}
 
 	async function fnDelete() {
@@ -54,11 +57,11 @@
 		oSearch.EndDate = "";
 		oSearch.Faq = "";
 		oSearch.oCategory = "Choice";
+		fnSearch();
 
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	function checkedAllchange(e) {
