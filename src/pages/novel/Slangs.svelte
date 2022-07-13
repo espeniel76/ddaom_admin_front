@@ -95,7 +95,9 @@
 		}
 		if ($slangs.Data.TotalCount > 0) {
 			totalCount = $slangs.Data.TotalCount;
-		}
+		}else{
+                totalCount=0;
+            };
 	}
 </script>
 

@@ -900,7 +900,6 @@ function setMemberInformation() {
     let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&Value=${o.Value}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
-
       if (getDatas.ResultCode !== 'OK') {
         alert(getDatas.ErrorDesc);
       } else {

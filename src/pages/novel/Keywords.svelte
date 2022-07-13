@@ -62,17 +62,19 @@
 		oSearch.Keyword = "";
 		oSearch.CntTotal = 0;
 	
-		fnSearch();
-
+		
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
+		fnSearch();
 	}
 
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
 			totalCount = $keywords.Data.TotalCount;
-		}
+		}else{
+                totalCount=0;
+            };
 	}
 	function checkedAllchange(e) {
 		const checked = e.target.checked;

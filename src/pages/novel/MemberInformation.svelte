@@ -41,9 +41,6 @@
             // 게시글 페이지 1번으로 
             async function fnSearch() { 
                 await memberInformation.fetchMemberInformation(oSearch, $paging.pageSize, $paging.nowPage);
-                let o = $paging;
-                o.nowPage = 1;
-                paging.update((paging) => o);
              }
         
             
@@ -53,10 +50,9 @@
             if ($memberInformation.Data.TotalCount > 0) {
                 totalCount = $memberInformation.Data.TotalCount;
                 quData = $memberInformation.Data.queryList;
-               
-              
-              
-        
+            }else{
+                totalCount=0;
+                quData=[];
             }
             
         	
@@ -137,12 +133,7 @@
 
         
 
-        function checkedAllchange(e) {
-            const checked = e.target.checked;
-            $check = checked
-        
-        }
-            
+  
             
     
     
@@ -178,7 +169,7 @@
 								aria-label="Default select example"
 								bind:value={oSearch.DateSelect}
 							>
-								<option value="All" selected>최종접속일</option>
+								<option value="All" selected>최근접속일</option>
 								<option value="LastDay" >최종접속일</option>
 								<option value="CreateDay">가입일</option>
 								<option value="DelectDay">탈퇴일</option>
@@ -290,7 +281,7 @@
             </tbody>
         </table>
     
-        <Paging {fnSearch} {pageSize} {totalCount} />
+        <Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} registUrl={undefined}/>
 
         
         </div>

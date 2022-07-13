@@ -38,10 +38,10 @@
 	function fnInit() {
 		oSearch.ActiveYn = "All";
 		oSearch.Name = "";
+		fnSearch();
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
@@ -51,7 +51,9 @@
 	$: {
 		if ($images.Data.TotalCount > 0) {
 			totalCount = $images.Data.TotalCount;
-		}
+		}else{
+                totalCount=0;
+            };
 	}
 </script>
 

@@ -71,7 +71,10 @@
 	if ($inquiries.Data.TotalCount > 0) {
 			totalCount = $inquiries.Data.TotalCount;
 			quData = $inquiries.Data.queryList;
-		}
+		}else{
+                totalCount=0;
+				quData=[];
+            };
 	}
 </script>
 
