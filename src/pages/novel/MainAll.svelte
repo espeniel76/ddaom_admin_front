@@ -26,10 +26,6 @@
 	
 	async function fnSearch() {
 		await mainAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
-		
 	}
 
 

@@ -32,9 +32,7 @@
 	async function fnSearch() {
 		await categoryFaq.fetchCategoryFaq();
 		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
+	
 	}
 
 	async function fnDelete() {
@@ -48,7 +46,9 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
-		}
+		}else{
+                totalCount=0;
+            };
 	}
 
 	function fnInit() {

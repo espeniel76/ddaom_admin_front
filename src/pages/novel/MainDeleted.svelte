@@ -25,9 +25,6 @@
 
 	async function fnSearch() {
 		await mainDeletedAll.fetch(oSearch, $paging.pageSize, $paging.nowPage);
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
 	}
 
 	async function fnInit() {

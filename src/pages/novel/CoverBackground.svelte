@@ -43,15 +43,17 @@
 		oSearch.ActiveYn = "All";
 		oSearch.Color = "";
 
+		fnSearch();
 		let o = $paging;
 		o.nowPage = 1;
 		paging.update((paging) => o);
-		fnSearch();
 	}
 
 	$: {
 		if ($colors.Data.TotalCount > 0) {
 			totalCount = $colors.Data.TotalCount;
+		}else{
+			totalCount= 0;
 		}
 	}
 </script>

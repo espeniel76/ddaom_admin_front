@@ -82,9 +82,6 @@
 
 	async function fnSearch() {
 		await genres.fetchGenres(oSearch.ActiveYn, oSearch.Genre, $paging.pageSize, $paging.nowPage);
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
 	}
 
 	function fnInit() {
@@ -103,7 +100,9 @@
 		}
 		if ($genres.Data.TotalCount > 0) {
 			totalCount = $genres.Data.TotalCount;
-		}
+		}else{
+                totalCount=0;
+            };
 	}
 </script>
 

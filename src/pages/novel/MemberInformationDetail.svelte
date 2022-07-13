@@ -76,9 +76,9 @@
 	let urlList = "/novel/memberInformation";
 
 	onMount(async () => {
+		fnSearch();
 		$paging.nowPage = 1;
 		$pagingLog.nowPage = 1;
-		fnSearch();
 	
 		if (_id !== "new") {
 			let retVal = await memberInformation.getMemberInformation(_id,allocatedDb);
@@ -230,7 +230,7 @@
 			oSave.oSnsType = Data.sns_type; // 가입경로 
 			//탈퇴사유
 			
-			// console.log('ddd',$novelFetch.Data.List[0].Content);
+			
 		
 			
 			
@@ -243,12 +243,15 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformationList.Data.TotalCount > 0) {
 			totalCount = $memberInformationList.Data.TotalCount;
-			console.log(totalCount);
 		}
+		else{
+			totalCount=0;
+		};
 		if ($novelLog.Data.TotalCount > 0) {
 			logTotalCount = $novelLog.Data.TotalCount;
-			console.log(logTotalCount);
-		}
+		}else{
+			logTotalCount=0;
+		};
     
 		
 	}
@@ -307,7 +310,7 @@
 				{/each}
 			</tbody>
 		</table>
-		<Paging {fnSearch} {pageSize} {totalCount} />
+		<Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} registUrl={undefined}/>
 		
 				<table class="table">
 					<thead><tr style="font-weight: bold; font-size:large;">블랙리스트 설정</tr></thead>
@@ -369,7 +372,6 @@
 			</tbody>
 		</table>
 		<Paging2 fnSearch={fnSearch} pageSize={pagingLogPageSize} totalCount={logTotalCount} fnDelete={undefined} registUrl={undefined}/>
-		<!-- <Paging fnSearch1={fnSearch2} {pageSize} {totalCount} /> -->
 		<br>	<br>
 		<!-- 목록버튼 -->
 		<DetailCommonInquirieBottomBtns {urlList}  />
