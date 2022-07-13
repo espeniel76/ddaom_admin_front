@@ -110,7 +110,7 @@
 				return "블랙 리스트 미등록 (자동)"
 				break;
 			case 6:
-				return `블랙 리스트 (등록)\n[사유]\n` + (contents)
+				return `블랙 리스트 (등록)\n[사유]\n\r <br>` + (contents)
 				break;
 			case 5:
 				return "회원 상태 변경 (탈퇴)"
@@ -262,7 +262,6 @@
 	<div class="table-responsive text-nowrap">
 		<br>
 		<table class="table">
-			<thead><tr style="font-weight: bold; font-size:large;">회원정보</tr></thead>
 			<tbody class="table-border-bottom-0">
 				<DetailCommonTr {oSave}/>
 			</tbody>
@@ -313,7 +312,6 @@
 		<Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} registUrl={undefined}/>
 		
 				<table class="table">
-					<thead><tr style="font-weight: bold; font-size:large;">블랙리스트 설정</tr></thead>
 					<tbody class="table-border-bottom-0">
 					<DetailCommonBlockedYn {oSave} title="블랙리스트 여부" Y="등록" N="미등록"/>
 				<tr>
@@ -339,23 +337,15 @@
 		<!-- 로그 -->
 		<table class="table">
 			<thead>
-				<tr>
-                    <th colspan="9">
-                        Total data: {$pagingLog.totalCount}
-                        , Now page: {$pagingLog.nowPage}
-                        , TOTAL page: {$pagingLog.totalPage}
-                    </th>
-					
-                </tr>
-				<tr style="font-weight: bold; font-size:large;">
-				   접속/변경 내역
-				</tr>
-				<tr style="text-align:center">
-				
+			<th colspan="9" style="">
+				Total data: {$pagingLog.totalCount}
+				, Now page: {$pagingLog.nowPage}
+				, TOTAL page: {$pagingLog.totalPage}
+			</th>
+				<tr style="text-align:center ">
 					<th width="50">No</th>
 					<th width="50">일시</th>
 					<th width="*">내용</th>
-					
 				</tr>
 			</thead>
 			

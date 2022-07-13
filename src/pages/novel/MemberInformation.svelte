@@ -169,7 +169,7 @@
 								aria-label="Default select example"
 								bind:value={oSearch.DateSelect}
 							>
-								<option value="All" selected>최종접속일</option>
+								<option value="All" selected>최근접속일</option>
 								<option value="LastDay" >최종접속일</option>
 								<option value="CreateDay">가입일</option>
 								<option value="DelectDay">탈퇴일</option>
