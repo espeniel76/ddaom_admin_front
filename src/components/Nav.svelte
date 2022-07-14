@@ -83,7 +83,7 @@
           icon: 'user',
           src: '/novel/faq',
           subs: [
-            // { title: 'FAQ', src: '/novel/main/all' },
+            { title: 'FAQ', src: '/novel/faq' },
             { title: 'FAQ장르관리', src: '/novel/main/deleted' },
           ],
         },

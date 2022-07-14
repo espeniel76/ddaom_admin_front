@@ -230,22 +230,22 @@
 <div class="card mb-4">
   <div class="table-responsive text-nowrap">
     <br />
-    <p style="margin:right=10">회원정보</p>
+    <th style="padding-left:30px">회원정보</th>
     <table class="table">
       <tbody class="table-border-bottom-0">
         <DetailCommonTr {oSave} />
       </tbody>
     </table>
+    <br /> <br />
+    <th colspan="12" style="float:right">
+      Total data: {$paging.totalCount}
+      , Now page: {$paging.nowPage}
+      , TOTAL page: {$paging.totalPage}
+    </th>
+    <th style="padding-left:30px">소설목록</th>
     <br />
     <table class="table">
       <thead>
-        <tr>
-          <th colspan="9">
-            Total data: {$paging.totalCount}
-            , Now page: {$paging.nowPage}
-            , TOTAL page: {$paging.totalPage}
-          </th>
-        </tr>
         <tr style="text-align:center">
           <th width="50">No</th>
           <th width="50">상태</th>
@@ -286,7 +286,7 @@
       fnDelete={undefined}
       registUrl={undefined}
     />
-
+    <th style="padding-left:30px">블랙리스트 설정</th>
     <table class="table">
       <tbody class="table-border-bottom-0">
         <DetailCommonBlockedYn
@@ -314,17 +314,20 @@
         </tr>
       </tbody>
     </table>
+    <br /> <br />
     <!-- 등록버튼 -->
     <DetailCommonInquirieBottomBtns {fnSave} {_id} />
     <br />
     <!-- 로그 -->
+    <th colspan="12" style="float:right">
+      Total data: {$pagingLog.totalCount}
+      , Now page: {$pagingLog.nowPage}
+      , TOTAL page: {$pagingLog.totalPage}
+    </th>
+    <th style="padding-left:30px">접속/변경내역</th>
+    <br />
     <table class="table">
       <thead>
-        <th colspan="9" style="">
-          Total data: {$pagingLog.totalCount}
-          , Now page: {$pagingLog.nowPage}
-          , TOTAL page: {$pagingLog.totalPage}
-        </th>
         <tr style="text-align:center ">
           <th width="50">No</th>
           <th width="50">일시</th>

@@ -13,7 +13,7 @@ export default {
     IMAGE_SERVER: 'http://192.168.1.20:81',
   },
   // urls: {
-  // 	ADMIN_API_SERVER: "https://adminapi.ttaom.com/api",
-  // 	IMAGE_SERVER: "https://s3.ap-northeast-2.amazonaws.com/image.ttaom.com",
+  //   ADMIN_API_SERVER: 'https://adminapi.ttaom.com/api',
+  //   IMAGE_SERVER: 'https://s3.ap-northeast-2.amazonaws.com/image.ttaom.com',
   // },
 };
