@@ -84,7 +84,7 @@
           src: '/cs/faq',
           subs: [
             { title: 'FAQ', src: '/cs/faq' },
-            { title: 'FAQ카테고리 관리', src: '/novel/genres' },
+            { title: '카테고리 관리', src: '/novel/genres' },
           ],
         },
       ],
