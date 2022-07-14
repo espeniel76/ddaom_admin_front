@@ -897,7 +897,7 @@ function setMemberInformation() {
   const { subscribe, set, update } = writable(values);
 
   const fetchMemberInformation = async (o, PageSize, Page) => {
-    let url = `/cs/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&Value=${o.Value}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/memberInfo/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&Value=${o.Value}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
       if (getDatas.ResultCode !== 'OK') {
@@ -912,7 +912,7 @@ function setMemberInformation() {
   };
 
   const getMemberInformation = async (seqMemberDtail, allocatedDb) => {
-    let url = `/cs/memberInformation/seqMemberDtail?seqMemberDtail=${seqMemberDtail}&allocatedDb=${allocatedDb}`;
+    let url = `/memberInfo/memberInformation/seqMemberDtail?seqMemberDtail=${seqMemberDtail}&allocatedDb=${allocatedDb}`;
     try {
       const getDatas = await getApi(url);
       return getDatas;
@@ -928,12 +928,15 @@ function setMemberInformation() {
     StartDate
   ) => {
     try {
-      const newData = await putApi(`/cs/memberInformation/${SeqMember}`, {
-        SeqMember,
-        isBlocked,
-        BlockedReason,
-        StartDate,
-      });
+      const newData = await putApi(
+        `/memberInfo/memberInformation/${SeqMember}`,
+        {
+          SeqMember,
+          isBlocked,
+          BlockedReason,
+          StartDate,
+        }
+      );
       return newData;
     } catch (error) {
       alert('오류가 발생했습니다. 다시 시도해 주세요. ');
@@ -941,7 +944,7 @@ function setMemberInformation() {
   };
 
   const delMemberInformation = async (idList) => {
-    let url = `/cs/memberInformation`;
+    let url = `/memberInfo/memberInformation`;
     try {
       const getDatas = await delApi(url, idList);
       if (getDatas.ResultCode !== 'OK') {
@@ -970,7 +973,7 @@ function setMemberInformationList() {
   const { subscribe, set, update } = writable(values);
 
   const setMemberInformationList = async (SeqMember, PageSize, Page) => {
-    let url = `/cs/memberInformationList/ListData?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/memberInfo/memberInformationList/ListData?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
 
@@ -995,7 +998,7 @@ function setNobel() {
   let values = { ...initListValues };
   const { subscribe, set, update } = writable(values);
   const fetch = async (SeqMember, novelStep, step) => {
-    let url = `/cs/memberInformationList/novelData?SeqMember=${SeqMember}&step=${step}&novelStep=${novelStep}`;
+    let url = `/memberInfo/memberInformationList/novelData?SeqMember=${SeqMember}&step=${step}&novelStep=${novelStep}`;
     try {
       const getDatas = await getApi(url);
 
@@ -1019,7 +1022,7 @@ function setMemLog() {
   let values = { ...initListValues };
   const { subscribe, set, update } = writable(values);
   const fetchLog = async (SeqMember, PageSize, Page) => {
-    let url = `/cs/memberInformationList/ListLog?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
+    let url = `/memberInfo/memberInformationList/ListLog?SeqMember=${SeqMember}&PageSize=${PageSize}&Page=${Page}`;
     try {
       const getDatas = await getApi(url);
 
