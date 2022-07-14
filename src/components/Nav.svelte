@@ -84,7 +84,7 @@
           src: '/cs/faq',
           subs: [
             { title: 'FAQ', src: '/cs/faq' },
-            { title: 'FAQ장르관리', src: '/novel/main/deleted' },
+            { title: 'FAQ카테고리 관리', src: '/novel/genres' },
           ],
         },
       ],

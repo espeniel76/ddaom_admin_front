@@ -18,6 +18,9 @@
   let totalCount = 0;
 
   let quData = '';
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
 
   onMount(() => {
     fnSearch();
@@ -185,6 +188,7 @@
                 type="text"
                 class="form-control form-control-sm"
                 bind:value={oSearch.NickName}
+                on:keypress={onKeyPress}
                 placeholder="닉네임 검색"
                 aria-label="Recipient's username with two button addons"
               />

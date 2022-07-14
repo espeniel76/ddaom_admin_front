@@ -13,7 +13,9 @@
   let pageSize = 10;
   let totalCount = 0;
   let registUrl = '/cs/notice/new';
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -114,8 +116,9 @@
               <input
                 type="text"
                 class="form-control form-control-sm"
-                placeholder="주제어"
+                placeholder="제목/내용"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Notice}
               />
               <button

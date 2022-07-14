@@ -18,6 +18,10 @@
   import DetailCommonStepList from '../../components/DetailCommonStepList.svelte';
   import PagingCommon from '../../components/PagingCommon.svelte';
 
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearchStep1();
+  };
+
   const route = meta();
   let _id = route.params._id;
 
@@ -295,6 +299,7 @@
                   type="text"
                   class="form-control form-control-sm"
                   placeholder="제목/내용/작가"
+                  on:keypress={onKeyPress}
                   bind:value={oSearchStep1.Search}
                 />
                 <button

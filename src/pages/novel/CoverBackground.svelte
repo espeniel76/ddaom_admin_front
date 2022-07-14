@@ -11,7 +11,9 @@
   let pageSize = 10;
   let totalCount = 0;
   let registUrl = '/novel/cover/background/new';
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -85,6 +87,7 @@
                 class="form-control form-control-sm"
                 placeholder="컬러명/코드"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Color}
               />
               <button

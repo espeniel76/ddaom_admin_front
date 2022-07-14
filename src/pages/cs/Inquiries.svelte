@@ -16,7 +16,9 @@
   let registUrl = '';
 
   let quData = '';
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -108,8 +110,9 @@
               <input
                 type="text"
                 class="form-control form-control-sm"
-                placeholder="주제어"
+                placeholder="제목/내용/등록자"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Inquiries}
               />
               <button

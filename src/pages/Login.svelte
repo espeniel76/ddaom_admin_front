@@ -9,6 +9,9 @@
     formPassword.value = '';
     formUserId.focus();
   };
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) onLogin();
+  };
 
   async function onLogin() {
     if (formUserId.value.length < 1) {
@@ -18,7 +21,7 @@
     }
 
     if (formPassword.value.length < 1) {
-      alert('아이디를 입력 하세요.');
+      alert('비밀번호를 입력 하세요.');
       formPassword.focus();
       return false;
     }
@@ -63,6 +66,7 @@
               type="text"
               class="form-control"
               placeholder="관리자아이디"
+              on:keypress={onKeyPress}
               bind:this={formUserId}
             />
           </div>
@@ -72,6 +76,7 @@
             </div>
             <div class="input-group input-group-merge">
               <input
+                on:keypress={onKeyPress}
                 type="password"
                 class="form-control"
                 placeholder="패스워드"

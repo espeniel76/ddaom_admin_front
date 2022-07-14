@@ -21,7 +21,9 @@
   };
   let pageSize = 10;
   let totalCount = 0;
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -188,6 +190,7 @@
                 class="form-control form-control-sm"
                 placeholder="장르"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Genre}
               />
               <button
