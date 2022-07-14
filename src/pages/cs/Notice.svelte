@@ -1,16 +1,18 @@
 <script>
   import { onMount } from 'svelte';
-  import { colors, paging, checkedList, check } from '../../stores';
+  import { notice, paging, checkedList, check } from '../../stores';
   import { Dates } from '../../utils/date';
   import Paging from '../../components/Paging.svelte';
 
   let oSearch = {
     ActiveYn: 'All',
-    Color: '',
+    StartDate: '',
+    EndDate: '',
+    Notice: '',
   };
   let pageSize = 10;
   let totalCount = 0;
-  let registUrl = '/novel/cover/background/new';
+  let registUrl = '/cs/notice/new';
   const onKeyPress = (e) => {
     if (e.charCode === 13) fnSearch();
   };
@@ -18,29 +20,27 @@
     fnSearch();
   });
 
-  function fnPageNavSet() {
+  // 체크 초기화
+  async function fnPageNavSet() {
     $checkedList = [];
     $check = false;
   }
 
+  // 게시글 페이지 1번으로
   async function fnSearch() {
-    await colors.fetch(oSearch, $paging.pageSize, $paging.nowPage);
+    await notice.fetchNotice(oSearch, $paging.pageSize, $paging.nowPage);
   }
-
   async function fnDelete() {
-    await colors.delColors($checkedList);
+    await notice.delNotice($checkedList);
     console.log('삭제클릭');
     fnPageNavSet();
     fnSearch();
   }
-  function checkedAllchange(e) {
-    const checked = e.target.checked;
-    $check = checked;
-  }
-
-  function fnInit() {
+  async function fnInit() {
     oSearch.ActiveYn = 'All';
-    oSearch.Color = '';
+    oSearch.StartDate = '';
+    oSearch.EndDate = '';
+    oSearch.Notice = '';
 
     fnSearch();
     let o = $paging;
@@ -48,9 +48,15 @@
     paging.update((paging) => o);
   }
 
+  async function checkedAllchange(e) {
+    const checked = e.target.checked;
+    $check = checked;
+  }
+
   $: {
-    if ($colors.Data.TotalCount > 0) {
-      totalCount = $colors.Data.TotalCount;
+    // 현재 페이지 게시물 갯수 TOTAL DATA
+    if ($notice.Data.TotalCount > 0) {
+      totalCount = $notice.Data.TotalCount;
     } else {
       totalCount = 0;
     }
@@ -62,10 +68,10 @@
     <table class="table">
       <tbody class="table-border-bottom-0">
         <tr>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">사용여부</h5></td
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">노출여부</h5></td
           >
-          <td width="200" style="vertical-align: middle;text-align:center">
+          <td width="100" style="vertical-align: middle;text-align:center">
             <select
               class="form-select form-select-sm"
               id="exampleFormControlSelect1"
@@ -73,22 +79,47 @@
               bind:value={oSearch.ActiveYn}
             >
               <option value="All" selected>전체</option>
-              <option value="Y">사용</option>
-              <option value="N">미사용</option>
+              <option value="Y">노출</option>
+              <option value="N">미노출</option>
             </select>
           </td>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">컬러명/코드</h5></td
+
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">등록일/수정일</h5></td
           >
-          <td width="*" colspan="3">
+          <td width="100" style="vertical-align: middle;text-align:center">
+            <input
+              class="form-control form-control-sm"
+              type="date"
+              bind:value={oSearch.StartDate}
+              id="html5-date-input"
+            />
+          </td>
+          <td
+            width="100"
+            style="vertical-align: middle;text-align:center; padding-left:0"
+          >
+            <input
+              class="form-control form-control-sm"
+              type="date"
+              bind:value={oSearch.EndDate}
+              id="html5-date-input"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">제목/내용</h5></td
+          >
+          <td width="*" colspan="4">
             <div class="input-group">
               <input
                 type="text"
                 class="form-control form-control-sm"
-                placeholder="컬러명/코드"
+                placeholder="제목/내용"
                 aria-label="Recipient's username with two button addons"
                 on:keypress={onKeyPress}
-                bind:value={oSearch.Color}
+                bind:value={oSearch.Notice}
               />
               <button
                 class="btn btn-sm btn-outline-primary"
@@ -125,32 +156,29 @@
             /></th
           >
           <th width="50">No</th>
-          <th width="*">컬러명</th>
-          <th width="50">색상</th>
-          <th width="100">코드</th>
-          <th width="100">사용여부</th>
+          <th width="*">제목</th>
+          <th width="100">노출여부</th>
           <th width="100">등록일</th>
-          <th width="100">수정일</th>
+          <th width="200">수정일</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        {#each $colors.Data.List as o, index}
-          <tr style="text-align:center" id={o.SeqColor}>
+        {#each $notice.Data.List as o, index}
+          <tr style="text-align:center" id={o.SeqNotice}>
             <td
               ><input
                 class="form-check-input"
                 type="checkbox"
                 id="defaultCheck3"
                 bind:group={$checkedList}
-                value={o.SeqColor}
+                value={o.SeqNotice}
                 checked={$check}
               /></td
             >
-            <td>{o.SeqColor}</td>
-            <td><a href="/novel/cover/background/{o.SeqColor}">{o.Name}</a></td>
-            <td style="background-color: {o.Color}" />
-            <td>{o.Color}</td>
-            <td>{o.ActiveYn ? '사용' : '미사용'}</td>
+            <td>{o.SeqNotice}</td>
+            <td><a href="/cs/notice/{o.SeqNotice}">{o.Title}</a></td>
+            <td>{o.ActiveYn ? '노출' : '미노출'}</td>
+
             <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ''}</td>
             <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ''}</td>
           </tr>

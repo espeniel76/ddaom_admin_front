@@ -1,29 +1,22 @@
 <script>
   import { onMount } from 'svelte';
-  import { keywords, paging, checkedList, check } from '../../stores';
+  import { faq, categoryFaq, paging, checkedList, check } from '../../stores';
   import { Dates } from '../../utils/date';
   import Paging from '../../components/Paging.svelte';
 
   let oSearch = {
-    Sort: 'startDateASC',
     ActiveYn: 'All',
-    ProcessYn: 'All',
     StartDate: '',
     EndDate: '',
-    Keyword: '',
-    CntTotal: 0,
+    Faq: '',
+    oCategory: 'Choice',
   };
   let pageSize = 10;
   let totalCount = 0;
-  let registUrl = '/novel/keywords/new';
-  let nowUnixtime = Dates.getUnixtime();
-
-  // 검색어 엔터
-  //on:keypress={onKeyPress}
+  let registUrl = '/cs/faq/new';
   const onKeyPress = (e) => {
     if (e.charCode === 13) fnSearch();
   };
-
   onMount(() => {
     fnSearch();
   });
@@ -36,36 +29,38 @@
 
   // 게시글 페이지 1번으로
   async function fnSearch() {
-    await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
+    await categoryFaq.fetchCategoryFaq();
+    await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
   }
+
   async function fnDelete() {
-    await keywords.delKeyword($checkedList);
+    await faq.delFaq($checkedList);
     console.log('삭제클릭');
     fnPageNavSet();
     fnSearch();
   }
-  async function checkedAllchange(e) {
-    const checked = e.target.checked;
-    $check = checked;
-  }
+
   async function fnInit() {
-    oSearch.Sort = 'startDateASC';
     oSearch.ActiveYn = 'All';
-    oSearch.ProcessYn = 'All';
     oSearch.StartDate = '';
     oSearch.EndDate = '';
-    oSearch.Keyword = '';
-    oSearch.CntTotal = 0;
+    oSearch.Faq = '';
+    oSearch.oCategory = 'Choice';
+    fnSearch();
 
     let o = $paging;
     o.nowPage = 1;
     paging.update((paging) => o);
-    fnSearch();
   }
 
+  async function checkedAllchange(e) {
+    const checked = e.target.checked;
+    $check = checked;
+  }
   $: {
-    if ($keywords.Data.TotalCount > 0) {
-      totalCount = $keywords.Data.TotalCount;
+    // 현재 페이지 게시물 갯수 TOTAL DATA
+    if ($faq.Data.TotalCount > 0) {
+      totalCount = $faq.Data.TotalCount;
     } else {
       totalCount = 0;
     }
@@ -77,10 +72,26 @@
     <table class="table">
       <tbody class="table-border-bottom-0">
         <tr>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">사용여부</h5></td
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">카테고리</h5></td
           >
-          <td width="200" style="vertical-align: middle;text-align:center">
+          <td width="100" style="vertical-align: middle;text-align:center">
+            <select
+              class="form-select form-select-sm"
+              id="exampleFormControlSelect1"
+              aria-label="Default select example"
+              bind:value={oSearch.oCategory}
+            >
+              <option value="Choice" selected>전체</option>
+              {#each $categoryFaq.Data.List as o, index}
+                <option value={o.SeqCategoryFaq}>{o.CategoryFaq}</option>
+              {/each}
+            </select></td
+          >
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">노출여부</h5></td
+          >
+          <td width="100" style="vertical-align: middle;text-align:center">
             <select
               class="form-select form-select-sm"
               id="exampleFormControlSelect1"
@@ -88,27 +99,13 @@
               bind:value={oSearch.ActiveYn}
             >
               <option value="All" selected>전체</option>
-              <option value="Y">사용</option>
-              <option value="N">미사용</option>
+              <option value="Y">노출</option>
+              <option value="N">미노출</option>
             </select>
           </td>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">진행여부</h5></td
-          >
-          <td width="200" style="vertical-align: middle;text-align:center">
-            <select
-              class="form-select form-select-sm"
-              id="exampleFormControlSelect1"
-              aria-label="Default select example"
-              bind:value={oSearch.ProcessYn}
-            >
-              <option value="All" selected>전체</option>
-              <option value="Y">진행</option>
-              <option value="N">종료</option>
-            </select>
-          </td>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">사용기간</h5></td
+
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">등록일/수정일</h5></td
           >
           <td width="100" style="vertical-align: middle;text-align:center">
             <input
@@ -131,18 +128,18 @@
           </td>
         </tr>
         <tr>
-          <td width="100" style="text-align: right;"
-            ><h5 class="mb-0">주제어</h5></td
+          <td width="100" style="text-align: left;"
+            ><h5 class="mb-0">제목/내용</h5></td
           >
-          <td width="*" colspan="3">
+          <td width="*" colspan="4">
             <div class="input-group">
               <input
                 type="text"
                 class="form-control form-control-sm"
-                placeholder="주제어"
+                placeholder="제목/내용"
                 aria-label="Recipient's username with two button addons"
                 on:keypress={onKeyPress}
-                bind:value={oSearch.Keyword}
+                bind:value={oSearch.Faq}
               />
               <button
                 class="btn btn-sm btn-outline-primary"
@@ -162,22 +159,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th colspan="4">
-            <select
-              class="form-select form-select-sm"
-              bind:value={oSearch.Sort}
-              style="width:200px"
-              on:change={() => {
-                fnSearch();
-              }}
-            >
-              <option value="startDateASC" selected>등록일 순</option>
-              <option value="NovelDESC">연재 많은 순</option>
-              <option value="EndDateASC">종료일 임박 순</option>
-              <option value="EndDateDESC">종료일 늦은 순</option>
-            </select>
-          </th>
-          <th colspan="12">
+          <th colspan="9">
             Total data: {$paging.totalCount}
             , Now page: {$paging.nowPage}
             , TOTAL page: {$paging.totalPage}
@@ -194,51 +176,36 @@
             /></th
           >
           <th width="50">No</th>
-          <th width="*">주제어</th>
-          <th width="100">사용여부</th>
-          <th width="100">진행여부</th>
-          <th width="100">사용기간</th>
+          <th width="50">카테고리</th>
+          <th width="*">제목</th>
+          <th width="100">노출여부</th>
           <th width="100">등록일</th>
-          <th width="100">수정일</th>
+          <th width="200">수정일</th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        {#each $keywords.Data.List as o, index}
-          <tr style="text-align:center" id={o.SeqKeyword}>
+        {#each $faq.Data.List as o, index}
+          <tr style="text-align:center" id={o.SeqFaq}>
             <td
               ><input
                 class="form-check-input"
                 type="checkbox"
                 id="defaultCheck3"
                 bind:group={$checkedList}
-                value={o.SeqKeyword}
+                value={o.SeqFaq}
                 checked={$check}
               /></td
             >
-            <td>{o.SeqKeyword}</td>
-            <td
-              ><a href="/novel/keywords/{o.SeqKeyword}"
-                >{o.Keyword}({o.CntTotal})</a
-              ></td
-            >
-            <td>{o.ActiveYn ? '사용' : '미사용'}</td>
-            <td>
-              {#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
-                예정
-              {:else if nowUnixtime < Dates.setUnixtime(o.EndDate)}
-                진행
-              {:else}
-                종료
-              {/if}
-            </td>
-            <td
-              >{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(
-                o.EndDate
-              )}</td
-            >
+            <td>{o.SeqFaq}</td>
+            <!-- <td>{o.faqCategory}</td> -->
+            <td>{$categoryFaq.Data.List[o.faqCategory - 1].CategoryFaq}</td>
+
+            <td><a href="/cs/faq/{o.SeqFaq}">{o.Title}</a></td>
+            <td>{o.ActiveYn ? '노출' : '미노출'}</td>
+
             <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ''}</td>
             <td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ''}</td>
-          </tr><tr />
+          </tr>
         {/each}
       </tbody>
     </table>
