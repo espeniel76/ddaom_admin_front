@@ -29,7 +29,7 @@
   };
 
   let Data;
-  let urlList = '/novel/inquiry';
+  let urlList = '/cs/inquiry';
   const regex = /[\s\uFEFF\xA0]+$/gi;
   // .replace(regex, '')
 

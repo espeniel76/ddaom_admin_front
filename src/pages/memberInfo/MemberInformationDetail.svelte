@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
 
-  import { meta } from 'tinro';
+  import { meta, router } from 'tinro';
   import {
     paging,
     pagingLog,
@@ -73,7 +73,7 @@
   let Data;
   let LogData;
 
-  let urlList = '/novel/memberInformation';
+  let urlList = '/memberInfo/memberInformation';
 
   onMount(async () => {
     fnSearch();
@@ -138,13 +138,11 @@
     let isBlocked = false;
     if (oSave.oBlockedYnTrue.checked) {
       isBlocked = true;
-      test = true;
 
       // fnPageNavSet();
       console.log('등록');
     } else if (oSave.oBlockedYnFalse.checked) {
       isBlocked = false;
-      test = false;
     }
 
     // 사용기간 체크
@@ -181,9 +179,9 @@
       console.log('수정', retVal);
       if (retVal) {
         alert('정상적으로 수정 되었습니다');
-        // router.goto("/novel/memberInformation");
+        // router.goto('/memberInfo/memberInformation');
       } else {
-        alert(retVal.ErrorDesc);
+        alert(retVal);
       }
     }
   }

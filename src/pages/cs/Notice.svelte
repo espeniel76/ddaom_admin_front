@@ -12,7 +12,7 @@
   };
   let pageSize = 10;
   let totalCount = 0;
-  let registUrl = '/novel/notice/new';
+  let registUrl = '/cs/notice/new';
 
   onMount(() => {
     fnSearch();

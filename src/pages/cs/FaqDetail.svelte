@@ -25,7 +25,7 @@
   };
 
   let Data;
-  let urlList = '/novel/faq';
+  let urlList = '/cs/faq/';
   const regex = /[\s\uFEFF\xA0]+$/gi;
   // .replace(regex, '')
 
