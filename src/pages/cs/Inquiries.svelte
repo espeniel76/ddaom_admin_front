@@ -177,10 +177,7 @@
                 ? '답변중'
                 : '미답변'}</td
             >
-            <td
-              ><a href="/novel/inquiry/{o.seq_service_inquiry}">{o.title}</a
-              ></td
-            >
+            <td><a href="/cs/inquiry/{o.seq_service_inquiry}">{o.title}</a></td>
             <td>{o.nick_name}</td>
             <td>{o.created_at ? Dates.defaultConvert(o.created_at) : ''}</td>
             <td

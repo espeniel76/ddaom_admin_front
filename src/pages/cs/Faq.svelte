@@ -197,7 +197,7 @@
             <!-- <td>{o.faqCategory}</td> -->
             <td>{$categoryFaq.Data.List[o.faqCategory - 1].CategoryFaq}</td>
 
-            <td><a href="/novel/faq/{o.SeqFaq}">{o.Title}</a></td>
+            <td><a href="/cs/faq/{o.SeqFaq}">{o.Title}</a></td>
             <td>{o.ActiveYn ? '노출' : '미노출'}</td>
 
             <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ''}</td>

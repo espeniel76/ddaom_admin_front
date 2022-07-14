@@ -173,7 +173,7 @@
               /></td
             >
             <td>{o.SeqNotice}</td>
-            <td><a href="/novel/notice/{o.SeqNotice}">{o.Title}</a></td>
+            <td><a href="/cs/notice/{o.SeqNotice}">{o.Title}</a></td>
             <td>{o.ActiveYn ? '노출' : '미노출'}</td>
 
             <td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ''}</td>

@@ -102,7 +102,7 @@
     await novelLog.fetchLog(_id, $pagingLog.pageSize, $pagingLog.nowPage);
   }
 
-  function test(e, contents) {
+  function type(e, contents) {
     switch (e) {
       case 8:
         return '블랙 리스트 미등록 (수동)';
@@ -111,7 +111,10 @@
         return '블랙 리스트 미등록 (자동)';
         break;
       case 6:
-        return `블랙 리스트 (등록)\n[사유]\n\r <br>` + contents;
+        return (
+          `블랙 리스트 (등록)\n[사유]\n\r <br> 여기 템플릿 수정해야함` +
+          contents
+        );
         break;
       case 5:
         return '회원 상태 변경 (탈퇴)';
@@ -341,7 +344,7 @@
           <tr style="text-align:center">
             <td>{o.seq_member_log}</td>
             <td>{Dates.defaultConvertFull(o.created_at)}</td>
-            <td>{test(o.type, o.contents)}</td>
+            <td>{type(o.type, o.contents)}</td>
           </tr>
         {/each}
       </tbody>

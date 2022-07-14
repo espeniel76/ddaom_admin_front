@@ -313,7 +313,7 @@
             <td>{o.cnt_finsh}</td>
             <td
               ><a
-                href="/novel/memberInformation/{o.seq_member}/{o.allocated_db}"
+                href="/memberInfo/memberInformation/{o.seq_member}/{o.allocated_db}"
                 >{o.nick_name}</a
               ></td
             >
