@@ -23,6 +23,8 @@
   import Faq from './pages/cs/Faq.svelte';
   import FaqDetail from './pages/cs/FaqDetail.svelte';
 
+  import FaqCatacory from './pages/cs/FaqCatacory.svelte';
+
   import Inquiry from './pages/cs/Inquiries.svelte';
   import InquiryDetail from './pages/cs/InquiriesDetail.svelte';
 
@@ -52,6 +54,8 @@
 
 <Route path="/cs/faq"><Faq /></Route>
 <Route path="/cs/faq/:_id"><FaqDetail /></Route>
+
+<Route path="/cs/FaqCatacory"><FaqCatacory /></Route>
 
 <Route path="/cs/inquiry"><Inquiry /></Route>
 <Route path="/cs/inquiry/:_id"><InquiryDetail /></Route>
