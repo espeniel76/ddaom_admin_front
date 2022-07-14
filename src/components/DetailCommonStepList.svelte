@@ -14,6 +14,10 @@
   $: {
     // console.log(oList);
   }
+
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
 </script>
 
 <table class="table">
@@ -26,6 +30,7 @@
             type="text"
             class="form-control form-control-sm"
             placeholder="내용/작가"
+            on:keypress={onKeyPress}
             bind:value={oSearchStep.Search}
           />
           <button

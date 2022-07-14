@@ -18,7 +18,9 @@
   let totalCount = 0;
   let registUrl = '';
   let fnDelete = false;
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -151,6 +153,7 @@
                 class="form-control form-control-sm"
                 placeholder="주제어"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Keyword}
               />
               <button

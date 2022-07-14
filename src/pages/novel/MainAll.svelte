@@ -24,6 +24,11 @@
   let nowUnixtime = Dates.getUnixtime();
   let fnDelete = '';
 
+  // 검색어 엔터
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
+
   onMount(() => {
     fnSearch();
   });
@@ -122,6 +127,7 @@
                 type="text"
                 class="form-control form-control-sm"
                 placeholder="주제어"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Keyword}
               />
               <button

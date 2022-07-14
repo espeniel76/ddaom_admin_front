@@ -12,7 +12,9 @@
   let pageSize = 10;
   let totalCount = 0;
   let registUrl = '/novel/cover/image/new';
-
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   onMount(() => {
     fnSearch();
   });
@@ -85,6 +87,7 @@
                 class="form-control form-control-sm"
                 placeholder="제목"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Name}
               />
               <button

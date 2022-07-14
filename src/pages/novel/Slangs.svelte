@@ -19,6 +19,9 @@
     ActiveYn: 'All',
     Slang: '',
   };
+  const onKeyPress = (e) => {
+    if (e.charCode === 13) fnSearch();
+  };
   let pageSize = 10;
   let totalCount = 0;
 
@@ -135,7 +138,7 @@
           <label class="form-check-label" for="inlineRadio2">미사용</label>
         </td>
         <td width="150" style="text-align: right;"
-          ><h5 class="mb-0">금칙어</h5></td
+          ><h5 class="mb-0">금칙어1</h5></td
         >
         <td width="*">
           <div class="input-group">
@@ -144,6 +147,7 @@
               class="form-control form-control-sm"
               placeholder="금칙어"
               aria-label="Recipient's username with two button addons"
+              on:keypress={onKeyPress}
               bind:this={oSave.oSlang}
             />
             <button
@@ -188,6 +192,7 @@
                 class="form-control form-control-sm"
                 placeholder="금칙어"
                 aria-label="Recipient's username with two button addons"
+                on:keypress={onKeyPress}
                 bind:value={oSearch.Slang}
               />
               <button
