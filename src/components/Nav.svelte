@@ -69,21 +69,21 @@
         {
           title: '공지사항',
           icon: 'notification',
-          src: '/novel/notice',
+          src: '/cs/notice',
           subs: [],
         },
         {
           title: '1:1문의',
           icon: 'chat',
-          src: '/novel/inquiry',
+          src: '/cs/inquiry',
           subs: [],
         },
         {
           title: 'FAQ',
           icon: 'user',
-          src: '/novel/faq',
+          src: '/cs/faq',
           subs: [
-            { title: 'FAQ', src: '/novel/faq' },
+            { title: 'FAQ', src: '/cs/faq' },
             { title: 'FAQ장르관리', src: '/novel/main/deleted' },
           ],
         },
@@ -95,7 +95,7 @@
         {
           title: '회원관리 정보',
           icon: 'user-pin',
-          src: '/novel/memberInformation',
+          src: '/memberInfo/memberInformation',
           subs: [],
         },
       ],
