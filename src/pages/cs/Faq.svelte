@@ -58,6 +58,8 @@
 		$check = checked;
 	}
 	$: {
+		console.log($categoryFaq.Data);
+		console.log(oSearch.oCategory);
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
@@ -87,7 +89,7 @@
 						>
 							<option value="Choice" selected>전체</option>
 							{#each $categoryFaq.Data.List as o, index}
-								<option value={o.SeqCategoryFaq}
+								<option value={o.SeqCategoryFaqs}
 									>{o.CategoryFaq}</option
 								>
 							{/each}
@@ -196,35 +198,32 @@
 			</thead>
 			<tbody class="table-border-bottom-0">
 				{#each $faq.Data.List as o, index}
-					<tr style="text-align:center" id={o.SeqFaq}>
+					<tr style="text-align:center" id={o.seq_faq}>
 						<td
 							><input
 								class="form-check-input"
 								type="checkbox"
 								id="defaultCheck3"
 								bind:group={$checkedList}
-								value={o.SeqFaq}
+								value={o.seq_faq}
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqFaq}</td>
-						<td
-							>{$categoryFaq.Data.List[o.faqCategory - 1]
-								.CategoryFaq}</td
-						>
+						<td>{o.seq_faq}</td>
+						<td>{o.category_faq}</td>
 
-						<td><a href="/cs/faq/{o.SeqFaq}">{o.Title}</a></td>
-						<td>{o.ActiveYn ? '노출' : '미노출'}</td>
+						<td><a href="/cs/faq/{o.seq_faq}">{o.title}</a></td>
+						<td>{o.active_yn ? '노출' : '미노출'}</td>
 
 						<td
-							>{o.CreatedAt
-								? Dates.defaultConvert(o.CreatedAt)
+							>{o.created_at
+								? Dates.defaultConvert(o.created_at)
 								: ''}</td
 						>
 						<td
-							>{o.UpdatedAt
-								? Dates.defaultConvert(o.UpdatedAt)
-								: ''}</td
+							>{o.updated_at
+								? Dates.defaultConvert(o.updated_at)
+								: '-'}</td
 						>
 					</tr>
 				{/each}

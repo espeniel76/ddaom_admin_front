@@ -774,6 +774,7 @@ function setFaq() {
 	};
 }
 
+//나중에 한번에 카테고리리스트 + 카테고리탭 합치기
 function setCategoryFaq() {
 	let values = { ...initListValues };
 
@@ -781,8 +782,10 @@ function setCategoryFaq() {
 
 	const fetchCategoryFaq = async () => {
 		let url = `/cs/faqs/category`;
+		console.log(url);
 		try {
 			const getDatas = await getApi(url);
+			console.log(getDatas);
 			if (getDatas.ResultCode !== 'OK') {
 				alert(getDatas.ErrorDesc);
 			} else {
@@ -797,6 +800,85 @@ function setCategoryFaq() {
 	return {
 		subscribe,
 		fetchCategoryFaq,
+	};
+}
+
+//CategoryList
+function setCategoryFaqList() {
+	let values = { ...initListValues };
+
+	const { subscribe, set, update } = writable(values);
+
+	const fetchCategoryList = async (ActiveYn, Search, PageSize, Page) => {
+		try {
+			const getDatas = await getApi(
+				`/cs/categoryFaqs?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
+			);
+
+			if (getDatas.ResultCode !== 'OK') {
+				alert(getDatas.ErrorDesc);
+			} else {
+				set(getDatas);
+			}
+		} catch (error) {
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
+
+	const editCategoryList = async (SeqCategoryFaqs, Category, ActiveYn) => {
+		try {
+			const newData = await putApi(
+				`/cs/categoryFaqs/${SeqCategoryFaqs}`,
+				{
+					Category,
+					ActiveYn,
+				}
+			);
+			if (newData.ResultCode !== 'OK') {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
+
+	const saveCategoryList = async (Category, ActiveYn) => {
+		try {
+			const newData = await postApi(`/cs/categoryFaqs`, {
+				Category,
+				ActiveYn,
+			});
+
+			if (newData.ResultCode !== 'OK') {
+				alert(newData.ErrorDesc);
+			}
+		} catch (error) {
+			console.log(error);
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
+	const delsaveCategoryList = async (idList) => {
+		let url = `/cs/CategoryFaqs`;
+		try {
+			const getDatas = await delApi(url, idList);
+			if (getDatas.ResultCode !== 'OK') {
+				// alert(getDatas.ErrorDesc);
+				alert('삭제리스트 체크하기');
+			} else {
+				alert('삭제확인');
+			}
+		} catch (error) {
+			console.log(error);
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
+
+	return {
+		subscribe,
+		fetchCategoryList,
+		editCategoryList,
+		saveCategoryList,
+		delsaveCategoryList,
 	};
 }
 
@@ -1094,6 +1176,7 @@ export const notice = setNotice();
 
 export const faq = setFaq();
 export const categoryFaq = setCategoryFaq();
+export const categoryList = setCategoryFaqList();
 
 export const inquiries = setInquiries();
 export const memberInformation = setMemberInformation();
