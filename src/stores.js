@@ -782,10 +782,8 @@ function setCategoryFaq() {
 
 	const fetchCategoryFaq = async () => {
 		let url = `/cs/faqs/category`;
-		console.log(url);
 		try {
 			const getDatas = await getApi(url);
-			console.log(getDatas);
 			if (getDatas.ResultCode !== 'OK') {
 				alert(getDatas.ErrorDesc);
 			} else {

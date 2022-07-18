@@ -41,7 +41,7 @@
 		let Category = oEdit.oCategory.value;
 		let ActiveYn = oEdit.oActiveYn.checked;
 		if (Category.length < 1) {
-			alert('금칙어를 입력 하세요.');
+			alert('카테고리 를 입력 하세요.');
 			oEdit.oCategory.focus();
 			return false;
 		}
@@ -51,6 +51,7 @@
 	}
 
 	function closeEditMode() {
+		fnSearch();
 		oEdit = {
 			SeqCategoryFaqs: 0,
 			oCategory: null,
@@ -66,7 +67,7 @@
 			isActive = false;
 		}
 		if (oSave.oCategory.value.length < 1) {
-			alert('금칙어를 입력 하세요.');
+			alert('카테고리 를 입력 하세요.');
 			oSave.oCategory.focus();
 			return flase;
 		}
