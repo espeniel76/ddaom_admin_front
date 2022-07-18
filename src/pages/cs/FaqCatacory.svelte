@@ -1,23 +1,22 @@
 <script>
-	// 장르관리
 	import { onMount } from 'svelte';
-	import { genres, paging, checkedList, check } from '../../stores';
+	import { categoryList, paging, checkedList, check } from '../../stores';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';
 
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		oGenre: null,
+		oCategory: null,
 	};
 	let oEdit = {
-		SeqGenre: 0,
-		oGenre: null,
+		SeqCategoryFaqs: 0,
+		oCategory: null,
 		oActiveYn: null,
 	};
 	let oSearch = {
 		ActiveYn: 'All',
-		Genre: '',
+		Category: '',
 	};
 	let pageSize = 10;
 	let totalCount = 0;
@@ -33,28 +32,28 @@
 		$check = checked;
 	}
 
-	function handleChangeEditMode(SeqGenre) {
-		oEdit.SeqGenre = SeqGenre;
+	function handleChangeEditMode(SeqCategoryFaqs) {
+		oEdit.SeqCategoryFaqs = SeqCategoryFaqs;
 	}
 
 	function handleChangeSaveMode() {
-		let SeqGenre = oEdit.SeqGenre;
-		let Genre = oEdit.oGenre.value;
+		let SeqCategoryFaqs = oEdit.SeqCategoryFaqs;
+		let Category = oEdit.oCategory.value;
 		let ActiveYn = oEdit.oActiveYn.checked;
-		if (Genre.length < 1) {
+		if (Category.length < 1) {
 			alert('금칙어를 입력 하세요.');
-			oEdit.oGenre.focus();
+			oEdit.oCategory.focus();
 			return false;
 		}
-		genres.editGenre(SeqGenre, Genre, ActiveYn);
+		categoryList.editCategoryList(SeqCategoryFaqs, Category, ActiveYn);
 		closeEditMode();
 		fnSearch();
 	}
 
 	function closeEditMode() {
 		oEdit = {
-			SeqGenre: 0,
-			oGenre: null,
+			SeqCategoryFaqs: 0,
+			oCategory: null,
 			oActiveYn: null,
 		};
 	}
@@ -66,20 +65,20 @@
 		} else if (oSave.oActiveYnFalse.checked) {
 			isActive = false;
 		}
-		if (oSave.oGenre.value.length < 1) {
+		if (oSave.oCategory.value.length < 1) {
 			alert('금칙어를 입력 하세요.');
-			oSave.oGenre.focus();
+			oSave.oCategory.focus();
 			return flase;
 		}
-		await genres.saveGenre(oSave.oGenre.value, isActive);
-		oSave.oGenre.value = '';
+		await categoryList.saveCategoryList(oSave.oCategory.value, isActive);
+		oSave.oCategory.value = '';
 		await fnSearch();
 	}
 
 	async function fnSearch() {
-		await genres.fetchGenres(
+		await categoryList.fetchCategoryList(
 			oSearch.ActiveYn,
-			oSearch.Genre,
+			oSearch.Category, //category_faq
 			$paging.pageSize,
 			$paging.nowPage
 		);
@@ -87,20 +86,32 @@
 
 	function fnInit() {
 		oSearch.ActiveYn = 'All';
-		oSearch.Genre = '';
+		oSearch.Category = '';
 		let o = $paging;
 		fnSearch();
 		o.nowPage = 1;
 		paging.update((paging) => o);
 	}
 
+	async function fnDelete() {
+		await categoryList.delsaveCategoryList($checkedList);
+		console.log('삭제클릭');
+		fnPageNavSet();
+		fnSearch();
+	}
+	// 체크 초기화
+	async function fnPageNavSet() {
+		$checkedList = [];
+		$check = false;
+	}
+
 	$: {
-		if (oEdit.oGenre) {
-			oEdit.oGenre.select();
-			oEdit.oGenre.focus();
+		if (oEdit.oCategory) {
+			oEdit.oCategory.select();
+			oEdit.oCategory.focus();
 		}
-		if ($genres.Data.TotalCount > 0) {
-			totalCount = $genres.Data.TotalCount;
+		if ($categoryList.Data.TotalCount > 0) {
+			totalCount = $categoryList.Data.TotalCount;
 		} else {
 			totalCount = 0;
 		}
@@ -141,16 +152,16 @@
 					>
 				</td>
 				<td width="150" style="text-align: right;"
-					><h5 class="mb-0">장르</h5></td
+					><h5 class="mb-0">카테고리</h5></td
 				>
 				<td width="*">
 					<div class="input-group">
 						<input
 							type="text"
 							class="form-control form-control-sm"
-							placeholder="장르"
+							placeholder="카테고리"
 							aria-label="Recipient's username with two button addons"
-							bind:this={oSave.oGenre}
+							bind:this={oSave.oCategory}
 						/>
 						<button
 							class="btn btn-sm btn-primary"
@@ -188,17 +199,17 @@
 						</select>
 					</td>
 					<td width="150" style="text-align: right;"
-						><h5 class="mb-0">장르</h5></td
+						><h5 class="mb-0">카테고리</h5></td
 					>
 					<td width="*">
 						<div class="input-group">
 							<input
 								type="text"
 								class="form-control form-control-sm"
-								placeholder="장르"
+								placeholder="카테고리"
 								aria-label="Recipient's username with two button addons"
 								on:keypress={onKeyPress}
-								bind:value={oSearch.Genre}
+								bind:value={oSearch.Category}
 							/>
 							<button
 								class="btn btn-sm btn-outline-primary"
@@ -235,7 +246,7 @@
 						/>
 					</th>
 					<th width="50">No</th>
-					<th width="*">장르</th>
+					<th width="300">카테고리</th>
 					<th width="130">사용여부</th>
 					<th width="100">등록일</th>
 					<th width="100">등록자</th>
@@ -245,35 +256,35 @@
 				</tr>
 			</thead>
 			<tbody class="table-border-bottom-0">
-				{#each $genres.Data.List as o, index}
-					<tr style="text-align:center" id={o.SeqGenre}>
+				{#each $categoryList.Data.List as o, index}
+					<tr style="text-align:center" id={o.SeqCategoryFaqs}>
 						<td
 							><input
 								class="form-check-input"
 								type="checkbox"
 								id="defaultCheck3"
 								bind:group={$checkedList}
-								value={o.SeqGenre}
+								value={o.SeqCategoryFaqs}
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqGenre}</td>
+						<td>{o.SeqCategoryFaqs}</td>
 						<td>
-							{#if oEdit.SeqGenre === o.SeqGenre}
+							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
 								<input
 									type="text"
 									class="form-control"
-									bind:this={oEdit.oGenre}
-									value={o.Genre}
+									bind:this={oEdit.oCategory}
+									value={o.CategoryFaq}
 									style="text-align:center"
-									placeholder="금칙어"
+									placeholder="카테고리"
 								/>
 							{:else}
-								{o.Genre}
+								{o.CategoryFaq}
 							{/if}
 						</td>
 						<td>
-							{#if oEdit.SeqGenre === o.SeqGenre}
+							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
 								<div class="form-check form-switch mb-2">
 									{#if o.ActiveYn}
 										<input
@@ -315,7 +326,7 @@
 						>
 						<td>{o.Updator ? o.Updator : ''}</td>
 						<td>
-							{#if oEdit.SeqGenre === o.SeqGenre}
+							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
 								<button
 									type="button"
 									class="btn btn-sm btn-primary"
@@ -325,8 +336,9 @@
 								<button
 									type="button"
 									class="btn btn-sm btn-info"
-									on:click={handleChangeEditMode(o.SeqGenre)}
-									>편집</button
+									on:click={handleChangeEditMode(
+										o.SeqCategoryFaqs
+									)}>편집</button
 								>
 							{/if}
 						</td>
@@ -334,6 +346,6 @@
 				{/each}
 			</tbody>
 		</table>
-		<Paging {fnSearch} {pageSize} {totalCount} />
+		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} />
 	</div>
 </div>
