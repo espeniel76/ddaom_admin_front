@@ -58,8 +58,6 @@
 		$check = checked;
 	}
 	$: {
-		console.log($categoryFaq.Data);
-		console.log(oSearch.oCategory);
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
