@@ -22,6 +22,7 @@
 		oTitle: '',
 		oContent: '',
 		oCategory: 'Choice',
+		oCategory2: '',
 	};
 
 	let Data;
@@ -33,8 +34,8 @@
 		if (_id !== 'new') {
 			let retVal = await faq.getFaq(_id);
 			if (retVal.ResultCode === 'OK') {
-				Data = retVal.Data;
-				oSave.oCategory = Data.faqCategory;
+				Data = retVal.Data.List[0];
+				oSave.oCategory = Data.seq_category_faq;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -78,7 +79,7 @@
 		let retVal;
 		if (_id === 'new') {
 			retVal = await faq.saveFaq(
-				oSave.oCategory.replace(regex, ''),
+				oSave.oCategory,
 				oSave.oTitle.value,
 				oSave.oContent.value,
 				isActive,
@@ -94,7 +95,7 @@
 		} else {
 			retVal = await faq.editFaq(
 				_id,
-				oSave.oCategory.replace(regex, ''),
+				oSave.oCategory,
 				oSave.oTitle.value,
 				oSave.oContent.value,
 				isActive,
@@ -111,9 +112,10 @@
 		}
 	}
 
+	let selected;
 	$: {
 		if (Data) {
-			if (Data.ActiveYn) {
+			if (Data.active_yn) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
 			} else {
@@ -121,13 +123,15 @@
 				oSave.oActiveYnFalse.checked = true;
 			}
 
-			oSave.oTitle.value = Data.Title;
-			oSave.oContent.value = Data.Content;
+			oSave.oTitle.value = Data.title;
+			oSave.oContent.value = Data.content;
 
-			oSave.CreatedAt = Data.CreatedAt;
-			oSave.UpdatedAt = Data.UpdatedAt;
-			oSave.Creator = Data.Creator;
-			oSave.Updator = Data.Updator;
+			oSave.CreatedAt = Data.created_at;
+			oSave.UpdatedAt = Data.updated_at;
+			oSave.Creator = Data.creator;
+			oSave.Updator = Data.updator;
+
+			// oSave.oCategory = Data.seq_category_faq; //2
 		}
 	}
 </script>
@@ -148,11 +152,9 @@
 								aria-label="Default select example"
 								bind:value={oSave.oCategory}
 							>
-								<option value="Choice" selected
-									>선택해주세요</option
-								>
+								<option value="Choice">선택해주세요</option>
 								{#each $categoryFaq.Data.List as o, index}
-									<option value={o.CategoryFaqs}
+									<option value={o.SeqCategoryFaqs}
 										>{o.CategoryFaq}</option
 									>
 								{/each}
