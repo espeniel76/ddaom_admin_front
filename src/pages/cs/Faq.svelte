@@ -87,7 +87,9 @@
 						>
 							<option value="Choice" selected>전체</option>
 							{#each $categoryFaq.Data.List as o, index}
-								<option value={o.SeqCategoryFaqs}
+								<option
+									value={o.SeqCategoryFaqs}
+									style={o.ActiveYn ? '' : 'display:none'}
 									>{o.CategoryFaq}</option
 								>
 							{/each}

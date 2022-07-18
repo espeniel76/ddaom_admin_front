@@ -154,7 +154,9 @@
 							>
 								<option value="Choice">선택해주세요</option>
 								{#each $categoryFaq.Data.List as o, index}
-									<option value={o.SeqCategoryFaqs}
+									<option
+										value={o.SeqCategoryFaqs}
+										style={o.ActiveYn ? '' : 'display:none'}
 										>{o.CategoryFaq}</option
 									>
 								{/each}
