@@ -27,11 +27,20 @@
 		$check = false;
 	}
 
-	// 게시글 페이지 1번으로
 	async function fnSearch() {
 		await categoryFaq.fetchCategoryFaq();
 		await faq.fetchFaq(oSearch, $paging.pageSize, $paging.nowPage);
 	}
+	function fnSearching(o) {
+		Number(o);
+		if (o.EndDate < o.StartDate) {
+			alert('사용기간이 종료일보다 큽니다.');
+			return false;
+		} else {
+			fnSearch();
+		}
+	}
+	// on:click={fnSearching(oSearch)}
 
 	async function fnDelete() {
 		await faq.delFaq($checkedList);
@@ -162,7 +171,7 @@
 							<button
 								class="btn btn-sm btn-primary"
 								type="button"
-								on:click={fnSearch}>검색</button
+								on:click={fnSearching(oSearch)}>검색</button
 							>
 						</div>
 					</td>

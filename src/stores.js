@@ -224,12 +224,28 @@ function setSlangs() {
 			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
 		}
 	};
+	const delSlang = async (idList) => {
+		let url = `/assets/slangs`;
+		try {
+			const getDatas = await delApi(url, idList);
+			if (getDatas.ResultCode !== 'OK') {
+				// alert(getDatas.ErrorDesc);
+				alert('삭제리스트 체크하기');
+			} else {
+				alert('삭제확인');
+			}
+		} catch (error) {
+			console.log(error);
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
 
 	return {
 		subscribe,
 		fetchSlangs,
 		editSlang,
 		saveSlang,
+		delSlang,
 	};
 }
 function setGenres() {
@@ -280,12 +296,28 @@ function setGenres() {
 			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
 		}
 	};
+	const delGenre = async (idList) => {
+		let url = `/assets/genres`;
+		try {
+			const getDatas = await delApi(url, idList);
+			if (getDatas.ResultCode !== 'OK') {
+				// alert(getDatas.ErrorDesc);
+				alert('삭제리스트 체크하기');
+			} else {
+				alert('삭제확인');
+			}
+		} catch (error) {
+			console.log(error);
+			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+		}
+	};
 
 	return {
 		subscribe,
 		fetchGenres,
 		editGenre,
 		saveGenre,
+		delGenre,
 	};
 }
 function setKeywords() {
@@ -782,10 +814,8 @@ function setCategoryFaq() {
 
 	const fetchCategoryFaq = async () => {
 		let url = `/cs/faqs/category`;
-		console.log(url);
 		try {
 			const getDatas = await getApi(url);
-			console.log(getDatas);
 			if (getDatas.ResultCode !== 'OK') {
 				alert(getDatas.ErrorDesc);
 			} else {

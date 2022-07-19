@@ -52,6 +52,7 @@
 	}
 
 	function closeEditMode() {
+		fnSearch();
 		oEdit = {
 			SeqGenre: 0,
 			oGenre: null,
@@ -74,6 +75,17 @@
 		await genres.saveGenre(oSave.oGenre.value, isActive);
 		oSave.oGenre.value = '';
 		await fnSearch();
+	}
+	async function fnDelete() {
+		await genres.delGenre($checkedList);
+		console.log('삭제클릭');
+		fnPageNavSet();
+		fnSearch();
+	}
+	// 체크 초기화
+	async function fnPageNavSet() {
+		$checkedList = [];
+		$check = false;
 	}
 
 	async function fnSearch() {
@@ -334,6 +346,6 @@
 				{/each}
 			</tbody>
 		</table>
-		<Paging {fnSearch} {pageSize} {totalCount} />
+		<Paging {fnSearch} {pageSize} {totalCount} {fnDelete} />
 	</div>
 </div>
