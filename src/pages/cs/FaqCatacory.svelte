@@ -20,6 +20,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
+	let startNumber = 0;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -113,6 +114,7 @@
 		}
 		if ($categoryList.Data.TotalCount > 0) {
 			totalCount = $categoryList.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -269,7 +271,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqCategoryFaqs}</td>
+						<td>{startNumber - index}</td>
 						<td>
 							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
 								<input

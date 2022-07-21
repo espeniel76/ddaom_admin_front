@@ -18,6 +18,7 @@
 	let totalCount = 0;
 	let registUrl = '';
 	let fnDelete = false;
+	let startNumber = 0;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -54,8 +55,8 @@
 
 	$: {
 		if ($mainDeletedAll.Data.TotalCount) {
-			console.log($mainDeletedAll);
 			totalCount = $mainDeletedAll.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		}
 	}
 </script>
@@ -165,7 +166,7 @@
 						</div>
 					</td>
 					<td width="100" style="text-align: right;"
-						><h5 class="mb-0">주제어</h5></td
+						><h5 class="mb-0">주제어/제목</h5></td
 					>
 					<td width="*" colspan="2">
 						<div class="input-group" style="width: 300px;">
@@ -195,7 +196,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th colspan="13">
+					<th colspan="12">
 						Total data: {$paging.totalCount}
 						, Now page: {$paging.nowPage}
 						, TOTAL page: {$paging.totalPage}
@@ -235,7 +236,8 @@
 			<tbody class="table-border-bottom-0">
 				{#each $mainDeletedAll.Data.List as o, index}
 					<tr style="text-align:center" id={o.SeqKeyword}>
-						<td>{o.SeqNovelDelete}</td>
+						<td>{startNumber - index}</td>
+
 						<td>{Dates.getProcessText(o.StartDate, o.EndDate)}</td>
 						<td>{Dates.defaultConvert(o.StartDate)}</td>
 						<td>{Dates.defaultConvert(o.EndDate)}</td>

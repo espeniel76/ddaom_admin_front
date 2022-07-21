@@ -13,6 +13,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
+	let startNumber = 0;
 	let registUrl = '/cs/faq/new';
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -70,6 +71,7 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -218,7 +220,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.seq_faq}</td>
+						<td>{startNumber - index}</td>
 						<td>{o.category_faq}</td>
 
 						<td><a href="/cs/faq/{o.seq_faq}">{o.title}</a></td>

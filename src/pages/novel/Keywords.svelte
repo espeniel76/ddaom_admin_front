@@ -5,7 +5,7 @@
 	import Paging from '../../components/Paging.svelte';
 
 	let oSearch = {
-		Sort: 'startDateASC',
+		Sort: 'startDateDESC',
 		ActiveYn: 'All',
 		ProcessYn: 'All',
 		StartDate: '',
@@ -18,6 +18,7 @@
 	let totalCount = 0;
 	let registUrl = '/novel/keywords/new';
 	let nowUnixtime = Dates.getUnixtime();
+	let startNumber = 0;
 
 	// 검색어 엔터
 	//on:keypress={onKeyPress}
@@ -77,7 +78,7 @@
 		$check = checked;
 	}
 	async function fnInit() {
-		oSearch.Sort = 'startDateASC';
+		oSearch.Sort = 'startDateDESC';
 		oSearch.ActiveYn = 'All';
 		oSearch.ProcessYn = 'All';
 		oSearch.StartDate = '';
@@ -94,8 +95,7 @@
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
 			totalCount = $keywords.Data.TotalCount;
-			oSearch.CntNowPageTotal = $keywords.Data.List.length;
-			oSearch.CntPageTotal = $keywords.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -173,7 +173,7 @@
 					<td width="100" style="text-align: right;"
 						><h5 class="mb-0">주제어</h5></td
 					>
-					<td width="*" colspan="3">
+					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
 								type="text"
@@ -210,7 +210,7 @@
 								fnSearch();
 							}}
 						>
-							<option value="startDateASC" selected
+							<option value="startDateDESC" selected
 								>등록일 순</option
 							>
 							<option value="NovelDESC">연재 많은 순</option>
@@ -245,47 +245,47 @@
 			</thead>
 			<tbody class="table-border-bottom-0">
 				{#each $keywords.Data.List as o, index}
-					<tr style="text-align:center" id={o.keywords_seq_keyword}>
+					<tr style="text-align:center" id={o.SeqKeyword}>
 						<td
 							><input
 								class="form-check-input"
 								type="checkbox"
 								id="defaultCheck3"
 								bind:group={$checkedList}
-								value={o.keywords_seq_keyword}
+								value={o.SeqKeyword}
 								checked={$check}
 							/></td
 						>
-						<td>{o.rownum}</td>
+						<td>{startNumber - index}</td>
 
 						<td
-							><a href="/novel/keywords/{o.keywords_seq_keyword}"
-								>{o.keywords_keyword}({o.keywords_cnt_total})</a
+							><a href="/novel/keywords/{o.SeqKeyword}"
+								>{o.Keyword}({o.CntTotal})</a
 							></td
 						>
-						<td>{o.keywords_active_yn ? '사용' : '미사용'}</td>
+						<td>{o.ActiveYn ? '사용' : '미사용'}</td>
 						<td>
-							{#if nowUnixtime < Dates.setUnixtime(o.keywords_start_date)}
+							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
 								예정
-							{:else if nowUnixtime < Dates.setUnixtime(o.keywords_end_date)}
+							{:else if nowUnixtime < Dates.setUnixtime(o.EndDate)}
 								진행
 							{:else}
 								종료
 							{/if}
 						</td>
 						<td
-							>{Dates.defaultConvert(o.keywords_start_date)} ~ {Dates.defaultConvert(
-								o.keywords_end_date
+							>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(
+								o.EndDate
 							)}</td
 						>
 						<td
-							>{o.keywords_created_at
-								? Dates.defaultConvert(o.keywords_created_at)
+							>{o.CreatedAt
+								? Dates.defaultConvert(o.CreatedAt)
 								: ''}</td
 						>
 						<td
-							>{o.keywords_updated_at
-								? Dates.defaultConvert(o.keywords_updated_at)
+							>{o.UpdatedAt
+								? Dates.defaultConvert(o.UpdatedAt)
 								: ''}</td
 						>
 					</tr><tr />

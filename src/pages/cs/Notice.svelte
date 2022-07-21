@@ -13,6 +13,7 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = '/cs/notice/new';
+	let startNumber = 0;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -66,6 +67,7 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($notice.Data.TotalCount > 0) {
 			totalCount = $notice.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -190,7 +192,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqNotice}</td>
+						<td>{startNumber - index}</td>
 						<td><a href="/cs/notice/{o.SeqNotice}">{o.Title}</a></td
 						>
 						<td>{o.ActiveYn ? '노출' : '미노출'}</td>

@@ -1,16 +1,17 @@
 <script>
-	import { onMount } from "svelte";
-	import { colors, paging, checkedList, check } from "../../stores";
-	import { Dates } from "../../utils/date";
-	import Paging from "../../components/Paging.svelte";
+	import { onMount } from 'svelte';
+	import { colors, paging, checkedList, check } from '../../stores';
+	import { Dates } from '../../utils/date';
+	import Paging from '../../components/Paging.svelte';
 
 	let oSearch = {
-		ActiveYn: "All",
-		Color: "",
+		ActiveYn: 'All',
+		Color: '',
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/novel/cover/background/new";
+	let registUrl = '/novel/cover/background/new';
+	let startNumber = 0;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -29,7 +30,7 @@
 
 	async function fnDelete() {
 		await colors.delColors($checkedList);
-		console.log("삭제클릭");
+		console.log('삭제클릭');
 		fnPageNavSet();
 		fnSearch();
 	}
@@ -39,8 +40,8 @@
 	}
 
 	function fnInit() {
-		oSearch.ActiveYn = "All";
-		oSearch.Color = "";
+		oSearch.ActiveYn = 'All';
+		oSearch.Color = '';
 
 		fnSearch();
 		let o = $paging;
@@ -51,6 +52,7 @@
 	$: {
 		if ($colors.Data.TotalCount > 0) {
 			totalCount = $colors.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -62,8 +64,13 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
-					<td width="200" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">사용여부</h5></td
+					>
+					<td
+						width="200"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -75,7 +82,9 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">컬러명/코드</h5></td>
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">컬러명/코드</h5></td
+					>
 					<td width="*" colspan="3">
 						<div class="input-group">
 							<input
@@ -86,8 +95,16 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Color}
 							/>
-							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
+							<button
+								class="btn btn-sm btn-outline-primary"
+								type="button"
+								on:click={fnInit}>초기화</button
+							>
+							<button
+								class="btn btn-sm btn-primary"
+								type="button"
+								on:click={fnSearch}>검색</button
+							>
 						</div>
 					</td>
 				</tr>
@@ -134,13 +151,25 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqColor}</td>
-						<td><a href="/novel/cover/background/{o.SeqColor}">{o.Name}</a></td>
+						<td>{startNumber - index}</td>
+						<td
+							><a href="/novel/cover/background/{o.SeqColor}"
+								>{o.Name}</a
+							></td
+						>
 						<td style="background-color: {o.Color}" />
 						<td>{o.Color}</td>
-						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
-						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td>{o.ActiveYn ? '사용' : '미사용'}</td>
+						<td
+							>{o.CreatedAt
+								? Dates.defaultConvert(o.CreatedAt)
+								: ''}</td
+						>
+						<td
+							>{o.UpdatedAt
+								? Dates.defaultConvert(o.UpdatedAt)
+								: ''}</td
+						>
 					</tr>
 				{/each}
 			</tbody>

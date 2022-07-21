@@ -14,7 +14,7 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let registUrl = '';
-
+	let startNumber = 0;
 	let quData = '';
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -61,6 +61,7 @@
 		if ($inquiries.Data.TotalCount > 0) {
 			totalCount = $inquiries.Data.TotalCount;
 			quData = $inquiries.Data.queryList;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 			quData = [];
@@ -190,7 +191,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.seq_service_inquiry}</td>
+						<td>{startNumber - index}</td>
 						<td
 							>{o.status == 3
 								? '답변완료'

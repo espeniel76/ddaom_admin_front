@@ -24,6 +24,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
+	let startNumber = 0;
 
 	onMount(() => {
 		fnSearch();
@@ -114,6 +115,7 @@
 		}
 		if ($slangs.Data.TotalCount > 0) {
 			totalCount = $slangs.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -271,7 +273,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqSlang}</td>
+						<td>{startNumber - index}</td>
 						<td>
 							{#if oEdit.SeqSlang === o.SeqSlang}
 								<input

@@ -24,6 +24,10 @@
 
 	const route = meta();
 	let _id = route.params._id;
+	let startNumber = 0;
+	let startNumber2 = 0;
+	let startNumber3 = 0;
+	let startNumber4 = 0;
 
 	let oStepClass = {
 		step2: {
@@ -72,18 +76,22 @@
 	let oPageStep1 = {
 		pageSize: 10,
 		totalCount: 0,
+		startNumber: 0,
 	};
 	let oPageStep2 = {
 		pageSize: 10,
 		totalCount: 0,
+		startNumber: 0,
 	};
 	let oPageStep3 = {
 		pageSize: 10,
 		totalCount: 0,
+		startNumber: 0,
 	};
 	let oPageStep4 = {
 		pageSize: 10,
 		totalCount: 0,
+		startNumber: 0,
 	};
 
 	let oSearchStep1 = {
@@ -179,17 +187,24 @@
 	};
 
 	$: {
-		console.log($mainAllDetail);
+		// console.log($mainAllDetail);
 		if ($novelStep1.Data.TotalCount > 0) {
 			oPageStep1.totalCount = $novelStep1.Data.TotalCount;
+			// startNumber = oPageStep1.totalCount;
+			oPageStep1.startNumber =
+				oPageStep1.totalCount -
+				$pagingStep1.pageSize * ($pagingStep1.nowPage - 1);
 		}
 		if ($novelStep2.Data.TotalCount > 0) {
 			oPageStep2.totalCount = $novelStep2.Data.TotalCount;
+			startNumber2 = oPageStep2.totalCount;
 		}
 		if ($novelStep3.Data.TotalCount > 0) {
 			oPageStep3.totalCount = $novelStep3.Data.TotalCount;
+			startNumber3 = oPageStep2.totalCount;
 		}
 		if ($novelStep4.Data.TotalCount > 0) {
+			startNumber4 = oPageStep2.totalCount;
 			oPageStep4.totalCount = $novelStep4.Data.TotalCount;
 		}
 	}
@@ -375,7 +390,7 @@
 									fnInitStep4();
 								}}
 							>
-								<td>{o.SeqNovelStep1}</td>
+								<td>{oPageStep1.startNumber - index}</td>
 								<td>{o.Title}</td>
 								<td>{o.Genre}</td>
 								<td>{o.NickName}</td>
@@ -400,6 +415,10 @@
 			style="width:100px"
 			on:click={() => {
 				router.goto('/novel/main/all');
+				fnSearchStep1();
+				fnSearchStep2();
+				fnSearchStep3();
+				fnSearchStep4();
 			}}>메인으로이동</button
 		>
 	</div>

@@ -16,7 +16,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-
+	let startNumber = 0;
 	let quData = '';
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -36,17 +36,16 @@
 	}
 
 	$: {
-		console.log($memberInformation.Data);
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformation.Data.TotalCount > 0) {
 			totalCount = $memberInformation.Data.TotalCount;
 			quData = $memberInformation.Data.queryList;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
+			console.log(startNumber);
 		} else {
 			totalCount = 0;
 			quData = [];
 		}
-		console.log(totalCount);
-		console.log(quData);
 	}
 
 	function fnButton(e) {
@@ -335,7 +334,7 @@
 					<tr style="text-align:center">
 						<td><input class="form-check-input" type="hidden" /></td
 						>
-						<td>{o.rownum}</td>
+						<td>{startNumber - index}</td>
 						<td>{o.deleted_yn == 1 ? '탈퇴' : '정상'}</td>
 						<td>{o.blocked_yn == 1 ? '등록' : '미등록'}</td>
 						<td>{o.cnt_subscribe}</td>

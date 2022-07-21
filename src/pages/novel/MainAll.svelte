@@ -23,7 +23,7 @@
 	let registUrl = '';
 	let nowUnixtime = Dates.getUnixtime();
 	let fnDelete = '';
-
+	let startNumber = 0;
 	// 검색어 엔터
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -78,6 +78,7 @@
 	$: {
 		if ($mainAll.Data.TotalCount > 0) {
 			totalCount = $mainAll.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		}
 
 		if ($mainAllFinish.Data.totalCount > 0) {
@@ -207,7 +208,7 @@
 					<tr style="text-align:center" id={o.SeqKeyword}>
 						<td><input class="form-check-input" type="hidden" /></td
 						>
-						<td>{o.SeqKeyword}</td>
+						<td>{startNumber - index}</td>
 						<td>
 							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
 								예정

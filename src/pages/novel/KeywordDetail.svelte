@@ -23,6 +23,7 @@
 		Creator: '',
 		UpdatedAt: '',
 		Updator: '',
+		Textarea: '',
 	};
 	let Data;
 	let nowDate = Dates.getYYYYMMTZ();
@@ -36,6 +37,7 @@
 
 			if (retVal.ResultCode === 'OK') {
 				Data = retVal.Data;
+				oSave.oKeyword = Data.Keyword;
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -74,17 +76,12 @@
 			oSave.oStartDate.focus();
 			return false;
 		}
-		if (oSave.oKeyword.value.length < 1) {
-			alert('주제어를 입력 하세요.');
-			oSave.oKeyword.focus();
-			return false;
-		}
 
 		//수정
 		let retVal;
 		if (_id === 'new') {
 			retVal = await keywords.saveKeyword(
-				oSave.oKeyword.value.replace(regex, ''),
+				oSave.oKeyword.replace(regex, ''),
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
@@ -97,7 +94,7 @@
 		} else {
 			retVal = await keywords.editKeyword(
 				_id,
-				oSave.oKeyword.value.replace(regex, ''),
+				oSave.oKeyword.replace(regex, ''),
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
@@ -111,7 +108,6 @@
 	}
 
 	$: {
-		console.log(oSave.oKeyword.value);
 		if (Data) {
 			if (Data.ActiveYn) {
 				oSave.oActiveYnTrue.checked = true;
@@ -120,9 +116,6 @@
 				oSave.oActiveYnTrue.checked = false;
 				oSave.oActiveYnFalse.checked = true;
 			}
-			oSave.oStartDate.value = Dates.defaultConvertFullT(Data.StartDate);
-			oSave.oEndDate.value = Dates.defaultConvertFullT(Data.EndDate);
-			oSave.oKeyword.value = Data.Keyword;
 			if (nowDate < Data.StartDate) {
 				oSave.ProcessYn = '예정';
 			} else if (nowDate < Data.EndDate) {
@@ -130,11 +123,19 @@
 			} else {
 				oSave.ProcessYn = '종료';
 			}
+
+			oSave.oStartDate.value = Dates.defaultConvertFullT(Data.StartDate);
+			oSave.oEndDate.value = Dates.defaultConvertFullT(Data.EndDate);
+
 			oSave.CntTotal = Data.CntTotal;
 			oSave.CreatedAt = Data.CreatedAt;
 			oSave.UpdatedAt = Data.UpdatedAt;
 			oSave.Creator = Data.Creator;
 			oSave.Updator = Data.Updator;
+		}
+
+		if (oSave.oKeyword.length > 20) {
+			alert('공백 포함하여 20자까지 입력할 수 있습니다.');
 		}
 	}
 </script>
@@ -178,8 +179,8 @@
 							class="form-control form-control-sm"
 							placeholder="주제어"
 							aria-label="Recipient's username with two button addons"
-							maxlength="20"
-							bind:this={oSave.oKeyword}
+							maxlength={20}
+							bind:value={oSave.oKeyword}
 						/>
 					</td>
 				</tr>
