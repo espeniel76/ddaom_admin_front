@@ -40,9 +40,6 @@
 		oSearch.ActiveYn = "All";
 		oSearch.Name = "";
 		fnSearch();
-		let o = $paging;
-		o.nowPage = 1;
-		paging.update((paging) => o);
 	}
 	function checkedAllchange(e) {
 		const checked = e.target.checked;
