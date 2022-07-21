@@ -11,6 +11,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
+	let startNumber = 0;
 	let registUrl = "/novel/cover/image/new";
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -51,6 +52,7 @@
 	$: {
 		if ($images.Data.TotalCount > 0) {
 			totalCount = $images.Data.TotalCount;
+			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -133,7 +135,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqImage}</td>
+						<td>{startNumber - index}</td>
 						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
 						<td><img alt="" src="{consts.urls.IMAGE_SERVER}{o.Image}" width="80" /></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
