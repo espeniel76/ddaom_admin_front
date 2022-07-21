@@ -179,6 +179,7 @@
 	};
 
 	$: {
+		console.log($mainAllDetail);
 		if ($novelStep1.Data.TotalCount > 0) {
 			oPageStep1.totalCount = $novelStep1.Data.TotalCount;
 		}

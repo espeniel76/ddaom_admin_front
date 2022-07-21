@@ -11,7 +11,8 @@
 		StartDate: '',
 		EndDate: '',
 		Keyword: '',
-		CntTotal: 0,
+		CntNowPageTotal: 0,
+		CntPageTotal: 0,
 	};
 	let pageSize = 10;
 	let totalCount = 0;
@@ -41,6 +42,20 @@
 			$paging.pageSize,
 			$paging.nowPage
 		);
+	}
+
+	async function fnSearch2() {
+		await keywords.fetchKeywords(
+			oSearch,
+			$paging.pageSize,
+			$paging.nowPage
+		);
+	}
+
+	function test() {
+		oSearch.CntNowPageTotal = $keywords.Data.List.length;
+		oSearch.CntPageTotal = $keywords.Data.TotalCount;
+		fnSearch();
 	}
 	function fnSearching(o) {
 		Number(o);
@@ -79,6 +94,8 @@
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
 			totalCount = $keywords.Data.TotalCount;
+			oSearch.CntNowPageTotal = $keywords.Data.List.length;
+			oSearch.CntPageTotal = $keywords.Data.TotalCount;
 		} else {
 			totalCount = 0;
 		}
@@ -228,46 +245,47 @@
 			</thead>
 			<tbody class="table-border-bottom-0">
 				{#each $keywords.Data.List as o, index}
-					<tr style="text-align:center" id={o.SeqKeyword}>
+					<tr style="text-align:center" id={o.keywords_seq_keyword}>
 						<td
 							><input
 								class="form-check-input"
 								type="checkbox"
 								id="defaultCheck3"
 								bind:group={$checkedList}
-								value={o.SeqKeyword}
+								value={o.keywords_seq_keyword}
 								checked={$check}
 							/></td
 						>
-						<td>{o.SeqKeyword}</td>
+						<td>{o.rownum}</td>
+
 						<td
-							><a href="/novel/keywords/{o.SeqKeyword}"
-								>{o.Keyword}({o.CntTotal})</a
+							><a href="/novel/keywords/{o.keywords_seq_keyword}"
+								>{o.keywords_keyword}({o.keywords_cnt_total})</a
 							></td
 						>
-						<td>{o.ActiveYn ? '사용' : '미사용'}</td>
+						<td>{o.keywords_active_yn ? '사용' : '미사용'}</td>
 						<td>
-							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
+							{#if nowUnixtime < Dates.setUnixtime(o.keywords_start_date)}
 								예정
-							{:else if nowUnixtime < Dates.setUnixtime(o.EndDate)}
+							{:else if nowUnixtime < Dates.setUnixtime(o.keywords_end_date)}
 								진행
 							{:else}
 								종료
 							{/if}
 						</td>
 						<td
-							>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(
-								o.EndDate
+							>{Dates.defaultConvert(o.keywords_start_date)} ~ {Dates.defaultConvert(
+								o.keywords_end_date
 							)}</td
 						>
 						<td
-							>{o.CreatedAt
-								? Dates.defaultConvert(o.CreatedAt)
+							>{o.keywords_created_at
+								? Dates.defaultConvert(o.keywords_created_at)
 								: ''}</td
 						>
 						<td
-							>{o.UpdatedAt
-								? Dates.defaultConvert(o.UpdatedAt)
+							>{o.keywords_updated_at
+								? Dates.defaultConvert(o.keywords_updated_at)
 								: ''}</td
 						>
 					</tr><tr />

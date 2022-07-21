@@ -326,7 +326,7 @@ function setKeywords() {
 	const { subscribe, set, update } = writable(values);
 
 	const fetchKeywords = async (o, PageSize, Page) => {
-		let url = `/assets/keywords?Sort=${o.Sort}&ActiveYn=${o.ActiveYn}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
+		let url = `/assets/keywords?Sort=${o.Sort}&ActiveYn=${o.ActiveYn}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&CntNowPageTotal=${o.CntNowPageTotal}&CntPageTotal=${o.CntPageTotal}&PageSize=${PageSize}&Page=${Page}`;
 
 		try {
 			const getDatas = await getApi(url);
