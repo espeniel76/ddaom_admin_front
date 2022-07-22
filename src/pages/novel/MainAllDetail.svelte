@@ -76,22 +76,18 @@
 	let oPageStep1 = {
 		pageSize: 10,
 		totalCount: 0,
-		startNumber: 0,
 	};
 	let oPageStep2 = {
 		pageSize: 10,
 		totalCount: 0,
-		startNumber: 0,
 	};
 	let oPageStep3 = {
 		pageSize: 10,
 		totalCount: 0,
-		startNumber: 0,
 	};
 	let oPageStep4 = {
 		pageSize: 10,
 		totalCount: 0,
-		startNumber: 0,
 	};
 
 	let oSearchStep1 = {
@@ -190,10 +186,7 @@
 		// console.log($mainAllDetail);
 		if ($novelStep1.Data.TotalCount > 0) {
 			oPageStep1.totalCount = $novelStep1.Data.TotalCount;
-			// startNumber = oPageStep1.totalCount;
-			oPageStep1.startNumber =
-				oPageStep1.totalCount -
-				$pagingStep1.pageSize * ($pagingStep1.nowPage - 1);
+			startNumber = oPageStep1.totalCount;
 		}
 		if ($novelStep2.Data.TotalCount > 0) {
 			oPageStep2.totalCount = $novelStep2.Data.TotalCount;
@@ -390,7 +383,7 @@
 									fnInitStep4();
 								}}
 							>
-								<td>{oPageStep1.startNumber - index}</td>
+								<td>{startNumber - index}</td>
 								<td>{o.Title}</td>
 								<td>{o.Genre}</td>
 								<td>{o.NickName}</td>

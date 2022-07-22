@@ -105,6 +105,7 @@
 	}
 
 	function type(e, contents) {
+		let str = `블랙 리스트 (등록)+ \n + " [사유] <br> 여기 템플릿 수정해야함`;
 		switch (e) {
 			case 8:
 				return '블랙 리스트 미등록 (수동)';
@@ -113,10 +114,7 @@
 				return '블랙 리스트 미등록 (자동)';
 				break;
 			case 6:
-				return (
-					`블랙 리스트 (등록)\n[사유]\n\r <br> 여기 템플릿 수정해야함` +
-					contents
-				);
+				return '블랙 리스트 (등록)  [사유] ' + contents;
 				break;
 			case 5:
 				return '회원 상태 변경 (탈퇴)';
@@ -138,35 +136,14 @@
 
 	async function fnSave() {
 		let isBlocked = false;
-		if (oSave.oBlockedYnTrue.checked) {
+		if (oSave.oBlockedYnTrue.checked && oSave.oBlockedReason.value < 1) {
+			alert('사유을 입력 하세요.');
+			return false;
+		} else if (oSave.oBlockedYnTrue.checked) {
 			isBlocked = true;
-
-			// fnPageNavSet();
-			console.log('등록');
 		} else if (oSave.oBlockedYnFalse.checked) {
 			isBlocked = false;
 		}
-
-		// 사용기간 체크
-
-		if ((oSave.oBlockedYnTrue = false)) {
-			alert('제목을 입력 하세요.');
-			return false;
-		}
-		// if (oSave.oBlockedYnTrue =true) {
-		// 	alert("내용을 입력 하세요.");
-		// 	oSave.oBlockedReason.focus();
-		// 	return false;
-		// }
-
-		// if(isBlocked = true)
-		// {
-		// 	if (oSave.oBlockedReason.value.length < 1) {
-		// 	alert("블랙리스트 사유 를 입력 하세요.");
-		// 	return false;
-		// }
-		// alert("블랙여부 x ");
-		// }
 
 		//수정
 		let retVal;
@@ -189,6 +166,7 @@
 	}
 
 	$: {
+		console.log(oSave.oBlockedReason.value);
 		if (Data) {
 			if (Data.blocked_yn) {
 				oSave.oBlockedYnTrue.checked = true;

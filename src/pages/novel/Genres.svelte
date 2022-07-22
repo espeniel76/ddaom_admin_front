@@ -43,7 +43,7 @@
 		let Genre = oEdit.oGenre.value;
 		let ActiveYn = oEdit.oActiveYn.checked;
 		if (Genre.length < 1) {
-			alert('금칙어를 입력 하세요.');
+			alert('장르를 입력하세요.');
 			oEdit.oGenre.focus();
 			return false;
 		}
@@ -69,7 +69,7 @@
 			isActive = false;
 		}
 		if (oSave.oGenre.value.length < 1) {
-			alert('금칙어를 입력 하세요.');
+			alert('장르를 입력하세요.');
 			oSave.oGenre.focus();
 			return flase;
 		}

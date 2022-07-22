@@ -127,7 +127,6 @@
 		$check = false;
 		$paging.nowPage = 1;
 	}
-	afterUpdate(() => {});
 </script>
 
 <nav id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
@@ -166,6 +165,7 @@
 							current = menu.title;
 							currentSub = item.title;
 						}
+
 						fnPageNavSet();
 					}}
 				>
