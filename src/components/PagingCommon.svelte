@@ -26,7 +26,6 @@
 			o.pageSize = oPage.pageSize;
 			o.startPage = startPage;
 			o.endPage = endPage;
-			console.log(o);
 			oPageStore.update((oPageStore) => o);
 			for (let i = startPage; i <= end; i++) {
 				pages = [...pages, i];

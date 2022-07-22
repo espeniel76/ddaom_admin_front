@@ -202,7 +202,6 @@
 
 		if (confirm("삭제하시겠습니까?")) {
 			let retVal = await deleteNovel.saveStep1(oReason);
-			console.log(retVal);
 			switch (retVal.ResultCode) {
 				case "OK":
 					// alert("정상적으로 삭제 처리 되었습니다.");
@@ -327,11 +326,8 @@
 									oSearchStep4.SeqNovelStep1 = o.SeqNovelStep1;
 
 									await fnSearchStep2();
-									fnInitStep2();
 									await fnSearchStep3();
-									fnInitStep3();
 									await fnSearchStep4();
-									fnInitStep4();
 								}}
 							>
 								<td>{o.SeqNovelStep1}</td>
