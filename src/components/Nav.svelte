@@ -119,6 +119,9 @@
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
 		menuSubSub.update((menuSubSub) => currentSubSub);
+		console.log(current);
+		console.log(currentSub);
+		console.log(currentSubSub);
 	}
 
 	// nav 이동시 모든 체크박스 풀림 , 페이지네이션 1로 초기화
@@ -161,9 +164,12 @@
 							current = menu.title;
 							currentSub = item.title;
 							currentSubSub = '';
+							console.log('1', item.subs.length);
 						} else {
 							current = menu.title;
 							currentSub = item.title;
+
+							console.log('2', item.subs.length);
 						}
 
 						fnPageNavSet();
@@ -176,7 +182,17 @@
 							: ''}"
 					>
 						<i class="menu-icon tf-icons bx bx-{item.icon}" />
-						<div data-i18n="Form Elements">{item.title}</div>
+						<div
+							data-i18n="Form Elements"
+							on:click={() => {
+								current = menu.title;
+								currentSub = item.title;
+
+								fnPageNavSet();
+							}}
+						>
+							{item.title}
+						</div>
 					</a>
 					{#if item.subs.length > 0}
 						<ul class="menu-sub">
@@ -194,7 +210,7 @@
 								>
 									<a href={sub.src} class="menu-link">
 										<div data-i18n="Basic Inputs">
-											{sub.title}
+											{sub.title}a
 										</div>
 									</a>
 								</li>

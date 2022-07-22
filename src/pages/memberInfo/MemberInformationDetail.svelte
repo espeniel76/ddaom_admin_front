@@ -105,7 +105,8 @@
 	}
 
 	function type(e, contents) {
-		let str = `블랙 리스트 (등록)+ \n + " [사유] <br> 여기 템플릿 수정해야함`;
+		let str = '';
+		let a;
 		switch (e) {
 			case 8:
 				return '블랙 리스트 미등록 (수동)';
@@ -114,7 +115,7 @@
 				return '블랙 리스트 미등록 (자동)';
 				break;
 			case 6:
-				return '블랙 리스트 (등록)  [사유] ' + contents;
+				str = e;
 				break;
 			case 5:
 				return '회원 상태 변경 (탈퇴)';
@@ -132,6 +133,11 @@
 				return '회원가입/접속';
 				break;
 		}
+
+		a = (str = 6) ? ` 블랙 리스트 (등록) \n [사유] ${contents}` : contents;
+		console.log(e);
+		console.log(str);
+		return a;
 	}
 
 	async function fnSave() {

@@ -5,8 +5,6 @@
 		mainAllFinish,
 		paging,
 		mainAllDetail,
-		checkedList,
-		check,
 	} from '../../stores';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';

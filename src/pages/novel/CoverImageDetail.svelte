@@ -52,6 +52,11 @@
 			oSave.oName.focus();
 			return false;
 		}
+		let fileCheck = document.getElementById('bfile').value;
+		if (!fileCheck) {
+			alert('파일을 첨부해 주세요');
+			return false;
+		}
 
 		let retVal;
 		if (_id === 'new') {
@@ -151,7 +156,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="*" style="vertical-align: middle" colspan="4">
+					<td
+						width="*"
+						style="vertical-align: middle"
+						colspan="4"
+						id="bfile"
+					>
 						<img alt={oSave.Image} bind:this={oImage} />
 					</td>
 				</tr>
