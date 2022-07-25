@@ -183,22 +183,18 @@
 	};
 
 	$: {
-		// console.log($mainAllDetail);
+		console.log($pagingStep1);
 		if ($novelStep1.Data.TotalCount > 0) {
-			oPageStep1.totalCount = $novelStep1.Data.TotalCount;
-			startNumber = oPageStep1.totalCount;
+			oPageStep1.totalCount = Number($novelStep1.Data.TotalCount);
 		}
 		if ($novelStep2.Data.TotalCount > 0) {
-			oPageStep2.totalCount = $novelStep2.Data.TotalCount;
-			startNumber2 = oPageStep2.totalCount;
+			oPageStep2.totalCount = Number($novelStep2.Data.TotalCount);
 		}
 		if ($novelStep3.Data.TotalCount > 0) {
-			oPageStep3.totalCount = $novelStep3.Data.TotalCount;
-			startNumber3 = oPageStep2.totalCount;
+			oPageStep3.totalCount = Number($novelStep3.Data.TotalCount);
 		}
 		if ($novelStep4.Data.TotalCount > 0) {
-			startNumber4 = oPageStep2.totalCount;
-			oPageStep4.totalCount = $novelStep4.Data.TotalCount;
+			oPageStep4.totalCount = Number($novelStep4.Data.TotalCount);
 		}
 	}
 
@@ -230,7 +226,6 @@
 
 		if (confirm('삭제하시겠습니까?')) {
 			let retVal = await deleteNovel.saveStep1(oReason);
-			console.log(retVal);
 			switch (retVal.ResultCode) {
 				case 'OK':
 					// alert("정상적으로 삭제 처리 되었습니다.");
@@ -275,7 +270,6 @@
 		oModal.typeDelete.value = '1';
 		oModal.reasonDelete.value = '';
 	}
-
 	function fnShowModal(o, isDel) {
 		isDelete = isDel;
 		oModal.class = 'modal fade show';
@@ -376,11 +370,8 @@
 										o.SeqNovelStep1;
 
 									await fnSearchStep2();
-									fnInitStep2();
 									await fnSearchStep3();
-									fnInitStep3();
 									await fnSearchStep4();
-									fnInitStep4();
 								}}
 							>
 								<td>{startNumber - index}</td>
@@ -408,10 +399,6 @@
 			style="width:100px"
 			on:click={() => {
 				router.goto('/novel/main/all');
-				fnSearchStep1();
-				fnSearchStep2();
-				fnSearchStep3();
-				fnSearchStep4();
 			}}>메인으로이동</button
 		>
 	</div>

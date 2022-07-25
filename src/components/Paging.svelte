@@ -21,26 +21,27 @@
 	}
 
 	$: {
-		// if (totalCount > 0) {
-		pages = [];
-		nowPage = $paging.nowPage === 0 ? 1 : $paging.nowPage;
-		totalPage = Math.ceil(totalCount / pageSize);
-		myRound = Math.floor(nowPage / pageSize);
-		startPage = myRound * pageSize;
-		endPage = startPage + $paging.pageListSize - 1;
-		end = endPage <= totalPage ? endPage : totalPage;
-		let o = $paging;
-		o.nowPage = nowPage;
-		o.totalCount = totalCount;
-		o.totalPage = totalPage;
-		o.pageSize = pageSize;
-		o.startPage = startPage;
-		o.endPage = endPage;
-		paging.update((paging) => o);
-		for (let i = startPage; i <= end; i++) {
-			pages = [...pages, i];
+		if (totalCount > 0) {
+			pages = [];
+			nowPage = $paging.nowPage === 0 ? 1 : $paging.nowPage;
+			totalPage = Math.ceil(totalCount / pageSize);
+			myRound = Math.floor(nowPage / pageSize);
+			startPage = myRound * pageSize;
+			endPage = startPage + $paging.pageListSize - 1;
+			end = endPage <= totalPage ? endPage : totalPage;
+			let o = $paging;
+			o.nowPage = nowPage;
+			o.totalCount = totalCount;
+			o.totalPage = totalPage;
+			o.pageSize = pageSize;
+			o.startPage = startPage;
+			o.endPage = endPage;
+			console.log(o);
+			// paging.update((paging) => o);
+			// for (let i = startPage; i <= end; i++) {
+			// 	pages = [...pages, i];
+			// }
 		}
-		// }
 	}
 </script>
 

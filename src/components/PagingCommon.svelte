@@ -70,7 +70,7 @@
 										class="page-link"
 										on:click={() => {
 											let o = $oPageStore;
-											oPage.nowPage = page;
+											o.nowPage = page;
 											oPageStore.update(
 												(oPageStore) => o
 											);
