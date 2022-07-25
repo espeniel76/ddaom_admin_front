@@ -24,10 +24,6 @@
 
 	const route = meta();
 	let _id = route.params._id;
-	let startNumber = 0;
-	let startNumber2 = 0;
-	let startNumber3 = 0;
-	let startNumber4 = 0;
 
 	let oStepClass = {
 		step2: {
@@ -183,7 +179,7 @@
 	};
 
 	$: {
-		console.log($pagingStep1);
+		// console.log($pagingStep1);
 		if ($novelStep1.Data.TotalCount > 0) {
 			oPageStep1.totalCount = Number($novelStep1.Data.TotalCount);
 		}
@@ -362,8 +358,6 @@
 									oStep1Content = o;
 
 									// step 2,3,4 데이터 가져오기
-									oSearchStep2.SeqNovelStep1 =
-										o.SeqNovelStep1;
 									oSearchStep3.SeqNovelStep1 =
 										o.SeqNovelStep1;
 									oSearchStep4.SeqNovelStep1 =
@@ -374,7 +368,7 @@
 									await fnSearchStep4();
 								}}
 							>
-								<td>{startNumber - index}</td>
+								<td>{o.SeqNovelStep1}</td>
 								<td>{o.Title}</td>
 								<td>{o.Genre}</td>
 								<td>{o.NickName}</td>

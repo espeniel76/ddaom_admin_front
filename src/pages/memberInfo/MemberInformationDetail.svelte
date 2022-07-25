@@ -43,7 +43,6 @@
 	let pagingLogPageSize = 10;
 	let logTotalCount = 0;
 	let registUrl = '';
-	let NonData = ['a', 'b', 'c'];
 
 	let oSave = {
 		oBlockedYnTrue: null,
