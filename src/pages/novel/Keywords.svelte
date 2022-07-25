@@ -45,19 +45,6 @@
 		);
 	}
 
-	async function fnSearch2() {
-		await keywords.fetchKeywords(
-			oSearch,
-			$paging.pageSize,
-			$paging.nowPage
-		);
-	}
-
-	function test() {
-		oSearch.CntNowPageTotal = $keywords.Data.List.length;
-		oSearch.CntPageTotal = $keywords.Data.TotalCount;
-		fnSearch();
-	}
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {

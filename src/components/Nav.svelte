@@ -119,9 +119,6 @@
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
 		menuSubSub.update((menuSubSub) => currentSubSub);
-		console.log(current);
-		console.log(currentSub);
-		console.log(currentSubSub);
 	}
 
 	// nav 이동시 모든 체크박스 풀림 , 페이지네이션 1로 초기화
@@ -156,20 +153,18 @@
 			</li>
 			{#each menu.menus as item}
 				<li
+					type="button"
 					class={currentSub === item.title
 						? 'menu-item active open'
 						: 'menu-item'}
-					on:click={() => {
+					on:click={(e) => {
 						if (item.subs.length == 0) {
 							current = menu.title;
 							currentSub = item.title;
 							currentSubSub = '';
-							console.log('1', item.subs.length);
 						} else {
 							current = menu.title;
 							currentSub = item.title;
-
-							console.log('2', item.subs.length);
 						}
 
 						fnPageNavSet();
@@ -201,7 +196,7 @@
 									class={currentSubSub == sub.title
 										? 'menu-item active'
 										: 'menu-item'}
-									on:click={() => {
+									on:click={(e) => {
 										current = menu.title;
 										currentSub = item.title;
 										currentSubSub = sub.title;
@@ -210,7 +205,7 @@
 								>
 									<a href={sub.src} class="menu-link">
 										<div data-i18n="Basic Inputs">
-											{sub.title}a
+											{sub.title}
 										</div>
 									</a>
 								</li>

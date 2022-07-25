@@ -134,7 +134,7 @@
 					<td width="100" style="text-align: right;"
 						><h5 class="mb-0">주제어</h5></td
 					>
-					<td width="*" colspan="3">
+					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
 								type="text"

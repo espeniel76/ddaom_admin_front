@@ -41,7 +41,6 @@
 			totalCount = $memberInformation.Data.TotalCount;
 			quData = $memberInformation.Data.queryList;
 			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
-			console.log(startNumber);
 		} else {
 			totalCount = 0;
 			quData = [];

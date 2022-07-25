@@ -52,11 +52,12 @@
 			oSave.oName.focus();
 			return false;
 		}
-		let fileCheck = document.getElementById('bfile').value;
-		if (!fileCheck) {
-			alert('파일을 첨부해 주세요');
-			return false;
-		}
+		// let fileCheck = document.getElementById('bfile');
+		// console.log(fileCheck);
+		// if (!fileCheck) {
+		// 	alert('파일을 첨부해 주세요');
+		// 	return false;
+		// }
 
 		let retVal;
 		if (_id === 'new') {

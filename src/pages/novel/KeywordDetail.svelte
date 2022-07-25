@@ -106,6 +106,7 @@
 			);
 			if (retVal.ResultCode === 'OK') {
 				alert('정상적으로 수정 되었습니다');
+				router.goto('/novel/keywords');
 			} else {
 				alert(retVal.ErrorDesc);
 			}

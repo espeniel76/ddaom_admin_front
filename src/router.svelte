@@ -1,5 +1,6 @@
 <script>
 	import { Route } from 'tinro';
+	import Transition from './components/Transition.svelte';
 	// import Route from 'svelte-spa-router';
 	//   import Router, {location, link} from 'svelte-spa-router';
 	// import { Route } from 'tinro';
@@ -33,37 +34,42 @@
 	import MemberInformationDetail from './pages/memberInfo/MemberInformationDetail.svelte';
 </script>
 
-<Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
+<Transition>
+	<Route path="/" redirect="/novel/main/all"><NovelMainAll /></Route>
 
-<Route path="/novel/main/all"><NovelMainAll /></Route>
-<Route path="/novel/main/all/:_id"><NovelMainAllDetail /></Route>
-<Route path="/novel/main/deleted"><NovelMainDeleted /></Route>
-<Route path="/novel/main/deleted/:_id/:_id2"><NovelMainDeletedDetail /></Route>
+	<Route path="/novel/main/all"><NovelMainAll /></Route>
+	<Route path="/novel/main/all/:_id"><NovelMainAllDetail /></Route>
+	<Route path="/novel/main/deleted"><NovelMainDeleted /></Route>
+	<Route path="/novel/main/deleted/:_id/:_id2"
+		><NovelMainDeletedDetail /></Route
+	>
 
-<Route path="/novel/slangs"><NovelSlangs /></Route>
-<Route path="/novel/genres"><NovelGenres /></Route>
-<Route path="/novel/keywords"><Novelkeywords /></Route>
-<Route path="/novel/keywords/:_id"><NovelkeywordDetail /></Route>
-<Route path="/novel/cover/background"><NovelCoverBackground /></Route>
-<Route path="/novel/cover/background/:_id"><NovelCoverBackgroundDetail /></Route
->
-<Route path="/novel/cover/image"><NovelCoverImage /></Route>
-<Route path="/novel/cover/image/:_id"><NovelCoverImageDetail /></Route>
+	<Route path="/novel/slangs"><NovelSlangs /></Route>
+	<Route path="/novel/genres"><NovelGenres /></Route>
+	<Route path="/novel/keywords"><Novelkeywords /></Route>
+	<Route path="/novel/keywords/:_id"><NovelkeywordDetail /></Route>
+	<Route path="/novel/cover/background"><NovelCoverBackground /></Route>
+	<Route path="/novel/cover/background/:_id"
+		><NovelCoverBackgroundDetail /></Route
+	>
+	<Route path="/novel/cover/image"><NovelCoverImage /></Route>
+	<Route path="/novel/cover/image/:_id"><NovelCoverImageDetail /></Route>
 
-<Route path="/cs/notice"><Notice /></Route>
-<Route path="/cs/notice/:_id"><NoticeDetail /></Route>
+	<Route path="/cs/notice"><Notice /></Route>
+	<Route path="/cs/notice/:_id"><NoticeDetail /></Route>
 
-<Route path="/cs/faq"><Faq /></Route>
-<Route path="/cs/faq/:_id"><FaqDetail /></Route>
+	<Route path="/cs/faq"><Faq /></Route>
+	<Route path="/cs/faq/:_id"><FaqDetail /></Route>
 
-<Route path="/cs/FaqCatacory"><FaqCatacory /></Route>
+	<Route path="/cs/FaqCatacory"><FaqCatacory /></Route>
 
-<Route path="/cs/inquiry"><Inquiry /></Route>
-<Route path="/cs/inquiry/:_id"><InquiryDetail /></Route>
+	<Route path="/cs/inquiry"><Inquiry /></Route>
+	<Route path="/cs/inquiry/:_id"><InquiryDetail /></Route>
 
-<Route path="/memberInfo/memberInformation"><MemberInformation /></Route>
-<Route path="/memberInfo/memberInformation/:_id/:allocatedDb"
-	><MemberInformationDetail /></Route
->
+	<Route path="/memberInfo/memberInformation"><MemberInformation /></Route>
+	<Route path="/memberInfo/memberInformation/:_id/:allocatedDb"
+		><MemberInformationDetail /></Route
+	>
+</Transition>
 
 <Route fallback>404페이지ㅁ</Route>

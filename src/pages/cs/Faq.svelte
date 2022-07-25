@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { faq, categoryFaq, paging, checkedList, check } from '../../stores';
+	import { fade, draw } from 'svelte/transition';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';
 

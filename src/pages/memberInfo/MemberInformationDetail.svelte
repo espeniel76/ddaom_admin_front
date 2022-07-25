@@ -88,7 +88,6 @@
 			);
 			if (retVal.ResultCode === 'OK') {
 				Data = retVal.Data.List[0];
-				console.log(Data);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -115,7 +114,7 @@
 				return '블랙 리스트 미등록 (자동)';
 				break;
 			case 6:
-				str = e;
+				return `블랙 리스트 (등록) 사유 : ${contents}`;
 				break;
 			case 5:
 				return '회원 상태 변경 (탈퇴)';
@@ -135,19 +134,29 @@
 		}
 
 		a = (str = 6) ? ` 블랙 리스트 (등록) \n [사유] ${contents}` : contents;
-		console.log(e);
-		console.log(str);
+
 		return a;
 	}
 
 	async function fnSave() {
 		let isBlocked = false;
+		let YN = oSave.oBlockedYnTrue.checked;
+		console.log(oSave.oBlockedYn);
+
 		if (oSave.oBlockedYnTrue.checked && oSave.oBlockedReason.value < 1) {
 			alert('사유을 입력 하세요.');
 			return false;
 		} else if (oSave.oBlockedYnTrue.checked) {
+			if (oSave.oBlockedYn == YN) {
+				alert('등록 상태');
+				return false;
+			}
 			isBlocked = true;
 		} else if (oSave.oBlockedYnFalse.checked) {
+			if (oSave.oBlockedYn == YN) {
+				alert(' 미등록 상태');
+				return false;
+			}
 			isBlocked = false;
 		}
 
@@ -161,10 +170,11 @@
 				oSave.oBlockedReason.value,
 				oSave.oStartDate.value
 			);
-			console.log('수정', retVal);
+
 			if (retVal) {
 				alert('정상적으로 수정 되었습니다');
-				// router.goto('/memberInfo/memberInformation');
+
+				router.goto('/memberInfo/memberInformation');
 			} else {
 				alert(retVal);
 			}
@@ -172,7 +182,6 @@
 	}
 
 	$: {
-		console.log(oSave.oBlockedReason.value);
 		if (Data) {
 			if (Data.blocked_yn) {
 				oSave.oBlockedYnTrue.checked = true;
