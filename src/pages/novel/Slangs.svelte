@@ -4,6 +4,7 @@
 	import { slangs, paging, checkedList, check } from '../../stores';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';
+	import { Maths } from '../../utils/math';
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -24,10 +25,11 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let startNumber = 0;
+
 	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
+
 	onMount(() => {
 		fnSearch();
 	});
@@ -124,7 +126,6 @@
 		}
 		if ($slangs.Data.TotalCount > 0) {
 			totalCount = $slangs.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -282,7 +283,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td>
 							{#if oEdit.SeqSlang === o.SeqSlang}
 								<input

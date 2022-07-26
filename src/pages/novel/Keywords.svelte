@@ -1,24 +1,24 @@
 <script>
-	import { onMount } from 'svelte';
-	import { keywords, paging, checkedList, check } from '../../stores';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
+	import { onMount } from "svelte";
+	import { keywords, paging, checkedList, check } from "../../stores";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import { Maths } from "../../utils/math";
 
 	let oSearch = {
-		Sort: 'startDateDESC',
-		ActiveYn: 'All',
-		ProcessYn: 'All',
-		StartDate: '',
-		EndDate: '',
-		Keyword: '',
+		Sort: "startDateDESC",
+		ActiveYn: "All",
+		ProcessYn: "All",
+		StartDate: "",
+		EndDate: "",
+		Keyword: "",
 		CntNowPageTotal: 0,
 		CntPageTotal: 0,
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = '/novel/keywords/new';
+	let registUrl = "/novel/keywords/new";
 	let nowUnixtime = Dates.getUnixtime();
-	let startNumber = 0;
 
 	// 검색어 엔터
 	//on:keypress={onKeyPress}
@@ -38,17 +38,13 @@
 
 	// 게시글 페이지 1번으로
 	async function fnSearch() {
-		await keywords.fetchKeywords(
-			oSearch,
-			$paging.pageSize,
-			$paging.nowPage
-		);
+		await keywords.fetchKeywords(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {
-			alert('사용기간이 종료일보다 큽니다.');
+			alert("사용기간이 종료일보다 큽니다.");
 			return false;
 		} else {
 			fnSearch();
@@ -56,7 +52,7 @@
 	}
 	async function fnDelete() {
 		await keywords.delKeyword($checkedList);
-		console.log('삭제클릭');
+		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
 	}
@@ -65,12 +61,12 @@
 		$check = checked;
 	}
 	async function fnInit() {
-		oSearch.Sort = 'startDateDESC';
-		oSearch.ActiveYn = 'All';
-		oSearch.ProcessYn = 'All';
-		oSearch.StartDate = '';
-		oSearch.EndDate = '';
-		oSearch.Keyword = '';
+		oSearch.Sort = "startDateDESC";
+		oSearch.ActiveYn = "All";
+		oSearch.ProcessYn = "All";
+		oSearch.StartDate = "";
+		oSearch.EndDate = "";
+		oSearch.Keyword = "";
 		oSearch.CntTotal = 0;
 
 		let o = $paging;
@@ -82,7 +78,6 @@
 	$: {
 		if ($keywords.Data.TotalCount > 0) {
 			totalCount = $keywords.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -94,13 +89,8 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: right;"
-						><h5 class="mb-0">사용여부</h5></td
-					>
-					<td
-						width="200"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
+					<td width="200" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -112,13 +102,8 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"
-						><h5 class="mb-0">진행여부</h5></td
-					>
-					<td
-						width="200"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: right;"><h5 class="mb-0">진행여부</h5></td>
+					<td width="200" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -130,13 +115,8 @@
 							<option value="N">종료</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"
-						><h5 class="mb-0">사용기간</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: right;"><h5 class="mb-0">사용기간</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -144,10 +124,7 @@
 							id="html5-date-input"
 						/>
 					</td>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center; padding-left:0"
-					>
+					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -157,9 +134,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="100" style="text-align: right;"
-						><h5 class="mb-0">주제어</h5></td
-					>
+					<td width="100" style="text-align: right;"><h5 class="mb-0">주제어</h5></td>
 					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
@@ -170,16 +145,8 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Keyword}
 							/>
-							<button
-								class="btn btn-sm btn-outline-primary"
-								type="button"
-								on:click={fnInit}>초기화</button
-							>
-							<button
-								class="btn btn-sm btn-primary"
-								type="button"
-								on:click={fnSearching(oSearch)}>검색</button
-							>
+							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
+							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearching(oSearch)}>검색</button>
 						</div>
 					</td>
 				</tr>
@@ -197,9 +164,7 @@
 								fnSearch();
 							}}
 						>
-							<option value="startDateDESC" selected
-								>등록일 순</option
-							>
+							<option value="startDateDESC" selected>등록일 순</option>
 							<option value="NovelDESC">연재 많은 순</option>
 							<option value="EndDateASC">종료일 임박 순</option>
 							<option value="EndDateDESC">종료일 늦은 순</option>
@@ -243,14 +208,10 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 
-						<td
-							><a href="/novel/keywords/{o.SeqKeyword}"
-								>{o.Keyword}({o.CntTotal})</a
-							></td
-						>
-						<td>{o.ActiveYn ? '사용' : '미사용'}</td>
+						<td><a href="/novel/keywords/{o.SeqKeyword}">{o.Keyword}({o.CntTotal})</a></td>
+						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
 						<td>
 							{#if nowUnixtime < Dates.setUnixtime(o.StartDate)}
 								예정
@@ -260,21 +221,9 @@
 								종료
 							{/if}
 						</td>
-						<td
-							>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(
-								o.EndDate
-							)}</td
-						>
-						<td
-							>{o.CreatedAt
-								? Dates.defaultConvert(o.CreatedAt)
-								: ''}</td
-						>
-						<td
-							>{o.UpdatedAt
-								? Dates.defaultConvert(o.UpdatedAt)
-								: ''}</td
-						>
+						<td>{Dates.defaultConvert(o.StartDate)} ~ {Dates.defaultConvert(o.EndDate)}</td>
+						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
+						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
 					</tr><tr />
 				{/each}
 			</tbody>

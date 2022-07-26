@@ -12,4 +12,7 @@ export const Maths = {
 		}
 		return num;
 	},
+	startNumber: (o) => {
+		return o.totalCount - o.pageSize * (o.nowPage - 1);
+	},
 };

@@ -4,6 +4,7 @@
 	import { Dates } from "../../utils/date";
 	import Paging from "../../components/Paging.svelte";
 	import consts from "../../define/consts";
+	import { Maths } from "../../utils/math";
 
 	let oSearch = {
 		ActiveYn: "All",
@@ -11,7 +12,6 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let startNumber = 0;
 	let registUrl = "/novel/cover/image/new";
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
@@ -49,7 +49,6 @@
 	$: {
 		if ($images.Data.TotalCount > 0) {
 			totalCount = $images.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -132,7 +131,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
 						<td><img alt="" src="{consts.urls.IMAGE_SERVER}{o.Image}" width="80" /></td>
 						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
