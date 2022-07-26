@@ -17,6 +17,7 @@
 	import DetailCommonBlockedYn from '../../components/DetailCommonBlockedYn .svelte';
 	import DetailCommonInquirieBottomBtns from '../../components/DetailCommonInquirieBottomBtns.svelte';
 	import DetailCommonTr from '../../components/DetailCommonTr.svelte';
+	import { Maths } from '../../utils/math';
 	let oModal = {
 		class: 'modal fade',
 		style: 'display: none',
@@ -72,9 +73,6 @@
 	let Data;
 	let LogData;
 	let urlList = '/memberInfo/memberInformation';
-	let startNumber = 0;
-	let startNumber2 = 0;
-	const blank_pattern = /^\s+|\s+$/g;
 
 	onMount(async () => {
 		$paging.nowPage = 1;
@@ -210,14 +208,11 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformationList.Data.TotalCount > 0) {
 			totalCount = $memberInformationList.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
 		if ($novelLog.Data.TotalCount > 0) {
 			logTotalCount = $novelLog.Data.TotalCount;
-			startNumber2 =
-				logTotalCount - $pagingLog.pageSize * ($pagingLog.nowPage - 1);
 		} else {
 			logTotalCount = 0;
 		}
@@ -261,7 +256,7 @@
 			<tbody class="table-border-bottom-0">
 				{#each $memberInformationList.Data.List as o, index}
 					<tr style="text-align:center">
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td>{o.deleted_yn == 1 ? '삭제' : '등록'}</td>
 						<td>{o.active_yn == 1 ? '진행' : '종료'}</td>
 						<td>{o.keyword}</td>
@@ -347,7 +342,7 @@
 			<tbody class="table-border-bottom-0">
 				{#each $novelLog.Data.List as o, index}
 					<tr style="text-align:center">
-						<td>{startNumber2 - index}</td>
+						<td>{Maths.startNumber($pagingLog) - index}</td>
 						<td>{Dates.defaultConvertFull(o.created_at)}</td>
 						<td>{type(o.type, o.contents)}</td>
 					</tr>

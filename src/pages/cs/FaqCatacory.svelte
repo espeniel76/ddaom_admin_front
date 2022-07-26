@@ -3,6 +3,7 @@
 	import { categoryList, paging, checkedList, check } from '../../stores';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';
+	import { Maths } from '../../utils/math';
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -118,7 +119,6 @@
 		}
 		if ($categoryList.Data.TotalCount > 0) {
 			totalCount = $categoryList.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -275,7 +275,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td>
 							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
 								<input

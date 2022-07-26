@@ -4,6 +4,7 @@
 	import { genres, paging, checkedList, check } from '../../stores';
 	import { Dates } from '../../utils/date';
 	import Paging from '../../components/Paging.svelte';
+	import { Maths } from '../../utils/math';
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -21,8 +22,6 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let startNumber = 0;
-	const blank_pattern = /^\s+|\s+$/g;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -277,7 +276,7 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td>
 							{#if oEdit.SeqGenre === o.SeqGenre}
 								<input
