@@ -1,6 +1,8 @@
 <script>
-	import { Dates } from '../utils/date';
-	import PagingCommon from './PagingCommon.svelte';
+	import { Dates } from "../utils/date";
+	import PagingCommon from "./PagingCommon.svelte";
+	import { pagingStep2, pagingStep3, pagingStep4 } from "../stores";
+	import { Maths } from "../utils/math";
 
 	export let oSearchStep;
 	export let fnInitStep;
@@ -33,16 +35,8 @@
 						on:keypress={onKeyPress}
 						bind:value={oSearchStep.Search}
 					/>
-					<button
-						class="btn btn-sm btn-outline-primary"
-						type="button"
-						on:click={fnInitStep}>초기화</button
-					>
-					<button
-						class="btn btn-sm btn-primary"
-						type="button"
-						on:click={fnSearch}>검색</button
-					>
+					<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInitStep}>초기화</button>
+					<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
 				</div>
 			</td>
 		</tr>
@@ -61,8 +55,7 @@
 				</select>
 			</th>
 			<th colspan="4" style="text-align:right; padding: 10px">
-				Total: {$oPageStore.totalCount} , Now: {$oPageStore.nowPage},
-				pages: {$oPageStore.totalPage}
+				Total: {$oPageStore.totalCount} , Now: {$oPageStore.nowPage}, pages: {$oPageStore.totalPage}
 			</th>
 		</tr>
 		<tr style="text-align:center">
@@ -71,7 +64,7 @@
 			<th width="150">좋아요 수</th>
 			<th width="170">등록일</th>
 			<th width="90">내용</th>
-			{#if viewType == '1'}
+			{#if viewType == "1"}
 				<th width="90">삭제</th>
 			{/if}
 		</tr>
@@ -82,11 +75,11 @@
 					<td>
 						<!-- 넘버 부분 -->
 						{#if o.SeqNovelStep2}
-							{index + 1}
+							{Maths.startNumber($pagingStep2) - index}
 						{:else if o.SeqNovelStep3}
-							{index + 1}
+							{Maths.startNumber($pagingStep3) - index}
 						{:else if o.SeqNovelStep4}
-							{index + 1}
+							{Maths.startNumber($pagingStep4) - index}
 						{/if}
 					</td>
 					<td>{o.NickName}</td>
@@ -103,7 +96,7 @@
 							보기
 						</button>
 					</td>
-					{#if viewType == '1'}
+					{#if viewType == "1"}
 						<td>
 							<button
 								class="btn btn-sm btn-info"

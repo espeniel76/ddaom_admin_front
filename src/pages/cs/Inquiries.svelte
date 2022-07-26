@@ -1,21 +1,21 @@
 <script>
-	import { onMount } from 'svelte';
-	import { inquiries, paging, checkedList, check } from '../../stores';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
+	import { onMount } from "svelte";
+	import { inquiries, paging, checkedList, check } from "../../stores";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import { Maths } from "../../utils/math";
 
 	let oSearch = {
-		Status: 'All', //답변여부
-		StartDate: '',
-		EndDate: '',
-		Inquiries: '', //제목
+		Status: "All", //답변여부
+		StartDate: "",
+		EndDate: "",
+		Inquiries: "", //제목
 	};
 
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = '';
-	let startNumber = 0;
-	let quData = '';
+	let registUrl = "";
+	let quData = "";
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -24,26 +24,22 @@
 	});
 
 	async function fnSearch() {
-		await inquiries.fetchInquiries(
-			oSearch,
-			$paging.pageSize,
-			$paging.nowPage
-		);
+		await inquiries.fetchInquiries(oSearch, $paging.pageSize, $paging.nowPage);
 	}
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {
-			alert('사용기간이 종료일보다 큽니다.');
+			alert("사용기간이 종료일보다 큽니다.");
 			return false;
 		} else {
 			fnSearch();
 		}
 	}
 	async function fnInit() {
-		oSearch.Status = 'All';
-		oSearch.StartDate = '';
-		oSearch.EndDate = '';
-		oSearch.Inquiries = '';
+		oSearch.Status = "All";
+		oSearch.StartDate = "";
+		oSearch.EndDate = "";
+		oSearch.Inquiries = "";
 
 		let o = $paging;
 		o.nowPage = 1;
@@ -61,7 +57,6 @@
 		if ($inquiries.Data.TotalCount > 0) {
 			totalCount = $inquiries.Data.TotalCount;
 			quData = $inquiries.Data.queryList;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 			quData = [];
@@ -74,13 +69,8 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">답변여부</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">답변여부</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -94,13 +84,8 @@
 						</select>
 					</td>
 
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">등록일/답변일</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/답변일</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -108,10 +93,7 @@
 							id="html5-date-input"
 						/>
 					</td>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center; padding-left:0"
-					>
+					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -121,9 +103,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">제목/내용/등록자</h5></td
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용/등록자</h5></td>
 					<td width="*" colspan="4">
 						<div class="input-group">
 							<input
@@ -134,16 +114,8 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Inquiries}
 							/>
-							<button
-								class="btn btn-sm btn-outline-primary"
-								type="button"
-								on:click={fnInit}>초기화</button
-							>
-							<button
-								class="btn btn-sm btn-primary"
-								type="button"
-								on:click={fnSearching(oSearch)}>검색</button
-							>
+							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
+							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearching(oSearch)}>검색</button>
 						</div>
 					</td>
 				</tr>
@@ -191,43 +163,17 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
-						<td
-							>{o.status == 3
-								? '답변완료'
-								: o.status == 2
-								? '답변중'
-								: '미답변'}</td
-						>
-						<td
-							><a href="/cs/inquiry/{o.seq_service_inquiry}"
-								>{o.title}</a
-							></td
-						>
+						<td>{Maths.startNumber($paging) - index}</td>
+						<td>{o.status == 3 ? "답변완료" : o.status == 2 ? "답변중" : "미답변"}</td>
+						<td><a href="/cs/inquiry/{o.seq_service_inquiry}">{o.title}</a></td>
 						<td>{o.nick_name}</td>
-						<td
-							>{o.created_at
-								? Dates.defaultConvert(o.created_at)
-								: ''}</td
-						>
-						<td
-							>{o.status == 3
-								? Dates.defaultConvert(o.updated_at)
-								: o.status == 2
-								? '-'
-								: '-'}</td
-						>
+						<td>{o.created_at ? Dates.defaultConvert(o.created_at) : ""}</td>
+						<td>{o.status == 3 ? Dates.defaultConvert(o.updated_at) : o.status == 2 ? "-" : "-"}</td>
 					</tr>
 				{/each}
 			</tbody>
 		</table>
 
-		<Paging
-			{fnSearch}
-			{pageSize}
-			{totalCount}
-			fnDelete={undefined}
-			{registUrl}
-		/>
+		<Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} {registUrl} />
 	</div>
 </div>

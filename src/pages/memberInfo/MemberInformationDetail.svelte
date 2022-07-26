@@ -1,35 +1,29 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
-	import { meta, router } from 'tinro';
-	import {
-		paging,
-		pagingLog,
-		memberInformation,
-		memberInformationList,
-		novelFetch,
-		novelLog,
-	} from '../../stores';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
-	import PagingLog from '../../components/PagingLog.svelte';
+	import { meta, router } from "tinro";
+	import { paging, pagingLog, memberInformation, memberInformationList, novelFetch, novelLog } from "../../stores";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import PagingLog from "../../components/PagingLog.svelte";
 
-	import DetailCommonBlockedYn from '../../components/DetailCommonBlockedYn .svelte';
-	import DetailCommonInquirieBottomBtns from '../../components/DetailCommonInquirieBottomBtns.svelte';
-	import DetailCommonTr from '../../components/DetailCommonTr.svelte';
+	import DetailCommonBlockedYn from "../../components/DetailCommonBlockedYn .svelte";
+	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
+	import DetailCommonTr from "../../components/DetailCommonTr.svelte";
+	import { Maths } from "../../utils/math";
 	let oModal = {
-		class: 'modal fade',
-		style: 'display: none',
+		class: "modal fade",
+		style: "display: none",
 		item: {},
 	};
 	function fnInitModal() {
-		oModal.class = 'modal fade';
-		oModal.style = 'display: none';
+		oModal.class = "modal fade";
+		oModal.style = "display: none";
 		oModal.item = {};
 	}
 	async function fnShowModal(SeqMember, novelStep, step) {
-		oModal.class = 'modal fade show';
-		oModal.style = 'display: block';
+		oModal.class = "modal fade show";
+		oModal.style = "display: block";
 		await novelFetch.fetch(SeqMember, novelStep, step);
 		oModal.item = $novelFetch.Data.List[0].content;
 	}
@@ -42,50 +36,45 @@
 	let totalCount = 0;
 	let pagingLogPageSize = 10;
 	let logTotalCount = 0;
-	let registUrl = '';
+	let registUrl = "";
 
 	let oSave = {
 		oBlockedYnTrue: null,
 		oBlockedYnFalse: null,
-		oDeletedYn: '',
-		oBlockedYn: '',
-		oNickName: '',
-		oEmail: '',
-		CreatedAt: '',
-		oDeletedAt: '',
-		UpdatedAt: '',
-		oCntSubscribe: '',
+		oDeletedYn: "",
+		oBlockedYn: "",
+		oNickName: "",
+		oEmail: "",
+		CreatedAt: "",
+		oDeletedAt: "",
+		UpdatedAt: "",
+		oCntSubscribe: "",
 		//보낸구독수
-		oFollowing: '',
+		oFollowing: "",
 		//소설등록수
-		oCntTotal: '',
+		oCntTotal: "",
 		//소설완결수
-		oCntFinish: '',
-		oStartEmail: '',
-		oSnsType: '',
-		oReason: '',
-		oStartDate: '',
-		oBlockedReason: '',
-		oEndDate: '',
+		oCntFinish: "",
+		oStartEmail: "",
+		oSnsType: "",
+		oReason: "",
+		oStartDate: "",
+		oBlockedReason: "",
+		oEndDate: "",
 	};
 
 	let Data;
 	let LogData;
-	let urlList = '/memberInfo/memberInformation';
-	let startNumber = 0;
-	let startNumber2 = 0;
+	let urlList = "/memberInfo/memberInformation";
 
 	onMount(async () => {
 		fnSearch();
 		$paging.nowPage = 1;
 		$pagingLog.nowPage = 1;
 
-		if (_id !== 'new') {
-			let retVal = await memberInformation.getMemberInformation(
-				_id,
-				allocatedDb
-			);
-			if (retVal.ResultCode === 'OK') {
+		if (_id !== "new") {
+			let retVal = await memberInformation.getMemberInformation(_id, allocatedDb);
+			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
 			} else {
 				alert(retVal.ErrorDesc);
@@ -94,41 +83,37 @@
 	});
 
 	async function fnSearch() {
-		await memberInformationList.setMemberInformationList(
-			_id,
-			$paging.pageSize,
-			$paging.nowPage
-		);
+		await memberInformationList.setMemberInformationList(_id, $paging.pageSize, $paging.nowPage);
 		await novelLog.fetchLog(_id, $pagingLog.pageSize, $pagingLog.nowPage);
 	}
 
 	function type(e, contents) {
-		let str = '';
+		let str = "";
 		let a;
 		switch (e) {
 			case 8:
-				return '블랙 리스트 미등록 (수동)';
+				return "블랙 리스트 미등록 (수동)";
 				break;
 			case 7:
-				return '블랙 리스트 미등록 (자동)';
+				return "블랙 리스트 미등록 (자동)";
 				break;
 			case 6:
 				return `블랙 리스트 (등록) 사유 : ${contents}`;
 				break;
 			case 5:
-				return '회원 상태 변경 (탈퇴)';
+				return "회원 상태 변경 (탈퇴)";
 				break;
 			case 4:
-				return '회원 상태 변경 (휴면)';
+				return "회원 상태 변경 (휴면)";
 				break;
 			case 3:
-				return '회원 상태 변경 (정상)';
+				return "회원 상태 변경 (정상)";
 				break;
 			case 2:
-				return '로그인/접속';
+				return "로그인/접속";
 				break;
 			case 1:
-				return '회원가입/접속';
+				return "회원가입/접속";
 				break;
 		}
 
@@ -143,17 +128,17 @@
 		console.log(oSave.oBlockedYn);
 
 		if (oSave.oBlockedYnTrue.checked && oSave.oBlockedReason.value < 1) {
-			alert('사유을 입력 하세요.');
+			alert("사유을 입력 하세요.");
 			return false;
 		} else if (oSave.oBlockedYnTrue.checked) {
 			if (oSave.oBlockedYn == YN) {
-				alert('등록 상태');
+				alert("등록 상태");
 				return false;
 			}
 			isBlocked = true;
 		} else if (oSave.oBlockedYnFalse.checked) {
 			if (oSave.oBlockedYn == YN) {
-				alert(' 미등록 상태');
+				alert(" 미등록 상태");
 				return false;
 			}
 			isBlocked = false;
@@ -161,7 +146,7 @@
 
 		//수정
 		let retVal;
-		if (_id === 'new') {
+		if (_id === "new") {
 		} else {
 			retVal = await memberInformation.editMemberInformation(
 				_id,
@@ -171,9 +156,9 @@
 			);
 
 			if (retVal) {
-				alert('정상적으로 수정 되었습니다');
+				alert("정상적으로 수정 되었습니다");
 
-				router.goto('/memberInfo/memberInformation');
+				router.goto("/memberInfo/memberInformation");
 			} else {
 				alert(retVal);
 			}
@@ -211,14 +196,11 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($memberInformationList.Data.TotalCount > 0) {
 			totalCount = $memberInformationList.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
 		if ($novelLog.Data.TotalCount > 0) {
 			logTotalCount = $novelLog.Data.TotalCount;
-			startNumber2 =
-				logTotalCount - $pagingLog.pageSize * ($pagingLog.nowPage - 1);
 		} else {
 			logTotalCount = 0;
 		}
@@ -261,53 +243,28 @@
 			<tbody class="table-border-bottom-0">
 				{#each $memberInformationList.Data.List as o, index}
 					<tr style="text-align:center">
-						<td>{startNumber - index}</td>
-						<td>{o.deleted_yn == 1 ? '삭제' : '등록'}</td>
-						<td>{o.active_yn == 1 ? '진행' : '종료'}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
+						<td>{o.deleted_yn == 1 ? "삭제" : "등록"}</td>
+						<td>{o.active_yn == 1 ? "진행" : "종료"}</td>
 						<td>{o.keyword}</td>
 						<td>{o.genres}</td>
 						<td>{o.title}</td>
 						<td>{o.step}</td>
-						<td>{o.deleted_yn == 1 ? '-' : o.cnt_like}</td>
+						<td>{o.deleted_yn == 1 ? "-" : o.cnt_like}</td>
 						<td>{Dates.defaultConvert(o.created_at)}</td>
-						<td
-							on:click={fnShowModal(
-								o.seq_member,
-								o.novel_step,
-								o.step
-							)}
-							style="cursor:pointer"><b>보기</b></td
-						>
+						<td on:click={fnShowModal(o.seq_member, o.novel_step, o.step)} style="cursor:pointer"><b>보기</b></td>
 					</tr>
 				{/each}
 			</tbody>
 		</table>
-		<Paging
-			{fnSearch}
-			{pageSize}
-			{totalCount}
-			fnDelete={undefined}
-			registUrl={undefined}
-		/>
+		<Paging {fnSearch} {pageSize} {totalCount} fnDelete={undefined} registUrl={undefined} />
 		<th style="padding-left:30px">블랙리스트 설정</th>
 		<table class="table">
 			<tbody class="table-border-bottom-0">
-				<DetailCommonBlockedYn
-					{oSave}
-					title="블랙리스트 여부"
-					Y="등록"
-					N="미등록"
-				/>
+				<DetailCommonBlockedYn {oSave} title="블랙리스트 여부" Y="등록" N="미등록" />
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">블랙리스트 사유*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="12"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">블랙리스트 사유*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="12">
 						<textarea
 							type="text"
 							rows="5"
@@ -347,7 +304,7 @@
 			<tbody class="table-border-bottom-0">
 				{#each $novelLog.Data.List as o, index}
 					<tr style="text-align:center">
-						<td>{startNumber2 - index}</td>
+						<td>{Maths.startNumber($pagingLog) - index}</td>
 						<td>{Dates.defaultConvertFull(o.created_at)}</td>
 						<td>{type(o.type, o.contents)}</td>
 					</tr>
@@ -384,9 +341,7 @@
 				/>
 			</div>
 			<div class="modal-body">
-				<textarea class="form-control form-control-sm" rows="10"
-					>{oModal.item}</textarea
-				>
+				<textarea class="form-control form-control-sm" rows="10">{oModal.item}</textarea>
 			</div>
 		</div>
 	</div>

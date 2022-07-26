@@ -1,21 +1,21 @@
 <script>
-	import { onMount } from 'svelte';
-	import { faq, categoryFaq, paging, checkedList, check } from '../../stores';
-	import { fade, draw } from 'svelte/transition';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
+	import { onMount } from "svelte";
+	import { faq, categoryFaq, paging, checkedList, check } from "../../stores";
+	import { fade, draw } from "svelte/transition";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import { Maths } from "../../utils/math";
 
 	let oSearch = {
-		ActiveYn: 'All',
-		StartDate: '',
-		EndDate: '',
-		Faq: '',
-		oCategory: 'Choice',
+		ActiveYn: "All",
+		StartDate: "",
+		EndDate: "",
+		Faq: "",
+		oCategory: "Choice",
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let startNumber = 0;
-	let registUrl = '/cs/faq/new';
+	let registUrl = "/cs/faq/new";
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -36,7 +36,7 @@
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {
-			alert('사용기간이 종료일보다 큽니다.');
+			alert("사용기간이 종료일보다 큽니다.");
 			return false;
 		} else {
 			fnSearch();
@@ -46,17 +46,17 @@
 
 	async function fnDelete() {
 		await faq.delFaq($checkedList);
-		console.log('삭제클릭');
+		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
 	}
 
 	async function fnInit() {
-		oSearch.ActiveYn = 'All';
-		oSearch.StartDate = '';
-		oSearch.EndDate = '';
-		oSearch.Faq = '';
-		oSearch.oCategory = 'Choice';
+		oSearch.ActiveYn = "All";
+		oSearch.StartDate = "";
+		oSearch.EndDate = "";
+		oSearch.Faq = "";
+		oSearch.oCategory = "Choice";
 		fnSearch();
 
 		let o = $paging;
@@ -72,7 +72,6 @@
 		// 현재 페이지 게시물 갯수 TOTAL DATA
 		if ($faq.Data.TotalCount > 0) {
 			totalCount = $faq.Data.TotalCount;
-			startNumber = totalCount - $paging.pageSize * ($paging.nowPage - 1);
 		} else {
 			totalCount = 0;
 		}
@@ -84,13 +83,8 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">카테고리</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">카테고리</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -99,21 +93,12 @@
 						>
 							<option value="Choice" selected>전체</option>
 							{#each $categoryFaq.Data.List as o, index}
-								<option
-									value={o.SeqCategoryFaqs}
-									style={o.ActiveYn ? '' : 'display:none'}
-									>{o.CategoryFaq}</option
-								>
+								<option value={o.SeqCategoryFaqs} style={o.ActiveYn ? "" : "display:none"}>{o.CategoryFaq}</option>
 							{/each}
 						</select></td
 					>
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">노출여부</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -126,13 +111,8 @@
 						</select>
 					</td>
 
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">등록일/수정일</h5></td
-					>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/수정일</h5></td>
+					<td width="100" style="vertical-align: middle;text-align:center">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -140,10 +120,7 @@
 							id="html5-date-input"
 						/>
 					</td>
-					<td
-						width="100"
-						style="vertical-align: middle;text-align:center; padding-left:0"
-					>
+					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -153,9 +130,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="100" style="text-align: left;"
-						><h5 class="mb-0">제목/내용</h5></td
-					>
+					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용</h5></td>
 					<td width="*" colspan="4">
 						<div class="input-group">
 							<input
@@ -166,16 +141,8 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Faq}
 							/>
-							<button
-								class="btn btn-sm btn-outline-primary"
-								type="button"
-								on:click={fnInit}>초기화</button
-							>
-							<button
-								class="btn btn-sm btn-primary"
-								type="button"
-								on:click={fnSearching(oSearch)}>검색</button
-							>
+							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
+							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearching(oSearch)}>검색</button>
 						</div>
 					</td>
 				</tr>
@@ -221,22 +188,13 @@
 								checked={$check}
 							/></td
 						>
-						<td>{startNumber - index}</td>
+						<td>{Maths.startNumber($paging) - index}</td>
 						<td>{o.category_faq}</td>
 
 						<td><a href="/cs/faq/{o.seq_faq}">{o.title}</a></td>
-						<td>{o.active_yn ? '노출' : '미노출'}</td>
-
-						<td
-							>{o.created_at
-								? Dates.defaultConvert(o.created_at)
-								: ''}</td
-						>
-						<td
-							>{o.updated_at
-								? Dates.defaultConvert(o.updated_at)
-								: '-'}</td
-						>
+						<td>{o.active_yn ? "노출" : "미노출"}</td>
+						<td>{o.created_at ? Dates.defaultConvert(o.created_at) : ""}</td>
+						<td>{o.updated_at ? Dates.defaultConvert(o.updated_at) : "-"}</td>
 					</tr>
 				{/each}
 			</tbody>
