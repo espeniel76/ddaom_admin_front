@@ -79,7 +79,7 @@
 		}
 		if (oSave.oKeyword < 1) {
 			alert('주제어를 입력 하세요.');
-			oSave.oKeyword.focus();
+
 			return false;
 		}
 

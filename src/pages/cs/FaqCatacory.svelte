@@ -21,7 +21,7 @@
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let startNumber = 0;
+
 	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 
@@ -74,7 +74,11 @@
 		if (oSave.oCategory.value.length < 1) {
 			alert('카테고리 를 입력 하세요.');
 			oSave.oCategory.focus();
-			return flase;
+			return false;
+		}
+		if (oSave.oCategory.value.replace(blank_pattern, '') == '') {
+			alert('카테고리 공백만 입력되었습니다.');
+			return false;
 		}
 
 		await categoryList.saveCategoryList(oSave.oCategory.value, isActive);
