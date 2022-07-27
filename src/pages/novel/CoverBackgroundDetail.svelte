@@ -21,6 +21,7 @@
 	};
 	let Data;
 	let urlList = '/novel/cover/background';
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -57,6 +58,14 @@
 		if (oSave.Color.length < 1) {
 			alert('컬러코드를 입력 하세요.');
 			oSave.Color.focus();
+			return false;
+		}
+		if (oSave.oName.value.replace(blank_pattern, '') == '') {
+			alert('컬려명 공백만 입력되었습니다.');
+			return false;
+		}
+		if (oSave.Color.value.replace(blank_pattern, '') == '') {
+			alert('컬러 공백만 입력되었습니다.');
 			return false;
 		}
 

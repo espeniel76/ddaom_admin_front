@@ -72,6 +72,7 @@
 			oSave.oCategory.focus();
 			return flase;
 		}
+
 		await categoryList.saveCategoryList(oSave.oCategory.value, isActive);
 		oSave.oCategory.value = '';
 		await fnSearch();

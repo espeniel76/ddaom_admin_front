@@ -2,6 +2,7 @@
 	export let urlList = undefined;
 	export let fnSave = undefined;
 	export let _id = undefined;
+	export let fnSearch;
 </script>
 
 <table class="table">
@@ -9,7 +10,7 @@
 		{#if urlList}
 			<td width="100">
 				<div class="demo-inline-spacing">
-					<a href={urlList}>
+					<a href={urlList} on:click={fnSearch()}>
 						<button type="button" class="btn btn-sm btn-info"
 							>목록</button
 						>

@@ -74,11 +74,12 @@
 	let urlList = '/memberInfo/memberInformation';
 	let startNumber = 0;
 	let startNumber2 = 0;
+	const blank_pattern = /^\s+|\s+$/g;
 
 	onMount(async () => {
-		fnSearch();
 		$paging.nowPage = 1;
 		$pagingLog.nowPage = 1;
+		fnSearch();
 
 		if (_id !== 'new') {
 			let retVal = await memberInformation.getMemberInformation(
@@ -103,36 +104,29 @@
 	}
 
 	function type(e, contents) {
-		let str = '';
-		let a;
+		//e =회원의status log
 		switch (e) {
 			case 8:
 				return '블랙 리스트 미등록 (수동)';
-				break;
 			case 7:
 				return '블랙 리스트 미등록 (자동)';
-				break;
 			case 6:
-				return `블랙 리스트 (등록) 사유 : ${contents}`;
-				break;
+				return `블랙 리스트 (등록) \n 사유 : ${contents}`;
 			case 5:
 				return '회원 상태 변경 (탈퇴)';
-				break;
 			case 4:
 				return '회원 상태 변경 (휴면)';
-				break;
 			case 3:
 				return '회원 상태 변경 (정상)';
-				break;
 			case 2:
 				return '로그인/접속';
-				break;
 			case 1:
 				return '회원가입/접속';
+			default:
 				break;
 		}
 
-		a = (str = 6) ? ` 블랙 리스트 (등록) \n [사유] ${contents}` : contents;
+		//if switch 등 문법에서는 구문
 
 		return a;
 	}
@@ -158,6 +152,11 @@
 			}
 			isBlocked = false;
 		}
+
+		// if (oSave.oBlockedYnTrue.value.replace(blank_pattern, '') == '') {
+		// 	alert('내용 공백만 입력되었습니다.');
+		// 	return false;
+		// }
 
 		//수정
 		let retVal;
@@ -247,6 +246,7 @@
 				<tr style="text-align:center">
 					<th width="50">No</th>
 					<th width="50">상태</th>
+					<th width="*">진행여부</th>
 					<th width="*">주제어</th>
 					<th width="100">장르</th>
 					<th width="100">제목</th>

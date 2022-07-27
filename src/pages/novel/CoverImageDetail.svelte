@@ -24,7 +24,7 @@
 	let Data;
 	let urlList = '/novel/cover/image';
 	let oImage = null;
-
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -50,6 +50,11 @@
 		if (oSave.oName.value.length < 1) {
 			alert('이미지명을 입력 하세요.');
 			oSave.oName.focus();
+			return false;
+		}
+
+		if (oSave.oName.value.replace(blank_pattern, '') == '') {
+			alert('내용 공백만 입력되었습니다.');
 			return false;
 		}
 		// let fileCheck = document.getElementById('bfile');
@@ -149,11 +154,16 @@
 							type="file"
 							class="form-control form-control-sm"
 							placeholder="코드"
+							accept="image/png"
 							on:change={(e) => {
 								imageLoad(e.target);
 							}}
 							bind:this={oSave.oFile}
 						/>
+						<div style="color:chocolate">
+							*배경이 투명인 png 파일을 첨부해주세요. (카카오톡
+							공유 시 오류 이슈)
+						</div>
 					</td>
 				</tr>
 				<tr>

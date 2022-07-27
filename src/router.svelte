@@ -1,9 +1,6 @@
 <script>
 	import { Route } from 'tinro';
 	import Transition from './components/Transition.svelte';
-	// import Route from 'svelte-spa-router';
-	//   import Router, {location, link} from 'svelte-spa-router';
-	// import { Route } from 'tinro';
 
 	import NovelMainAll from './pages/novel/MainAll.svelte';
 	import NovelMainAllDetail from './pages/novel/MainAllDetail.svelte';
@@ -70,6 +67,5 @@
 	<Route path="/memberInfo/memberInformation/:_id/:allocatedDb"
 		><MemberInformationDetail /></Route
 	>
+	<Route fallback>404</Route>
 </Transition>
-
-<Route fallback>404페이지ㅁ</Route>

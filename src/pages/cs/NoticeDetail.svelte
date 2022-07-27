@@ -24,6 +24,7 @@
 
 	let Data;
 	let urlList = '/cs/notice';
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -64,6 +65,14 @@
 		if (oSave.oContent.value.length < 1) {
 			alert('내용을 입력 하세요.');
 			oSave.oContent.focus();
+			return false;
+		}
+		if (oSave.oTitle.value.replace(blank_pattern, '') == '') {
+			alert('제목 공백만 입력되었습니다.');
+			return false;
+		}
+		if (oSave.oContent.value.replace(blank_pattern, '') == '') {
+			alert('내용 공백만 입력되었습니다.');
 			return false;
 		}
 

@@ -28,6 +28,7 @@
 	let Data;
 	let nowDate = Dates.getYYYYMMTZ();
 	let urlList = '/novel/keywords';
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -76,7 +77,7 @@
 			oSave.oStartDate.focus();
 			return false;
 		}
-		if (oSave.oKeyword.length < 1) {
+		if (oSave.oKeyword < 1) {
 			alert('주제어를 입력 하세요.');
 			oSave.oKeyword.focus();
 			return false;

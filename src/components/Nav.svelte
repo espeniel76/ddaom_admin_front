@@ -26,7 +26,7 @@
 				{
 					title: '표지관리',
 					icon: 'paint',
-					src: '/novel/cover/image',
+					src: '',
 					subs: [
 						{ title: '이미지', src: '/novel/cover/image' },
 						{ title: '배경', src: '/novel/cover/background' },
@@ -129,8 +129,12 @@
 	}
 </script>
 
-<nav id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-	<div class="app-brand demo" style="padding-left: 0rem">
+<nav
+	id="layout-menu"
+	class="menu-vertical menu bg-menu-theme"
+	style="display:flex;"
+>
+	<div class="app-brand demo" style="padding-left: 0rem ">
 		<img alt="" src="/assets/img/logo.png" width="50" />
 		<span class="app-brand-text demo menu-text fw-bolder ms-2"
 			>따옴 관리자</span

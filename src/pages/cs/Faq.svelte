@@ -156,7 +156,7 @@
 					<td width="100" style="text-align: left;"
 						><h5 class="mb-0">제목/내용</h5></td
 					>
-					<td width="*" colspan="4">
+					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
 								type="text"

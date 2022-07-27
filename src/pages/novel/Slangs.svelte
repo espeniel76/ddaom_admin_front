@@ -25,7 +25,9 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let startNumber = 0;
-
+	const blank_pattern = /^\s+|\s+$/g;
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+	// .replace(regex, '')
 	onMount(() => {
 		fnSearch();
 	});
@@ -48,6 +50,7 @@
 			oEdit.oSlang.focus();
 			return false;
 		}
+
 		slangs.editSlang(SeqSlang, Slang, ActiveYn);
 		closeEditMode();
 		fnSearch();
@@ -74,6 +77,12 @@
 			oSave.oSlang.focus();
 			return flase;
 		}
+
+		if (oSave.oSlang.value.replace(blank_pattern, '') == '') {
+			alert('금칙어 내용 공백만 입력되었습니다.');
+			return false;
+		}
+
 		await slangs.saveSlang(oSave.oSlang.value, isActive);
 		oSave.oSlang.value = '';
 		await fnSearch();

@@ -22,6 +22,7 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let startNumber = 0;
+	const blank_pattern = /^\s+|\s+$/g;
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -73,6 +74,11 @@
 			oSave.oGenre.focus();
 			return flase;
 		}
+		if (oSave.oGenre.value.replace(blank_pattern, '') == '') {
+			alert('장르 내용 공백만 입력되었습니다.');
+			return false;
+		}
+
 		await genres.saveGenre(oSave.oGenre.value, isActive);
 		oSave.oGenre.value = '';
 		await fnSearch();

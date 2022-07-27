@@ -27,6 +27,7 @@
 
 	let Data;
 	let urlList = '/cs/faq/';
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -69,9 +70,18 @@
 			return false;
 		}
 
+		if (oSave.oTitle.value.replace(blank_pattern, '') == '') {
+			alert('제목 공백만 입력되었습니다.');
+			return false;
+		}
+
 		if (oSave.oContent.value.length < 1) {
 			alert('내용을 입력 하세요.');
 			oSave.oContent.focus();
+			return false;
+		}
+		if (oSave.oContent.value.replace(blank_pattern, '') == '') {
+			alert('내용 공백만 입력되었습니다.');
 			return false;
 		}
 
@@ -80,7 +90,7 @@
 		if (_id === 'new') {
 			retVal = await faq.saveFaq(
 				oSave.oCategory,
-				oSave.oTitle.value,
+				oSave.oTitle.value.replace(regex, ''),
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,
@@ -96,7 +106,7 @@
 			retVal = await faq.editFaq(
 				_id,
 				oSave.oCategory,
-				oSave.oTitle.value,
+				oSave.oTitle.value.replace(regex, ''),
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,

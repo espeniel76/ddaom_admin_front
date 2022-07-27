@@ -30,6 +30,7 @@
 
 	let Data;
 	let urlList = '/cs/inquiry';
+	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
@@ -64,11 +65,15 @@
 		// 	return false;
 		// }
 
-		// if (oSave.oContent.value.length < 1) {
-		// 	alert("내용을 입력 하세요.");
-		// 	oSave.oContent.focus();
-		// 	return false;
-		// }
+		if (oSave.oAnswer.value.length < 1) {
+			alert('내용을 입력 하세요.');
+			oSave.oAnswer.focus();
+			return false;
+		}
+		if (oSave.oAnswer.value.replace(blank_pattern, '') == '') {
+			alert('내용 공백만 입력되었습니다.');
+			return false;
+		}
 
 		//수정
 		let retVal;
