@@ -31,7 +31,7 @@
 	onMount(async () => {
 		if (_id !== 'new') {
 			let retVal = await images.get(_id);
-			console.log(retVal);
+
 			if (retVal.ResultCode === 'OK') {
 				Data = retVal.Data;
 			} else {
@@ -106,7 +106,6 @@
 	}
 
 	$: {
-		console.log(oSave.Image);
 		if (Data && oSave.Image === '') {
 			if (Data.ActiveYn) {
 				oSave.oActiveYnTrue.checked = true;
