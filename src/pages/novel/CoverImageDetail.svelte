@@ -57,6 +57,10 @@
 			alert('내용 공백만 입력되었습니다.');
 			return false;
 		}
+		if (oSave.oFile.value == '') {
+			alert('이미지 파일을 등록 하세요.');
+			return false;
+		}
 		// let fileCheck = document.getElementById('bfile');
 		// console.log(fileCheck);
 		// if (!fileCheck) {
@@ -120,6 +124,18 @@
 			oImage.src = `${consts.urls.IMAGE_SERVER}${Data.Image}`;
 		}
 	}
+	function validateFileType(e) {
+		const fileName = document.getElementById('fileName').value;
+		const idxDot = fileName.lastIndexOf('.') + 1;
+		const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+		if (extFile == 'png') {
+			//TO DO
+		} else {
+			e.target.value = '';
+			alert('png 확장자 파일만 등록 가능합니다.');
+			return false;
+		}
+	}
 </script>
 
 <div class="card mb-4">
@@ -151,11 +167,13 @@
 					>
 					<td width="*" style="vertical-align: middle" colspan="3">
 						<input
+							id="fileName"
 							type="file"
 							class="form-control form-control-sm"
 							placeholder="코드"
 							accept="image/png"
 							on:change={(e) => {
+								validateFileType(e);
 								imageLoad(e.target);
 							}}
 							bind:this={oSave.oFile}
