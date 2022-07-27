@@ -1,18 +1,18 @@
 <script>
-	import { beforeUpdate, onMount } from "svelte";
-	import { images, paging, checkedList, check } from "../../stores";
-	import { Dates } from "../../utils/date";
-	import Paging from "../../components/Paging.svelte";
-	import consts from "../../define/consts";
-	import { Maths } from "../../utils/math";
+	import { beforeUpdate, onMount } from 'svelte';
+	import { images, paging, checkedList, check } from '../../stores';
+	import { Dates } from '../../utils/date';
+	import Paging from '../../components/Paging.svelte';
+	import consts from '../../define/consts';
+	import { Maths } from '../../utils/math';
 
 	let oSearch = {
-		ActiveYn: "All",
-		Name: "",
+		ActiveYn: 'All',
+		Name: '',
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/novel/cover/image/new";
+	let registUrl = '/novel/cover/image/new';
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -31,14 +31,14 @@
 
 	async function fnDelete() {
 		await images.delImages($checkedList);
-		console.log("삭제클릭");
+		console.log('삭제클릭');
 		fnPageNavSet();
 		fnSearch();
 	}
 
 	function fnInit() {
-		oSearch.ActiveYn = "All";
-		oSearch.Name = "";
+		oSearch.ActiveYn = 'All';
+		oSearch.Name = '';
 		fnSearch();
 	}
 	function checkedAllchange(e) {
@@ -60,8 +60,13 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
-					<td width="200" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">사용여부</h5></td
+					>
+					<td
+						width="200"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -73,7 +78,9 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">제목</h5></td>
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">제목</h5></td
+					>
 					<td width="*" colspan="3">
 						<div class="input-group">
 							<input
@@ -84,8 +91,18 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Name}
 							/>
-							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearch}>검색</button>
+							<button
+								style="margin-left:5px;"
+								class="btn btn-sm btn-outline-primary"
+								type="button"
+								on:click={fnInit}>초기화</button
+							>
+							<button
+								style="margin-left:5px;"
+								class="btn btn-sm btn-primary"
+								type="button"
+								on:click={fnSearch}>검색</button
+							>
 						</div>
 					</td>
 				</tr>
@@ -132,11 +149,29 @@
 							/></td
 						>
 						<td>{Maths.startNumber($paging) - index}</td>
-						<td><a href="/novel/cover/image/{o.SeqImage}">{o.Name}</a></td>
-						<td><img alt="" src="{consts.urls.IMAGE_SERVER}{o.Image}" width="80" /></td>
-						<td>{o.ActiveYn ? "사용" : "미사용"}</td>
-						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td
+							><a href="/novel/cover/image/{o.SeqImage}"
+								>{o.Name}</a
+							></td
+						>
+						<td
+							><img
+								alt=""
+								src="{consts.urls.IMAGE_SERVER}{o.Image}"
+								width="80"
+							/></td
+						>
+						<td>{o.ActiveYn ? '사용' : '미사용'}</td>
+						<td
+							>{o.CreatedAt
+								? Dates.defaultConvert(o.CreatedAt)
+								: ''}</td
+						>
+						<td
+							>{o.UpdatedAt
+								? Dates.defaultConvert(o.UpdatedAt)
+								: ''}</td
+						>
 					</tr>
 				{/each}
 			</tbody>

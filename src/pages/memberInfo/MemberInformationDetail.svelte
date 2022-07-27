@@ -231,10 +231,13 @@
 			</tbody>
 		</table>
 		<br /> <br />
-		<th colspan="12" style="float:right">
-			Total data: {$paging.totalCount}
-			, Now page: {$paging.nowPage}
-			, TOTAL page: {$paging.totalPage}
+		<th
+			colspan="12"
+			style="float:right; margin-right: 20px;font-size: 12px;"
+		>
+			TOTAL DATA: {$paging.totalCount}
+			,NOW PAGE: {$paging.nowPage}
+			,TOTAL PAGE: {$paging.totalPage}
 		</th>
 		<th style="padding-left:30px">소설목록</th>
 		<br />
@@ -324,10 +327,13 @@
 		<DetailCommonInquirieBottomBtns {fnSave} {_id} />
 		<br />
 		<!-- 로그 -->
-		<th colspan="12" style="float:right">
-			Total data: {$pagingLog.totalCount}
-			, Now page: {$pagingLog.nowPage}
-			, TOTAL page: {$pagingLog.totalPage}
+		<th
+			colspan="12"
+			style="float:right; margin-right: 20px;font-size: 12px;"
+		>
+			TOTAL DATA: {$pagingLog.totalCount}
+			, NOW PAGE: {$pagingLog.nowPage}
+			, TOTAL PAGE: {$pagingLog.totalPage}
 		</th>
 		<th style="padding-left:30px">접속/변경내역</th>
 		<br />

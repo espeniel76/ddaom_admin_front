@@ -1,20 +1,20 @@
 <script>
-	import { onMount } from "svelte";
-	import { notice, paging, checkedList, check } from "../../stores";
-	import { Dates } from "../../utils/date";
+	import { onMount } from 'svelte';
+	import { notice, paging, checkedList, check } from '../../stores';
+	import { Dates } from '../../utils/date';
 
-	import Paging from "../../components/Paging.svelte";
-	import { Maths } from "../../utils/math";
+	import Paging from '../../components/Paging.svelte';
+	import { Maths } from '../../utils/math';
 
 	let oSearch = {
-		ActiveYn: "All",
-		StartDate: "",
-		EndDate: "",
-		Notice: "",
+		ActiveYn: 'All',
+		StartDate: '',
+		EndDate: '',
+		Notice: '',
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "/cs/notice/new";
+	let registUrl = '/cs/notice/new';
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -35,7 +35,7 @@
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {
-			alert("사용기간이 종료일보다 큽니다.");
+			alert('사용기간이 종료일보다 큽니다.');
 			return false;
 		} else {
 			fnSearch();
@@ -43,15 +43,15 @@
 	}
 	async function fnDelete() {
 		await notice.delNotice($checkedList);
-		console.log("삭제클릭");
+		console.log('삭제클릭');
 		fnPageNavSet();
 		fnSearch();
 	}
 	async function fnInit() {
-		oSearch.ActiveYn = "All";
-		oSearch.StartDate = "";
-		oSearch.EndDate = "";
-		oSearch.Notice = "";
+		oSearch.ActiveYn = 'All';
+		oSearch.StartDate = '';
+		oSearch.EndDate = '';
+		oSearch.Notice = '';
 
 		fnSearch();
 		let o = $paging;
@@ -79,8 +79,13 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">노출여부</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: left;"
+						><h5 class="mb-0">노출여부</h5></td
+					>
+					<td
+						width="100"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -93,8 +98,13 @@
 						</select>
 					</td>
 
-					<td width="100" style="text-align: left;"><h5 class="mb-0">등록일/수정일</h5></td>
-					<td width="100" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: left;"
+						><h5 class="mb-0">등록일/수정일</h5></td
+					>
+					<td
+						width="100"
+						style="vertical-align: middle;text-align:center"
+					>
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -102,7 +112,10 @@
 							id="html5-date-input"
 						/>
 					</td>
-					<td width="100" style="vertical-align: middle;text-align:center; padding-left:0">
+					<td
+						width="100"
+						style="vertical-align: middle;text-align:center; padding-left:0"
+					>
 						<input
 							class="form-control form-control-sm"
 							type="date"
@@ -112,7 +125,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="100" style="text-align: left;"><h5 class="mb-0">제목/내용</h5></td>
+					<td width="100" style="text-align: left;"
+						><h5 class="mb-0">제목/내용</h5></td
+					>
 					<td width="*" colspan="4">
 						<div class="input-group">
 							<input
@@ -123,8 +138,18 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Notice}
 							/>
-							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearching(oSearch)}>검색</button>
+							<button
+								style="margin-left:5px;"
+								class="btn btn-sm btn-outline-primary"
+								type="button"
+								on:click={fnInit}>초기화</button
+							>
+							<button
+								style="margin-left:5px;"
+								class="btn btn-sm btn-primary"
+								type="button"
+								on:click={fnSearching(oSearch)}>검색</button
+							>
 						</div>
 					</td>
 				</tr>
@@ -170,11 +195,20 @@
 							/></td
 						>
 						<td>{Maths.startNumber($paging) - index}</td>
-						<td><a href="/cs/notice/{o.SeqNotice}">{o.Title}</a></td>
-						<td>{o.ActiveYn ? "노출" : "미노출"}</td>
+						<td><a href="/cs/notice/{o.SeqNotice}">{o.Title}</a></td
+						>
+						<td>{o.ActiveYn ? '노출' : '미노출'}</td>
 
-						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td
+							>{o.CreatedAt
+								? Dates.defaultConvert(o.CreatedAt)
+								: ''}</td
+						>
+						<td
+							>{o.UpdatedAt
+								? Dates.defaultConvert(o.UpdatedAt)
+								: ''}</td
+						>
 					</tr>
 				{/each}
 			</tbody>

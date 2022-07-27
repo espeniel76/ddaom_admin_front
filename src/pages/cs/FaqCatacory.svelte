@@ -212,7 +212,7 @@
 					<td width="150" style="text-align: right;"
 						><h5 class="mb-0">카테고리</h5></td
 					>
-					<td width="*">
+					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
 								type="text"
@@ -223,11 +223,13 @@
 								bind:value={oSearch.Category}
 							/>
 							<button
+								style="margin-left:5px;"
 								class="btn btn-sm btn-outline-primary"
 								type="button"
 								on:click={fnInit}>초기화</button
 							>
 							<button
+								style="margin-left:5px;"
 								class="btn btn-sm btn-primary"
 								type="button"
 								on:click={fnSearch}>검색</button

@@ -227,11 +227,13 @@
 								bind:value={oSearch.Slang}
 							/>
 							<button
+								style="margin-left:5px;"
 								class="btn btn-sm btn-outline-primary"
 								type="button"
 								on:click={fnInit}>초기화</button
 							>
 							<button
+								style="margin-left:5px;"
 								class="btn btn-sm btn-primary"
 								type="button"
 								on:click={fnSearch}>검색</button
