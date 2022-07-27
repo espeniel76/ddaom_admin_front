@@ -21,6 +21,9 @@
 	let pageSize = 10;
 	let totalCount = 0;
 	let startNumber = 0;
+	const blank_pattern = /^\s+|\s+$/g;
+	const regex = /[\s\uFEFF\xA0]+$/gi;
+
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
