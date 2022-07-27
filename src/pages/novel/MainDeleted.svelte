@@ -1,25 +1,25 @@
 <script>
-	import { onMount } from "svelte";
-	import { mainDeletedAll, paging } from "../../stores";
-	import { Dates } from "../../utils/date";
-	import { Strings } from "../../utils/string";
-	import Paging from "../../components/Paging.svelte";
-	import { Maths } from "../../utils/math";
+	import { onMount } from 'svelte';
+	import { mainDeletedAll, paging } from '../../stores';
+	import { Dates } from '../../utils/date';
+	import { Strings } from '../../utils/string';
+	import Paging from '../../components/Paging.svelte';
+	import { Maths } from '../../utils/math';
 
 	let oSearch = {
-		ProcessYn: "All",
-		StartDate: "",
-		EndDate: "",
-		Step: "All",
-		TypeDelete: "All",
-		NickName: "",
-		Keyword: "",
+		ProcessYn: 'All',
+		StartDate: '',
+		EndDate: '',
+		Step: 'All',
+		TypeDelete: 'All',
+		NickName: '',
+		Keyword: '',
 	};
 	let pageSize = 10;
 	let totalCount = 0;
-	let registUrl = "";
+	let registUrl = '';
 	let fnDelete = false;
-	let startNumber = 0;
+
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -33,7 +33,7 @@
 	function fnSearching(o) {
 		Number(o);
 		if (o.EndDate < o.StartDate) {
-			alert("사용기간이 종료일보다 큽니다.");
+			alert('사용기간이 종료일보다 큽니다.');
 			return false;
 		} else {
 			fnSearch();
@@ -41,13 +41,13 @@
 	}
 
 	async function fnInit() {
-		oSearch.ProcessYn = "All";
-		oSearch.StartDate = "";
-		oSearch.EndDate = "";
-		oSearch.Step = "All";
-		oSearch.TypeDelete = "All";
-		oSearch.NickName = "";
-		oSearch.Keyword = "";
+		oSearch.ProcessYn = 'All';
+		oSearch.StartDate = '';
+		oSearch.EndDate = '';
+		oSearch.Step = 'All';
+		oSearch.TypeDelete = 'All';
+		oSearch.NickName = '';
+		oSearch.Keyword = '';
 		fnSearch();
 		let o = $paging;
 		o.nowPage = 1;
@@ -66,8 +66,13 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">진행여부</h5></td>
-					<td width="200" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">진행여부</h5></td
+					>
+					<td
+						width="200"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -79,8 +84,13 @@
 							<option value="N">종료</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">삭제일</h5></td>
-					<td width="200" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">삭제일</h5></td
+					>
+					<td
+						width="200"
+						style="vertical-align: middle;text-align:center"
+					>
 						<div class="input-group">
 							<input
 								class="form-control form-control-sm"
@@ -99,8 +109,13 @@
 					<td width="*" />
 				</tr>
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">Step</h5></td>
-					<td width="300" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">Step</h5></td
+					>
+					<td
+						width="300"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -114,8 +129,13 @@
 							<option value="4">4</option>
 						</select>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">삭제유형</h5></td>
-					<td width="300" style="vertical-align: middle;text-align:center">
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">삭제유형</h5></td
+					>
+					<td
+						width="300"
+						style="vertical-align: middle;text-align:center"
+					>
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -131,7 +151,9 @@
 					<td width="*" />
 				</tr>
 				<tr>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">작가</h5></td>
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">작가</h5></td
+					>
 					<td width="300">
 						<div class="input-group">
 							<input
@@ -143,7 +165,9 @@
 							/>
 						</div>
 					</td>
-					<td width="100" style="text-align: right;"><h5 class="mb-0">주제어/제목</h5></td>
+					<td width="100" style="text-align: right;"
+						><h5 class="mb-0">주제어/제목</h5></td
+					>
 					<td width="*" colspan="2">
 						<div class="input-group" style="width: 300px;">
 							<input
@@ -154,8 +178,16 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Keyword}
 							/>
-							<button class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}>초기화</button>
-							<button class="btn btn-sm btn-primary" type="button" on:click={fnSearching(oSearch)}>검색</button>
+							<button
+								class="btn btn-sm btn-outline-primary"
+								type="button"
+								on:click={fnInit}>초기화</button
+							>
+							<button
+								class="btn btn-sm btn-primary"
+								type="button"
+								on:click={fnSearching(oSearch)}>검색</button
+							>
 						</div>
 					</td>
 				</tr>
@@ -210,12 +242,25 @@
 						<td>{Dates.defaultConvert(o.StartDate)}</td>
 						<td>{Dates.defaultConvert(o.EndDate)}</td>
 						<td>{o.Keyword}</td>
-						<td><a href="/novel/main/deleted/{o.SeqNovelDelete}/{o.Step}">{o.Title}</a></td>
+						<td
+							><a
+								href="/novel/main/deleted/{o.SeqNovelDelete}/{o.Step}"
+								>{o.Title}</a
+							></td
+						>
 						<td>{o.Genre}</td>
 						<td>{o.Step}</td>
 						<td>{o.NickName}</td>
-						<td>{o.CreatedAt ? Dates.defaultConvert(o.CreatedAt) : ""}</td>
-						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td
+							>{o.CreatedAt
+								? Dates.defaultConvert(o.CreatedAt)
+								: ''}</td
+						>
+						<td
+							>{o.UpdatedAt
+								? Dates.defaultConvert(o.UpdatedAt)
+								: ''}</td
+						>
 						<td>{Strings.getDeleteType(o.TypeDelete)}</td>
 					</tr>
 				{/each}
