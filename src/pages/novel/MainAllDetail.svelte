@@ -115,6 +115,10 @@
 			$pagingStep1.pageSize,
 			$pagingStep1.nowPage
 		);
+		fnInitStep1();
+		fnInitStep2();
+		fnInitStep3();
+		fnInitStep4();
 	});
 
 	function fnInitStep1() {
@@ -183,15 +187,24 @@
 		// console.log($pagingStep1);
 		if ($novelStep1.Data.TotalCount > 0) {
 			oPageStep1.totalCount = Number($novelStep1.Data.TotalCount);
+		} else {
+			oPageStep1.totalCount = 0;
 		}
+
 		if ($novelStep2.Data.TotalCount > 0) {
 			oPageStep2.totalCount = Number($novelStep2.Data.TotalCount);
+		} else {
+			oPageStep2.totalCount = 0;
 		}
 		if ($novelStep3.Data.TotalCount > 0) {
 			oPageStep3.totalCount = Number($novelStep3.Data.TotalCount);
+		} else {
+			oPageStep3.totalCount = 0;
 		}
 		if ($novelStep4.Data.TotalCount > 0) {
 			oPageStep4.totalCount = Number($novelStep4.Data.TotalCount);
+		} else {
+			oPageStep4.totalCount = 0;
 		}
 	}
 

@@ -12,8 +12,8 @@
 		const style = element.style.display;
 
 		style === 'flex'
-			? (document.getElementById('layout-menu').style = 'display:none')
-			: (document.getElementById('layout-menu').style = 'display:flex');
+			? (element.style = 'display:none')
+			: (element.style = 'display:flex');
 	}
 </script>
 
