@@ -384,6 +384,8 @@
 									await fnSearchStep2();
 									await fnSearchStep3();
 									await fnSearchStep4();
+
+									// 하위 소설들 초기화 해 주는 머시기가 필요
 								}}
 							>
 								<td

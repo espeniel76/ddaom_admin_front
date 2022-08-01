@@ -13,10 +13,6 @@
 	export let fnShowModal;
 	export let viewType;
 
-	$: {
-		// console.log(oList);
-	}
-
 	const onKeyPress = (e) => {
 		if (e.charCode === 13) fnSearch();
 	};
@@ -63,8 +59,8 @@
 				</select>
 			</th>
 			<th colspan="4" style="text-align:right; padding: 10px">
-				Total: {$oPageStore.totalCount} , Now: {$oPageStore.nowPage},
-				pages: {$oPageStore.totalPage}
+				<!-- Total: {$oPageStore.totalCount} , Now: {$oPageStore.nowPage}, pages: {$oPageStore.totalPage} -->
+				Total: {oList.length} , Now: {$oPageStore.nowPage}, pages: {$oPageStore.totalPage}
 			</th>
 		</tr>
 		<tr style="text-align:center">
