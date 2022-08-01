@@ -522,6 +522,7 @@
 						type="button"
 						class={oStepClass.step2.title}
 						on:click={() => {
+							fnSearchStep2();
 							fnShowStepClass(2);
 						}}>Step2</button
 					>
@@ -531,6 +532,7 @@
 						type="button"
 						class={oStepClass.step3.title}
 						on:click={() => {
+							fnSearchStep3();
 							fnShowStepClass(3);
 						}}>Step3</button
 					>
@@ -540,6 +542,7 @@
 						type="button"
 						class={oStepClass.step4.title}
 						on:click={() => {
+							fnSearchStep4();
 							fnShowStepClass(4);
 						}}>Step4</button
 					>
@@ -592,7 +595,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">삭제2</h5>
+					<h5 class="modal-title">삭제</h5>
 					<button
 						type="button"
 						class="btn-close"
