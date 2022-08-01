@@ -119,7 +119,7 @@ function setNovelStep2() {
 	const { subscribe, set, update } = writable(values);
 	const fetch = async (o, PageSize, Page) => {
 		let url = `/main/all/step234?Step=2&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
-		console.log(url);
+
 		try {
 			const getDatas = await getApi(url);
 			if (getDatas.ResultCode !== 'OK') {
