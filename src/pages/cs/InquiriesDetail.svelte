@@ -1,11 +1,11 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
-	import { meta, router } from 'tinro';
-	import { inquiries } from '../../stores';
-	import DetailCommonInquiriesBottom from '../../components/DetailCommonInquiriesBottom.svelte';
-	import DetailCommonYn from '../../components/DetailCommonYn.svelte';
-	import DetailCommonInquirieBottomBtns from '../../components/DetailCommonInquirieBottomBtns.svelte';
+	import { meta, router } from "tinro";
+	import { inquiries } from "../../stores";
+	import DetailCommonInquiriesBottom from "../../components/DetailCommonInquiriesBottom.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonInquirieBottomBtns from "../../components/DetailCommonInquirieBottomBtns.svelte";
 
 	const route = meta();
 	let _id = route.params._id;
@@ -13,31 +13,31 @@
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		oStartDate: '',
-		oEndDate: '',
-		CreatedAt: '',
-		Creator: '',
-		UpdatedAt: '',
-		Updator: '',
-		oTitle: '',
-		oContent: '',
-		oEmail: '',
-		oEmailYn: '',
-		oStatus: '',
-		oAnswer: '',
+		oStartDate: "",
+		oEndDate: "",
+		CreatedAt: "",
+		Creator: "",
+		UpdatedAt: "",
+		Updator: "",
+		oTitle: "",
+		oContent: "",
+		oEmail: "",
+		oEmailYn: "",
+		oStatus: "",
+		oAnswer: "",
 		SeqMember: 0,
 	};
 
 	let Data;
-	let urlList = '/cs/inquiry';
+	let urlList = "/cs/inquiry";
 	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
 	onMount(async () => {
-		if (_id !== 'new') {
+		if (_id !== "new") {
 			let retVal = await inquiries.getInquiries(_id);
-			if (retVal.ResultCode === 'OK') {
+			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data.List[0];
 			} else {
 				alert(retVal.ErrorDesc);
@@ -66,18 +66,18 @@
 		// }
 
 		if (oSave.oAnswer.value.length < 1) {
-			alert('내용을 입력 하세요.');
+			alert("내용을 입력 하세요.");
 			oSave.oAnswer.focus();
 			return false;
 		}
-		if (oSave.oAnswer.value.replace(blank_pattern, '') == '') {
-			alert('내용 공백만 입력되었습니다.');
+		if (oSave.oAnswer.value.replace(blank_pattern, "") == "") {
+			alert("내용 공백만 입력되었습니다.");
 			return false;
 		}
 
 		//수정
 		let retVal;
-		if (_id === 'new') {
+		if (_id === "new") {
 		} else {
 			retVal = await inquiries.editInquiries(
 				_id,
@@ -89,9 +89,9 @@
 				oSave.SeqMember
 			);
 
-			if (retVal.ResultCode === 'OK') {
-				alert('정상적으로 수정 되었습니다');
-				router.goto('/cs/inquiry');
+			if (retVal.ResultCode === "OK") {
+				alert("정상적으로 수정 되었습니다");
+				router.goto("/cs/inquiry");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -131,29 +131,15 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">제목*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						{oSave.oTitle}
 					</td>
 				</tr>
 
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">문의내용*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">문의내용*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<textarea
 							type="text"
 							rows="10"
@@ -165,47 +151,21 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">이메일</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">이메일</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						{oSave.oEmail}
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">이메일로 답변 받기</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
-						{(oSave.oEmailYn = 1 ? 'Y' : 'N')}
+					<td style="text-align: right;"><h5 class="mb-0">이메일로 답변 받기</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						{(oSave.oEmailYn = 1 ? "Y" : "N")}
 					</td>
 				</tr>
-				<DetailCommonYn
-					{oSave}
-					title="답변여부"
-					Y="답변완료"
-					N="답변중"
-				/>
+				<DetailCommonYn {oSave} title="답변여부" Y="답변완료" N="답변중" />
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">답변내용*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">답변내용*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<textarea
 							type="text"
 							rows="10"
@@ -219,7 +179,7 @@
 					</td>
 				</tr>
 				<tr />
-				{#if _id !== 'new'}
+				{#if _id !== "new"}
 					<DetailCommonInquiriesBottom {oSave} />
 				{/if}
 			</tbody>

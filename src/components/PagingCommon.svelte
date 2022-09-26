@@ -44,11 +44,8 @@
 							<span
 								class="page-link"
 								on:click={() => {
-									$oPageStore.endPage =
-										$oPageStore.startPage - 1;
-									$oPageStore.startPage =
-										$oPageStore.endPage -
-										($oPageStore.pageListSize - 1);
+									$oPageStore.endPage = $oPageStore.startPage - 1;
+									$oPageStore.startPage = $oPageStore.endPage - ($oPageStore.pageListSize - 1);
 									$oPageStore.nowPage = $oPageStore.endPage;
 									fnSearch();
 								}}
@@ -71,9 +68,7 @@
 										on:click={() => {
 											let o = $oPageStore;
 											o.nowPage = page;
-											oPageStore.update(
-												(oPageStore) => o
-											);
+											oPageStore.update((oPageStore) => o);
 											fnSearch();
 										}}
 										style="cursor:pointer"
@@ -90,8 +85,7 @@
 							<span
 								class="page-link"
 								on:click={() => {
-									$oPageStore.startPage =
-										$oPageStore.endPage + 1;
+									$oPageStore.startPage = $oPageStore.endPage + 1;
 									$oPageStore.nowPage = $oPageStore.startPage;
 									fnSearch();
 								}}

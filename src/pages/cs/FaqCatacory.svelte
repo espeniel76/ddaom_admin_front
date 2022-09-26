@@ -1,9 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
-	import { categoryList, paging, checkedList, check } from '../../stores';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
-	import { Maths } from '../../utils/math';
+	import { onMount } from "svelte";
+	import { categoryList, paging, checkedList, check } from "../../stores";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import { Maths } from "../../utils/math";
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -16,8 +16,8 @@
 		oActiveYn: null,
 	};
 	let oSearch = {
-		ActiveYn: 'All',
-		Category: '',
+		ActiveYn: "All",
+		Category: "",
 	};
 	let pageSize = 10;
 	let totalCount = 0;
@@ -46,7 +46,7 @@
 		let Category = oEdit.oCategory.value;
 		let ActiveYn = oEdit.oActiveYn.checked;
 		if (Category.length < 1) {
-			alert('카테고리 를 입력 하세요.');
+			alert("카테고리 를 입력 하세요.");
 			oEdit.oCategory.focus();
 			return false;
 		}
@@ -72,17 +72,17 @@
 			isActive = false;
 		}
 		if (oSave.oCategory.value.length < 1) {
-			alert('카테고리 를 입력 하세요.');
+			alert("카테고리 를 입력 하세요.");
 			oSave.oCategory.focus();
 			return false;
 		}
-		if (oSave.oCategory.value.replace(blank_pattern, '') == '') {
-			alert('카테고리 공백만 입력되었습니다.');
+		if (oSave.oCategory.value.replace(blank_pattern, "") == "") {
+			alert("카테고리 공백만 입력되었습니다.");
 			return false;
 		}
 
 		await categoryList.saveCategoryList(oSave.oCategory.value, isActive);
-		oSave.oCategory.value = '';
+		oSave.oCategory.value = "";
 		await fnSearch();
 	}
 
@@ -96,8 +96,8 @@
 	}
 
 	function fnInit() {
-		oSearch.ActiveYn = 'All';
-		oSearch.Category = '';
+		oSearch.ActiveYn = "All";
+		oSearch.Category = "";
 		let o = $paging;
 		fnSearch();
 		o.nowPage = 1;
@@ -106,7 +106,7 @@
 
 	async function fnDelete() {
 		await categoryList.delsaveCategoryList($checkedList);
-		console.log('삭제클릭');
+		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
 	}
@@ -133,9 +133,7 @@
 	<table class="table">
 		<tbody class="table-border-bottom-0">
 			<tr>
-				<td width="150" style="text-align: right;"
-					><h5 class="mb-0">사용여부</h5></td
-				>
+				<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 				<td width="250">
 					<input
 						class="form-check-input"
@@ -146,9 +144,7 @@
 						bind:this={oSave.oActiveYnTrue}
 						checked
 					/>
-					<label class="form-check-label" for="inlineRadio1"
-						>사용</label
-					>
+					<label class="form-check-label" for="inlineRadio1">사용</label>
 					&nbsp;
 					<input
 						class="form-check-input"
@@ -158,13 +154,9 @@
 						value="option2"
 						bind:this={oSave.oActiveYnFalse}
 					/>
-					<label class="form-check-label" for="inlineRadio2"
-						>미사용</label
-					>
+					<label class="form-check-label" for="inlineRadio2">미사용</label>
 				</td>
-				<td width="150" style="text-align: right;"
-					><h5 class="mb-0">카테고리</h5></td
-				>
+				<td width="150" style="text-align: right;"><h5 class="mb-0">카테고리</h5></td>
 				<td width="*">
 					<div class="input-group">
 						<input
@@ -174,11 +166,7 @@
 							aria-label="Recipient's username with two button addons"
 							bind:this={oSave.oCategory}
 						/>
-						<button
-							class="btn btn-sm btn-primary"
-							type="button"
-							on:click={fnSave}>등록</button
-						>
+						<button class="btn btn-sm btn-primary" type="button" on:click={fnSave}>등록</button>
 					</div>
 				</td>
 			</tr>
@@ -191,13 +179,8 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="150" style="text-align: right;"
-						><h5 class="mb-0">사용여부</h5></td
-					>
-					<td
-						width="250"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
+					<td width="250" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -209,9 +192,7 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="150" style="text-align: right;"
-						><h5 class="mb-0">카테고리</h5></td
-					>
+					<td width="150" style="text-align: right;"><h5 class="mb-0">카테고리</h5></td>
 					<td width="*" colspan="12">
 						<div class="input-group">
 							<input
@@ -222,17 +203,11 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Category}
 							/>
-							<button
-								style="margin-left:5px;"
-								class="btn btn-sm btn-outline-primary"
-								type="button"
-								on:click={fnInit}>초기화</button
+							<button style="margin-left:5px;" class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}
+								>초기화</button
 							>
-							<button
-								style="margin-left:5px;"
-								class="btn btn-sm btn-primary"
-								type="button"
-								on:click={fnSearch}>검색</button
+							<button style="margin-left:5px;" class="btn btn-sm btn-primary" type="button" on:click={fnSearch}
+								>검색</button
 							>
 						</div>
 					</td>
@@ -307,11 +282,7 @@
 											id="flexSwitchCheckChecked"
 											checked
 										/>
-										<label
-											class="form-check-label"
-											for="flexSwitchCheckChecked"
-											>사용</label
-										>
+										<label class="form-check-label" for="flexSwitchCheckChecked">사용</label>
 									{:else}
 										<input
 											class="form-check-input"
@@ -319,39 +290,23 @@
 											type="checkbox"
 											id="flexSwitchCheckChecked"
 										/>
-										<label
-											class="form-check-label"
-											for="flexSwitchCheckChecked"
-											>미사용</label
-										>
+										<label class="form-check-label" for="flexSwitchCheckChecked">미사용</label>
 									{/if}
 								</div>
 							{:else}
-								{o.ActiveYn ? '사용' : '미사용'}
+								{o.ActiveYn ? "사용" : "미사용"}
 							{/if}
 						</td>
 						<td>{Dates.defaultConvert(o.CreatedAt)}</td>
-						<td>{o.Creator ? o.Creator : ''}</td>
-						<td
-							>{o.UpdatedAt
-								? Dates.defaultConvert(o.UpdatedAt)
-								: ''}</td
-						>
-						<td>{o.Updator ? o.Updator : ''}</td>
+						<td>{o.Creator ? o.Creator : ""}</td>
+						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td>{o.Updator ? o.Updator : ""}</td>
 						<td>
 							{#if oEdit.SeqCategoryFaqs === o.SeqCategoryFaqs}
-								<button
-									type="button"
-									class="btn btn-sm btn-primary"
-									on:click={handleChangeSaveMode}>저장</button
-								>
+								<button type="button" class="btn btn-sm btn-primary" on:click={handleChangeSaveMode}>저장</button>
 							{:else}
-								<button
-									type="button"
-									class="btn btn-sm btn-info"
-									on:click={handleChangeEditMode(
-										o.SeqCategoryFaqs
-									)}>편집</button
+								<button type="button" class="btn btn-sm btn-info" on:click={handleChangeEditMode(o.SeqCategoryFaqs)}
+									>편집</button
 								>
 							{/if}
 						</td>

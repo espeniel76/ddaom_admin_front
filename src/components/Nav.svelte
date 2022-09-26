@@ -1,120 +1,112 @@
 <script>
-	import { afterUpdate, onMount } from 'svelte';
-	import {
-		mainAll,
-		menu,
-		menuSub,
-		paging,
-		menuSubSub,
-		checkedList,
-		check,
-	} from '../stores';
+	import { afterUpdate, onMount } from "svelte";
+	import { mainAll, menu, menuSub, paging, menuSubSub, checkedList, check } from "../stores";
 
 	let listMenu = [
 		{
-			title: '소설관리',
+			title: "소설관리",
 			menus: [
 				{
-					title: '메인',
-					icon: 'layer',
-					src: '/novel/main/all',
+					title: "메인",
+					icon: "layer",
+					src: "/novel/main/all",
 					subs: [
-						{ title: '전체소설', src: '/novel/main/all' },
-						{ title: '삭제된 소설', src: '/novel/main/deleted' },
+						{ title: "전체소설", src: "/novel/main/all" },
+						{ title: "삭제된 소설", src: "/novel/main/deleted" },
 					],
 				},
 				{
-					title: '표지관리',
-					icon: 'paint',
-					src: '',
+					title: "표지관리",
+					icon: "paint",
+					src: "",
 					subs: [
-						{ title: '이미지', src: '/novel/cover/image' },
-						{ title: '배경', src: '/novel/cover/background' },
+						{ title: "이미지", src: "/novel/cover/image" },
+						{ title: "배경", src: "/novel/cover/background" },
 					],
 				},
 				{
-					title: '금칙어관리',
-					icon: 'filter-alt',
-					src: '/novel/slangs',
+					title: "금칙어관리",
+					icon: "filter-alt",
+					src: "/novel/slangs",
 					subs: [],
 				},
 				{
-					title: '주제어관리',
-					icon: 'edit-alt',
-					src: '/novel/keywords',
+					title: "주제어관리",
+					icon: "edit-alt",
+					src: "/novel/keywords",
 					subs: [],
 				},
 				{
-					title: '장르관리',
-					icon: 'category',
-					src: '/novel/genres',
-					subs: [],
-				},
-			],
-		},
-		{
-			title: '이벤트관리',
-			menus: [
-				{
-					title: '이벤트',
-					icon: 'face',
-					src: '/',
+					title: "장르관리",
+					icon: "category",
+					src: "/novel/genres",
 					subs: [],
 				},
 			],
 		},
 		{
-			title: 'CS관리',
+			title: "이벤트관리",
 			menus: [
 				{
-					title: '공지사항',
-					icon: 'notification',
-					src: '/cs/notice',
+					title: "이벤트",
+					icon: "face",
+					src: "/",
+					subs: [],
+				},
+			],
+		},
+		{
+			title: "CS관리",
+			menus: [
+				{
+					title: "공지사항",
+					icon: "notification",
+					src: "/cs/notice",
 					subs: [],
 				},
 				{
-					title: '1:1문의',
-					icon: 'chat',
-					src: '/cs/inquiry',
+					title: "1:1문의",
+					icon: "chat",
+					src: "/cs/inquiry",
 					subs: [],
 				},
 				{
-					title: 'FAQ',
-					icon: 'user',
-					src: '/cs/faq',
+					title: "FAQ",
+					icon: "user",
+					src: "/cs/faq",
 					subs: [
-						{ title: 'FAQ', src: '/cs/faq' },
-						{ title: '카테고리 관리', src: '/cs/FaqCatacory' },
+						{ title: "FAQ", src: "/cs/faq" },
+						{ title: "카테고리 관리", src: "/cs/FaqCatacory" },
 					],
 				},
 			],
 		},
 		{
-			title: '회원관리',
+			title: "회원관리",
 			menus: [
 				{
-					title: '회원관리 정보',
-					icon: 'user-pin',
-					src: '/memberInfo/memberInformation',
+					title: "회원관리 정보",
+					icon: "user-pin",
+					src: "/memberInfo/memberInformation",
 					subs: [],
 				},
 			],
 		},
 		{
-			title: '통계',
+			title: "통계",
 			menus: [
 				{
-					title: '통계',
-					icon: 'line-chart',
-					src: '/',
+					title: "통계",
+					icon: "line-chart",
+					src: "/",
 					subs: [],
 				},
 			],
 		},
 	];
-	let current = '소설관리';
-	let currentSub = '메인';
-	let currentSubSub = '전체소설';
+	let current = "소설관리";
+	let currentSub = "메인";
+	let currentSubSub = "전체소설";
 	$: {
 		menu.update((menu) => current);
 		menuSub.update((menuSub) => currentSub);
@@ -129,16 +121,10 @@
 	}
 </script>
 
-<nav
-	id="layout-menu"
-	class="menu-vertical menu bg-menu-theme"
-	style="display:flex;"
->
+<nav id="layout-menu" class="menu-vertical menu bg-menu-theme" style="display:flex;">
 	<div class="app-brand demo" style="padding-left: 0rem ">
 		<img alt="" src="/assets/img/logo.png" width="50" />
-		<span class="app-brand-text demo menu-text fw-bolder ms-2"
-			>따옴 관리자</span
-		>
+		<span class="app-brand-text demo menu-text fw-bolder ms-2">따옴 관리자</span>
 	</div>
 
 	<div class="menu-inner-shadow" />
@@ -158,14 +144,12 @@
 			{#each menu.menus as item}
 				<li
 					type="button"
-					class={currentSub === item.title
-						? 'menu-item active open'
-						: 'menu-item'}
+					class={currentSub === item.title ? "menu-item active open" : "menu-item"}
 					on:click={(e) => {
 						if (item.subs.length == 0) {
 							current = menu.title;
 							currentSub = item.title;
-							currentSubSub = '';
+							currentSubSub = "";
 						} else {
 							current = menu.title;
 							currentSub = item.title;
@@ -174,12 +158,7 @@
 						fnPageNavSet();
 					}}
 				>
-					<a
-						href={item.src}
-						class="menu-link {item.subs.length > 0
-							? 'menu-toggle'
-							: ''}"
-					>
+					<a href={item.src} class="menu-link {item.subs.length > 0 ? 'menu-toggle' : ''}">
 						<i class="menu-icon tf-icons bx bx-{item.icon}" />
 						<div
 							data-i18n="Form Elements"
@@ -197,9 +176,7 @@
 						<ul class="menu-sub">
 							{#each item.subs as sub}
 								<li
-									class={currentSubSub == sub.title
-										? 'menu-item active'
-										: 'menu-item'}
+									class={currentSubSub == sub.title ? "menu-item active" : "menu-item"}
 									on:click={(e) => {
 										current = menu.title;
 										currentSub = item.title;

@@ -1,17 +1,17 @@
 <script>
-	import { Dates } from '../utils/date';
+	import { Dates } from "../utils/date";
 	export let oSave;
 </script>
 
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">상태</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		{oSave.oDeletedYn ? '탈퇴' : '정상'}
+		{oSave.oDeletedYn ? "탈퇴" : "정상"}
 	</td>
 
 	<td style="text-align: left;"><h5 class="mb-0">블랙리스트 여부</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		{oSave.oBlockedYn ? '등록' : '미등록'}
+		{oSave.oBlockedYn ? "등록" : "미등록"}
 	</td>
 </tr>
 <tr>
@@ -22,16 +22,14 @@
 
 	<td style="text-align: left;"><h5 class="mb-0">이메일</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		{oSave.oEmail ? oSave.oEmail : '-'}
+		{oSave.oEmail ? oSave.oEmail : "-"}
 	</td>
 </tr>
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">가입일/탈퇴일</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
 		{Dates.defaultConvert(oSave.CreatedAt)} /<span class="text-danger">
-			{oSave.oDeletedYn
-				? Dates.defaultConvert(oSave.oDeletedAt)
-				: ''}</span
+			{oSave.oDeletedYn ? Dates.defaultConvert(oSave.oDeletedAt) : ""}</span
 		>
 	</td>
 
@@ -65,7 +63,7 @@
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">가입 이메일</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="2">
-		{oSave.oStartEmail ? oSave.oStartEmail : '-'}
+		{oSave.oStartEmail ? oSave.oStartEmail : "-"}
 	</td>
 
 	<td style="text-align: left;"><h5 class="mb-0">가입 경로</h5></td>
@@ -76,7 +74,7 @@
 <tr>
 	<td style="text-align: left;"><h5 class="mb-0">탈퇴 사유</h5></td>
 	<td width="*" style="vertical-align: middle" height="55" colspan="12">
-		{oSave.oDeletedYn ? oSave.oReason : '-'}
+		{oSave.oDeletedYn ? oSave.oReason : "-"}
 	</td>
 </tr>
 <tr />

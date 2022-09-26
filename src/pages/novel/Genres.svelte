@@ -1,10 +1,10 @@
 <script>
 	// 장르관리
-	import { onMount } from 'svelte';
-	import { genres, paging, checkedList, check } from '../../stores';
-	import { Dates } from '../../utils/date';
-	import Paging from '../../components/Paging.svelte';
-	import { Maths } from '../../utils/math';
+	import { onMount } from "svelte";
+	import { genres, paging, checkedList, check } from "../../stores";
+	import { Dates } from "../../utils/date";
+	import Paging from "../../components/Paging.svelte";
+	import { Maths } from "../../utils/math";
 
 	let oSave = {
 		oActiveYnTrue: null,
@@ -17,8 +17,8 @@
 		oActiveYn: null,
 	};
 	let oSearch = {
-		ActiveYn: 'All',
-		Genre: '',
+		ActiveYn: "All",
+		Genre: "",
 	};
 	let pageSize = 10;
 	let totalCount = 0;
@@ -45,7 +45,7 @@
 		let Genre = oEdit.oGenre.value;
 		let ActiveYn = oEdit.oActiveYn.checked;
 		if (Genre.length < 1) {
-			alert('장르를 입력하세요.');
+			alert("장르를 입력하세요.");
 			oEdit.oGenre.focus();
 			return false;
 		}
@@ -71,22 +71,22 @@
 			isActive = false;
 		}
 		if (oSave.oGenre.value.length < 1) {
-			alert('장르를 입력하세요.');
+			alert("장르를 입력하세요.");
 			oSave.oGenre.focus();
 			return flase;
 		}
-		if (oSave.oGenre.value.replace(blank_pattern, '') == '') {
-			alert('장르 내용 공백만 입력되었습니다.');
+		if (oSave.oGenre.value.replace(blank_pattern, "") == "") {
+			alert("장르 내용 공백만 입력되었습니다.");
 			return false;
 		}
 
 		await genres.saveGenre(oSave.oGenre.value, isActive);
-		oSave.oGenre.value = '';
+		oSave.oGenre.value = "";
 		await fnSearch();
 	}
 	async function fnDelete() {
 		await genres.delGenre($checkedList);
-		console.log('삭제클릭');
+		console.log("삭제클릭");
 		fnPageNavSet();
 		fnSearch();
 	}
@@ -97,17 +97,12 @@
 	}
 
 	async function fnSearch() {
-		await genres.fetchGenres(
-			oSearch.ActiveYn,
-			oSearch.Genre,
-			$paging.pageSize,
-			$paging.nowPage
-		);
+		await genres.fetchGenres(oSearch.ActiveYn, oSearch.Genre, $paging.pageSize, $paging.nowPage);
 	}
 
 	function fnInit() {
-		oSearch.ActiveYn = 'All';
-		oSearch.Genre = '';
+		oSearch.ActiveYn = "All";
+		oSearch.Genre = "";
 		let o = $paging;
 		fnSearch();
 		o.nowPage = 1;
@@ -131,9 +126,7 @@
 	<table class="table">
 		<tbody class="table-border-bottom-0">
 			<tr>
-				<td width="150" style="text-align: right;"
-					><h5 class="mb-0">사용여부</h5></td
-				>
+				<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
 				<td width="250">
 					<input
 						class="form-check-input"
@@ -144,9 +137,7 @@
 						bind:this={oSave.oActiveYnTrue}
 						checked
 					/>
-					<label class="form-check-label" for="inlineRadio1"
-						>사용</label
-					>
+					<label class="form-check-label" for="inlineRadio1">사용</label>
 					&nbsp;
 					<input
 						class="form-check-input"
@@ -156,13 +147,9 @@
 						value="option2"
 						bind:this={oSave.oActiveYnFalse}
 					/>
-					<label class="form-check-label" for="inlineRadio2"
-						>미사용</label
-					>
+					<label class="form-check-label" for="inlineRadio2">미사용</label>
 				</td>
-				<td width="150" style="text-align: right;"
-					><h5 class="mb-0">장르</h5></td
-				>
+				<td width="150" style="text-align: right;"><h5 class="mb-0">장르</h5></td>
 				<td width="*">
 					<div class="input-group">
 						<input
@@ -172,11 +159,7 @@
 							aria-label="Recipient's username with two button addons"
 							bind:this={oSave.oGenre}
 						/>
-						<button
-							class="btn btn-sm btn-primary"
-							type="button"
-							on:click={fnSave}>등록</button
-						>
+						<button class="btn btn-sm btn-primary" type="button" on:click={fnSave}>등록</button>
 					</div>
 				</td>
 			</tr>
@@ -189,13 +172,8 @@
 		<table class="table">
 			<tbody class="table-border-bottom-0">
 				<tr>
-					<td width="150" style="text-align: right;"
-						><h5 class="mb-0">사용여부</h5></td
-					>
-					<td
-						width="250"
-						style="vertical-align: middle;text-align:center"
-					>
+					<td width="150" style="text-align: right;"><h5 class="mb-0">사용여부</h5></td>
+					<td width="250" style="vertical-align: middle;text-align:center">
 						<select
 							class="form-select form-select-sm"
 							id="exampleFormControlSelect1"
@@ -207,9 +185,7 @@
 							<option value="N">미사용</option>
 						</select>
 					</td>
-					<td width="150" style="text-align: right;"
-						><h5 class="mb-0">장르</h5></td
-					>
+					<td width="150" style="text-align: right;"><h5 class="mb-0">장르</h5></td>
 					<td width="*">
 						<div class="input-group">
 							<input
@@ -220,17 +196,11 @@
 								on:keypress={onKeyPress}
 								bind:value={oSearch.Genre}
 							/>
-							<button
-								style="margin-left:5px;"
-								class="btn btn-sm btn-outline-primary"
-								type="button"
-								on:click={fnInit}>초기화</button
+							<button style="margin-left:5px;" class="btn btn-sm btn-outline-primary" type="button" on:click={fnInit}
+								>초기화</button
 							>
-							<button
-								style="margin-left:5px;"
-								class="btn btn-sm btn-primary"
-								type="button"
-								on:click={fnSearch}>검색</button
+							<button style="margin-left:5px;" class="btn btn-sm btn-primary" type="button" on:click={fnSearch}
+								>검색</button
 							>
 						</div>
 					</td>
@@ -305,11 +275,7 @@
 											id="flexSwitchCheckChecked"
 											checked
 										/>
-										<label
-											class="form-check-label"
-											for="flexSwitchCheckChecked"
-											>사용</label
-										>
+										<label class="form-check-label" for="flexSwitchCheckChecked">사용</label>
 									{:else}
 										<input
 											class="form-check-input"
@@ -317,37 +283,22 @@
 											type="checkbox"
 											id="flexSwitchCheckChecked"
 										/>
-										<label
-											class="form-check-label"
-											for="flexSwitchCheckChecked"
-											>미사용</label
-										>
+										<label class="form-check-label" for="flexSwitchCheckChecked">미사용</label>
 									{/if}
 								</div>
 							{:else}
-								{o.ActiveYn ? '사용' : '미사용'}
+								{o.ActiveYn ? "사용" : "미사용"}
 							{/if}
 						</td>
 						<td>{Dates.defaultConvert(o.CreatedAt)}</td>
-						<td>{o.Creator ? o.Creator : ''}</td>
-						<td
-							>{o.UpdatedAt
-								? Dates.defaultConvert(o.UpdatedAt)
-								: ''}</td
-						>
-						<td>{o.Updator ? o.Updator : ''}</td>
+						<td>{o.Creator ? o.Creator : ""}</td>
+						<td>{o.UpdatedAt ? Dates.defaultConvert(o.UpdatedAt) : ""}</td>
+						<td>{o.Updator ? o.Updator : ""}</td>
 						<td>
 							{#if oEdit.SeqGenre === o.SeqGenre}
-								<button
-									type="button"
-									class="btn btn-sm btn-primary"
-									on:click={handleChangeSaveMode}>저장</button
-								>
+								<button type="button" class="btn btn-sm btn-primary" on:click={handleChangeSaveMode}>저장</button>
 							{:else}
-								<button
-									type="button"
-									class="btn btn-sm btn-info"
-									on:click={handleChangeEditMode(o.SeqGenre)}
+								<button type="button" class="btn btn-sm btn-info" on:click={handleChangeEditMode(o.SeqGenre)}
 									>편집</button
 								>
 							{/if}

@@ -6,9 +6,7 @@
 </script>
 
 <tr>
-	<td width="150" style="text-align: right;"
-		><h5 class="mb-0">{title}*</h5></td
-	>
+	<td width="150" style="text-align: right;"><h5 class="mb-0">{title}*</h5></td>
 
 	<td width="*" style="vertical-align: middle" height="55" colspan="3">
 		<input

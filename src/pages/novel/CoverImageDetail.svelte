@@ -1,38 +1,38 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
-	import { meta, router } from 'tinro';
-	import { images } from '../../stores';
-	import DetailCommonBottom from '../../components/DetailCommonBottom.svelte';
-	import DetailCommonYn from '../../components/DetailCommonYn.svelte';
-	import DetailCommonBottomBtns from '../../components/DetailCommonBottomBtns.svelte';
-	import consts from '../../define/consts';
+	import { meta, router } from "tinro";
+	import { images } from "../../stores";
+	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
+	import consts from "../../define/consts";
 	const route = meta();
 	let _id = route.params._id;
 
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		Image: '',
-		oFile: '',
-		oName: '',
-		CreatedAt: '',
-		Creator: '',
-		UpdatedAt: '',
-		Updator: '',
+		Image: "",
+		oFile: "",
+		oName: "",
+		CreatedAt: "",
+		Creator: "",
+		UpdatedAt: "",
+		Updator: "",
 	};
 	let Data;
-	let urlList = '/novel/cover/image';
+	let urlList = "/novel/cover/image";
 	let oImage = null;
 	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
 	onMount(async () => {
-		if (_id !== 'new') {
+		if (_id !== "new") {
 			let retVal = await images.get(_id);
 
-			if (retVal.ResultCode === 'OK') {
+			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 			} else {
 				alert(retVal.ErrorDesc);
@@ -48,17 +48,17 @@
 			isActive = false;
 		}
 		if (oSave.oName.value.length < 1) {
-			alert('이미지명을 입력 하세요.');
+			alert("이미지명을 입력 하세요.");
 			oSave.oName.focus();
 			return false;
 		}
 
-		if (oSave.oName.value.replace(blank_pattern, '') == '') {
-			alert('내용 공백만 입력되었습니다.');
+		if (oSave.oName.value.replace(blank_pattern, "") == "") {
+			alert("내용 공백만 입력되었습니다.");
 			return false;
 		}
-		if (oSave.oFile.value == '') {
-			alert('이미지 파일을 등록 하세요.');
+		if (oSave.oFile.value == "") {
+			alert("이미지 파일을 등록 하세요.");
 			return false;
 		}
 		// let fileCheck = document.getElementById('bfile');
@@ -69,26 +69,17 @@
 		// }
 
 		let retVal;
-		if (_id === 'new') {
-			retVal = await images.save(
-				oSave.oName.value.replace(regex, ''),
-				oSave.oFile,
-				isActive
-			);
-			if (retVal.ResultCode === 'OK') {
+		if (_id === "new") {
+			retVal = await images.save(oSave.oName.value.replace(regex, ""), oSave.oFile, isActive);
+			if (retVal.ResultCode === "OK") {
 				router.goto(urlList);
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
-			retVal = await images.edit(
-				_id,
-				oSave.oName.value.replace(regex, ''),
-				oSave.oFile,
-				isActive
-			);
-			if (retVal.ResultCode === 'OK') {
-				alert('정상적으로 수정 되었습니다');
+			retVal = await images.edit(_id, oSave.oName.value.replace(regex, ""), oSave.oFile, isActive);
+			if (retVal.ResultCode === "OK") {
+				alert("정상적으로 수정 되었습니다");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -106,7 +97,7 @@
 	}
 
 	$: {
-		if (Data && oSave.Image === '') {
+		if (Data && oSave.Image === "") {
 			if (Data.ActiveYn) {
 				oSave.oActiveYnTrue.checked = true;
 				oSave.oActiveYnFalse.checked = false;
@@ -124,14 +115,14 @@
 		}
 	}
 	function validateFileType(e) {
-		const fileName = document.getElementById('fileName').value;
-		const idxDot = fileName.lastIndexOf('.') + 1;
+		const fileName = document.getElementById("fileName").value;
+		const idxDot = fileName.lastIndexOf(".") + 1;
 		const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-		if (extFile == 'png') {
+		if (extFile == "png") {
 			//TO DO
 		} else {
-			e.target.value = '';
-			alert('png 확장자 파일만 등록 가능합니다.');
+			e.target.value = "";
+			alert("png 확장자 파일만 등록 가능합니다.");
 			return false;
 		}
 	}
@@ -143,27 +134,13 @@
 			<tbody class="table-border-bottom-0">
 				<DetailCommonYn {oSave} title="사용여부" Y="사용" N="미사용" />
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">제목*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
-						<input
-							type="text"
-							class="form-control form-control-sm"
-							placeholder="제목"
-							bind:this={oSave.oName}
-						/>
+					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oName} />
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">이미지*</h5></td
-					>
+					<td style="text-align: right;"><h5 class="mb-0">이미지*</h5></td>
 					<td width="*" style="vertical-align: middle" colspan="3">
 						<input
 							id="fileName"
@@ -177,23 +154,15 @@
 							}}
 							bind:this={oSave.oFile}
 						/>
-						<div style="color:chocolate">
-							*배경이 투명인 png 파일을 첨부해주세요. (카카오톡
-							공유 시 오류 이슈)
-						</div>
+						<div style="color:chocolate">*배경이 투명인 png 파일을 첨부해주세요. (카카오톡 공유 시 오류 이슈)</div>
 					</td>
 				</tr>
 				<tr>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						colspan="4"
-						id="bfile"
-					>
+					<td width="*" style="vertical-align: middle" colspan="4" id="bfile">
 						<img alt={oSave.Image} bind:this={oImage} />
 					</td>
 				</tr>
-				{#if _id !== 'new'}
+				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />
 				{/if}
 			</tbody>

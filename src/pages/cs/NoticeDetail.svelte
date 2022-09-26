@@ -1,10 +1,10 @@
 <script>
-	import { onMount } from 'svelte';
-	import { meta, router } from 'tinro';
-	import { notice, checkedList, check } from '../../stores';
-	import DetailCommonBottom from '../../components/DetailCommonBottom.svelte';
-	import DetailCommonYn from '../../components/DetailCommonYn.svelte';
-	import DetailCommonBottomBtns from '../../components/DetailCommonBottomBtns.svelte';
+	import { onMount } from "svelte";
+	import { meta, router } from "tinro";
+	import { notice, checkedList, check } from "../../stores";
+	import DetailCommonBottom from "../../components/DetailCommonBottom.svelte";
+	import DetailCommonYn from "../../components/DetailCommonYn.svelte";
+	import DetailCommonBottomBtns from "../../components/DetailCommonBottomBtns.svelte";
 
 	const route = meta();
 	let _id = route.params._id;
@@ -12,26 +12,26 @@
 	let oSave = {
 		oActiveYnTrue: null,
 		oActiveYnFalse: null,
-		oStartDate: '',
-		oEndDate: '',
-		CreatedAt: '',
-		Creator: '',
-		UpdatedAt: '',
-		Updator: '',
-		oTitle: '',
-		oContent: '',
+		oStartDate: "",
+		oEndDate: "",
+		CreatedAt: "",
+		Creator: "",
+		UpdatedAt: "",
+		Updator: "",
+		oTitle: "",
+		oContent: "",
 	};
 
 	let Data;
-	let urlList = '/cs/notice';
+	let urlList = "/cs/notice";
 	const blank_pattern = /^\s+|\s+$/g;
 	const regex = /[\s\uFEFF\xA0]+$/gi;
 	// .replace(regex, '')
 
 	onMount(async () => {
-		if (_id !== 'new') {
+		if (_id !== "new") {
 			let retVal = await notice.getNotice(_id);
-			if (retVal.ResultCode === 'OK') {
+			if (retVal.ResultCode === "OK") {
 				Data = retVal.Data;
 			} else {
 				alert(retVal.ErrorDesc);
@@ -58,52 +58,52 @@
 		// 사용기간 체크
 
 		if (oSave.oTitle.value.length < 1) {
-			alert('제목을 입력 하세요.');
+			alert("제목을 입력 하세요.");
 			oSave.oTitle.focus();
 			return false;
 		}
 		if (oSave.oContent.value.length < 1) {
-			alert('내용을 입력 하세요.');
+			alert("내용을 입력 하세요.");
 			oSave.oContent.focus();
 			return false;
 		}
-		if (oSave.oTitle.value.replace(blank_pattern, '') == '') {
-			alert('제목 공백만 입력되었습니다.');
+		if (oSave.oTitle.value.replace(blank_pattern, "") == "") {
+			alert("제목 공백만 입력되었습니다.");
 			return false;
 		}
-		if (oSave.oContent.value.replace(blank_pattern, '') == '') {
-			alert('내용 공백만 입력되었습니다.');
+		if (oSave.oContent.value.replace(blank_pattern, "") == "") {
+			alert("내용 공백만 입력되었습니다.");
 			return false;
 		}
 
 		//수정
 		let retVal;
-		if (_id === 'new') {
+		if (_id === "new") {
 			retVal = await notice.saveNotice(
-				oSave.oTitle.value.replace(regex, ''),
+				oSave.oTitle.value.replace(regex, ""),
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
 
-			if (retVal.ResultCode === 'OK') {
-				router.goto('/cs/notice');
+			if (retVal.ResultCode === "OK") {
+				router.goto("/cs/notice");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
 		} else {
 			retVal = await notice.editNotice(
 				_id,
-				oSave.oTitle.value.replace(regex, ''),
+				oSave.oTitle.value.replace(regex, ""),
 				oSave.oContent.value,
 				isActive,
 				oSave.oStartDate.value,
 				oSave.oEndDate.value
 			);
-			if (retVal.ResultCode === 'OK') {
-				alert('정상적으로 수정 되었습니다');
-				router.goto('/cs/notice');
+			if (retVal.ResultCode === "OK") {
+				alert("정상적으로 수정 되었습니다");
+				router.goto("/cs/notice");
 			} else {
 				alert(retVal.ErrorDesc);
 			}
@@ -137,34 +137,15 @@
 			<tbody class="table-border-bottom-0">
 				<DetailCommonYn {oSave} title="노출여부" Y="노출" N="미노출" />
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">제목*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
-						<input
-							type="text"
-							class="form-control form-control-sm"
-							placeholder="제목"
-							bind:this={oSave.oTitle}
-						/>
+					<td style="text-align: right;"><h5 class="mb-0">제목*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
+						<input type="text" class="form-control form-control-sm" placeholder="제목" bind:this={oSave.oTitle} />
 					</td>
 				</tr>
 
 				<tr>
-					<td style="text-align: right;"
-						><h5 class="mb-0">내용*</h5></td
-					>
-					<td
-						width="*"
-						style="vertical-align: middle"
-						height="55"
-						colspan="3"
-					>
+					<td style="text-align: right;"><h5 class="mb-0">내용*</h5></td>
+					<td width="*" style="vertical-align: middle" height="55" colspan="3">
 						<textarea
 							type="text"
 							rows="10"
@@ -178,7 +159,7 @@
 					</td>
 				</tr>
 				<tr />
-				{#if _id !== 'new'}
+				{#if _id !== "new"}
 					<DetailCommonBottom {oSave} />
 				{/if}
 			</tbody>

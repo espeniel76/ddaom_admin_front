@@ -1,17 +1,10 @@
-import { onMount } from 'svelte';
-import { writable, get } from 'svelte/store';
-import {
-	getApi,
-	putApi,
-	delApi,
-	postApi,
-	postFileApi,
-	putFileApi,
-} from './service/api';
+import { onMount } from "svelte";
+import { writable, get } from "svelte/store";
+import { getApi, putApi, delApi, postApi, postFileApi, putFileApi } from "./service/api";
 
 let initListValues = {
-	ResultCode: '',
-	ErrorDesc: '',
+	ResultCode: "",
+	ErrorDesc: "",
 	Data: {
 		TotalCount: 0,
 		List: [],
@@ -25,13 +18,13 @@ function setMainAll() {
 		let url = `/main/all?Sort=${o.Sort}&ProcessYn=${o.ProcessYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Keyword}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -47,13 +40,13 @@ function setMainFinish() {
 		let url = `/main/all/finishes/${SeqKeyword}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -68,13 +61,13 @@ function setMainDeletedAll() {
 		let url = `/main/deleted/all?PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await postApi(url, o);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	const get = async (SeqNovelDelete, Step) => {
@@ -83,7 +76,7 @@ function setMainDeletedAll() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -99,13 +92,13 @@ function setNovelStep1() {
 		let url = `/main/all/step1?Sort=${o.Sort}&SeqKeyword=${o.SeqKeyword}&SeqGenre=${o.SeqGenre}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -122,13 +115,13 @@ function setNovelStep2() {
 
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -143,13 +136,13 @@ function setNovelStep3() {
 		let url = `/main/all/step234?Step=3&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -164,13 +157,13 @@ function setNovelStep4() {
 		let url = `/main/all/step234?Step=4&Sort=${o.Sort}&SeqNovelStep1=${o.SeqNovelStep1}&Search=${o.Search}&PageSize=${PageSize}&Page=${Page}&Deleted=${o.Deleted}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -188,13 +181,13 @@ function setSlangs() {
 			const getDatas = await getApi(
 				`/assets/slangs?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
 			);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -204,11 +197,11 @@ function setSlangs() {
 				Slang,
 				ActiveYn,
 			});
-			if (newData.ResultCode !== 'OK') {
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -218,26 +211,26 @@ function setSlangs() {
 				Slang,
 				ActiveYn,
 			});
-			if (newData.ResultCode !== 'OK') {
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	const delSlang = async (idList) => {
 		let url = `/assets/slangs`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -259,13 +252,13 @@ function setGenres() {
 			const getDatas = await getApi(
 				`/assets/genres?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
 			);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -275,11 +268,11 @@ function setGenres() {
 				Genre,
 				ActiveYn,
 			});
-			if (newData.ResultCode !== 'OK') {
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -289,27 +282,27 @@ function setGenres() {
 				Genre,
 				ActiveYn,
 			});
-			if (newData.ResultCode !== 'OK') {
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	const delGenre = async (idList) => {
 		let url = `/assets/genres`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -332,13 +325,13 @@ function setKeywords() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -349,17 +342,11 @@ function setKeywords() {
 
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const editKeyword = async (
-		SeqKeyword,
-		Keyword,
-		ActiveYn,
-		StartDate,
-		EndDate
-	) => {
+	const editKeyword = async (SeqKeyword, Keyword, ActiveYn, StartDate, EndDate) => {
 		try {
 			const newData = await putApi(`/assets/keywords/${SeqKeyword}`, {
 				Keyword,
@@ -369,7 +356,7 @@ function setKeywords() {
 			});
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -384,7 +371,7 @@ function setKeywords() {
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -392,15 +379,15 @@ function setKeywords() {
 		let url = `/assets/keywords`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -423,13 +410,13 @@ function setColors() {
 		let url = `/assets/colors?ActiveYn=${o.ActiveYn}&Search=${o.Color}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -439,7 +426,7 @@ function setColors() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -452,7 +439,7 @@ function setColors() {
 			});
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -466,7 +453,7 @@ function setColors() {
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -474,14 +461,14 @@ function setColors() {
 		let url = `/assets/colors`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -503,13 +490,13 @@ function setImages() {
 		let url = `/assets/images?ActiveYn=${o.ActiveYn}&Search=${o.Name}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -519,38 +506,35 @@ function setImages() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
 	const save = async (Name, Image, ActiveYn) => {
 		var data = new FormData();
-		data.append('Name', Name);
-		data.append('ActiveYn', ActiveYn);
-		data.append('Image', Image.files[0]);
+		data.append("Name", Name);
+		data.append("ActiveYn", ActiveYn);
+		data.append("Image", Image.files[0]);
 		try {
 			const newData = await postFileApi(`/assets/images`, data);
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
 	const edit = async (SeqImage, Name, Image, ActiveYn) => {
 		var data = new FormData();
-		data.append('Name', Name);
-		data.append('ActiveYn', ActiveYn);
-		data.append('Image', Image.files[0]);
+		data.append("Name", Name);
+		data.append("ActiveYn", ActiveYn);
+		data.append("Image", Image.files[0]);
 		try {
-			const newData = await putFileApi(
-				`/assets/images/${SeqImage}`,
-				data
-			);
+			const newData = await putFileApi(`/assets/images/${SeqImage}`, data);
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -558,14 +542,14 @@ function setImages() {
 		let url = `/assets/images`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -594,7 +578,7 @@ function setDeleteNovel() {
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -612,14 +596,14 @@ function setNotice() {
 		let url = `/cs/notices?ActiveYn=${o.ActiveYn}&StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.Notice}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.1');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.1");
 		}
 	};
 
@@ -629,18 +613,11 @@ function setNotice() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const editNotice = async (
-		SeqNotice,
-		Title,
-		Content,
-		ActiveYn,
-		StartDate,
-		EndDate
-	) => {
+	const editNotice = async (SeqNotice, Title, Content, ActiveYn, StartDate, EndDate) => {
 		try {
 			const newData = await putApi(`/cs/notices/${SeqNotice}`, {
 				Title,
@@ -652,7 +629,7 @@ function setNotice() {
 
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -669,7 +646,7 @@ function setNotice() {
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -677,15 +654,15 @@ function setNotice() {
 		let url = `/cs/notices`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -709,14 +686,14 @@ function setFaq() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -726,19 +703,11 @@ function setFaq() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const editFaq = async (
-		SeqFaq,
-		faqCategory,
-		Title,
-		Content,
-		ActiveYn,
-		StartDate,
-		EndDate
-	) => {
+	const editFaq = async (SeqFaq, faqCategory, Title, Content, ActiveYn, StartDate, EndDate) => {
 		try {
 			const newData = await putApi(`/cs/faqs/${SeqFaq}`, {
 				SeqFaq,
@@ -752,18 +721,11 @@ function setFaq() {
 
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const saveFaq = async (
-		faqCategory,
-		Title,
-		Content,
-		ActiveYn,
-		StartDate,
-		EndDate
-	) => {
+	const saveFaq = async (faqCategory, Title, Content, ActiveYn, StartDate, EndDate) => {
 		try {
 			const newData = await postApi(`/cs/faqs`, {
 				faqCategory,
@@ -777,7 +739,7 @@ function setFaq() {
 			return newData;
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -785,15 +747,15 @@ function setFaq() {
 		let url = `/cs/faqs`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -817,14 +779,14 @@ function setCategoryFaq() {
 		let url = `/cs/faqs/category`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -846,30 +808,27 @@ function setCategoryFaqList() {
 				`/cs/categoryFaqs?ActiveYn=${ActiveYn}&Search=${Search}&PageSize=${PageSize}&Page=${Page}`
 			);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
 	const editCategoryList = async (SeqCategoryFaqs, Category, ActiveYn) => {
 		try {
-			const newData = await putApi(
-				`/cs/categoryFaqs/${SeqCategoryFaqs}`,
-				{
-					Category,
-					ActiveYn,
-				}
-			);
-			if (newData.ResultCode !== 'OK') {
+			const newData = await putApi(`/cs/categoryFaqs/${SeqCategoryFaqs}`, {
+				Category,
+				ActiveYn,
+			});
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -880,27 +839,27 @@ function setCategoryFaqList() {
 				ActiveYn,
 			});
 
-			if (newData.ResultCode !== 'OK') {
+			if (newData.ResultCode !== "OK") {
 				alert(newData.ErrorDesc);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	const delsaveCategoryList = async (idList) => {
 		let url = `/cs/CategoryFaqs`;
 		try {
 			const getDatas = await delApi(url, idList);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				// alert(getDatas.ErrorDesc);
-				alert('삭제리스트 체크하기');
+				alert("삭제리스트 체크하기");
 			} else {
-				alert('삭제확인');
+				alert("삭제확인");
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -923,14 +882,14 @@ function setInquiries() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -941,19 +900,11 @@ function setInquiries() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const editInquiries = async (
-		SeqServiceInquiry,
-		Status,
-		Answer,
-		StartDate,
-		EndDate,
-		Title,
-		SeqMember
-	) => {
+	const editInquiries = async (SeqServiceInquiry, Status, Answer, StartDate, EndDate, Title, SeqMember) => {
 		try {
 			const newData = await putApi(`/cs/inquiries/${SeqServiceInquiry}`, {
 				SeqServiceInquiry,
@@ -967,7 +918,7 @@ function setInquiries() {
 
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -989,14 +940,14 @@ function setMemberInformation() {
 		let url = `/memberInfo/memberInformation?StartDate=${o.StartDate}&EndDate=${o.EndDate}&Search=${o.NickName}&BlackedYn=${o.BlackedYn}&ActiveYn=${o.ActiveYn}&DateSelect=${o.DateSelect}&Value=${o.Value}&PageSize=${PageSize}&Page=${Page}`;
 		try {
 			const getDatas = await getApi(url);
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -1006,29 +957,21 @@ function setMemberInformation() {
 			const getDatas = await getApi(url);
 			return getDatas;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
-	const editMemberInformation = async (
-		SeqMember,
-		isBlocked,
-		BlockedReason,
-		StartDate
-	) => {
+	const editMemberInformation = async (SeqMember, isBlocked, BlockedReason, StartDate) => {
 		try {
-			const newData = await putApi(
-				`/memberInfo/memberInformation/${SeqMember}`,
-				{
-					SeqMember,
-					isBlocked,
-					BlockedReason,
-					StartDate,
-				}
-			);
+			const newData = await putApi(`/memberInfo/memberInformation/${SeqMember}`, {
+				SeqMember,
+				isBlocked,
+				BlockedReason,
+				StartDate,
+			});
 			return newData;
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -1049,14 +992,14 @@ function setMemberInformationList() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
 			console.log(error);
-			alert('오류가 발생했습니다. 다시 시도해 주세요.');
+			alert("오류가 발생했습니다. 다시 시도해 주세요.");
 		}
 	};
 
@@ -1074,13 +1017,13 @@ function setNobel() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 
@@ -1098,13 +1041,13 @@ function setMemLog() {
 		try {
 			const getDatas = await getApi(url);
 
-			if (getDatas.ResultCode !== 'OK') {
+			if (getDatas.ResultCode !== "OK") {
 				alert(getDatas.ErrorDesc);
 			} else {
 				set(getDatas);
 			}
 		} catch (error) {
-			alert('오류가 발생했습니다. 다시 시도해 주세요. ');
+			alert("오류가 발생했습니다. 다시 시도해 주세요. ");
 		}
 	};
 	return {
@@ -1183,9 +1126,9 @@ export const memberLogPage = writable({
 export const checkedList = writable([]);
 export const check = writable(false);
 
-export const menu = writable('');
-export const menuSub = writable('');
-export const menuSubSub = writable('');
+export const menu = writable("");
+export const menuSub = writable("");
+export const menuSubSub = writable("");
 
 export const mainAll = setMainAll();
 export const mainAllFinish = setMainFinish();

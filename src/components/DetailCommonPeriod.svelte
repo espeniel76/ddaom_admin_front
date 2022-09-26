@@ -13,10 +13,7 @@
 			bind:this={oSave.oStartDate}
 		/>
 	</td>
-	<td
-		width="200"
-		style="vertical-align: middle;text-align:center; padding-left:0"
-	>
+	<td width="200" style="vertical-align: middle;text-align:center; padding-left:0">
 		<input
 			class="form-control form-control-sm"
 			type="datetime-local"

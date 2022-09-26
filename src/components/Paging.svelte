@@ -1,5 +1,5 @@
 <script>
-	import { paging, checkedList, check, keywords } from '../stores';
+	import { paging, checkedList, check, keywords } from "../stores";
 	export let fnSearch;
 	export let pageSize;
 	export let totalCount;
@@ -49,11 +49,7 @@
 		<td width="100">
 			{#if fnDelete}
 				<div class="demo-inline-spacing">
-					<button
-						type="button"
-						class="btn btn-sm btn-danger"
-						on:click={fnDelete}>삭제</button
-					>
+					<button type="button" class="btn btn-sm btn-danger" on:click={fnDelete}>삭제</button>
 				</div>
 			{/if}
 		</td>
@@ -66,9 +62,7 @@
 								class="page-link"
 								on:click={() => {
 									$paging.endPage = $paging.startPage - 1;
-									$paging.startPage =
-										$paging.endPage -
-										($paging.pageListSize - 1);
+									$paging.startPage = $paging.endPage - ($paging.pageListSize - 1);
 									$paging.nowPage = $paging.endPage;
 									fnSearch();
 									fnPageNavSet();
@@ -127,9 +121,7 @@
 			{#if registUrl}
 				<div class="demo-inline-spacing">
 					<a href={registUrl}>
-						<button type="button" class="btn btn-sm btn-primary"
-							>등록</button
-						>
+						<button type="button" class="btn btn-sm btn-primary">등록</button>
 					</a>
 				</div>
 			{/if}

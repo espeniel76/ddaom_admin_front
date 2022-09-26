@@ -11,9 +11,7 @@
 			<td width="100">
 				<div class="demo-inline-spacing">
 					<a href={urlList} on:click={fnSearch()}>
-						<button type="button" class="btn btn-sm btn-info"
-							>목록</button
-						>
+						<button type="button" class="btn btn-sm btn-info">목록</button>
 					</a>
 				</div>
 			</td>
@@ -22,11 +20,8 @@
 		{#if fnSave}
 			<td width="100">
 				<div class="demo-inline-spacing">
-					<button
-						type="button"
-						class="btn btn-sm btn-primary"
-						on:click={fnSave}
-						>{_id === 'new' ? '등록' : '등록'}</button
+					<button type="button" class="btn btn-sm btn-primary" on:click={fnSave}
+						>{_id === "new" ? "등록" : "등록"}</button
 					>
 				</div>
 			</td>
